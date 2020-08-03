@@ -25,7 +25,7 @@
           >
             <el-menu-item index="1">
               <i class="el-icon-s-home"></i>
-              <span slot="title">后台主页</span>
+              <router-link tag="span" slot="title" to='/home'>后台主页</router-link>
             </el-menu-item>
             <el-submenu index="2">
               <template slot="title">
@@ -33,8 +33,8 @@
                 <span>代理商</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="2-1">代理商管理</el-menu-item>
-                <el-menu-item index="2-2">添加代理商</el-menu-item>
+                <el-menu-item index="2-1"><router-link tag='span' to='/merchant'>代理商管理</router-link></el-menu-item>
+                <el-menu-item index="2-2"><router-link tag='span' to='/merchantAdd'>添加代理商</router-link></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
              <el-submenu index="3">
@@ -43,26 +43,27 @@
                 <span>商品管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="3-1">商品添加</el-menu-item>
-                <el-menu-item index="3-2">商品列表</el-menu-item>
+                <el-menu-item index="3-1"><router-link tag='span' to='/shopAdd'>商品添加</router-link></el-menu-item>
+                <el-menu-item index="3-2"><router-link tag='span' to='/shop'>商品列表</router-link></el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-menu-item index="4">
               <i class="el-icon-s-data"></i>
-              <span slot="title">统计报表</span>
+              <router-link slot="title" tag='span' to='/statistics'>统计报表</router-link>
             </el-menu-item>
             <el-menu-item index="5">
               <i class="el-icon-setting"></i>
-              <span slot="title">用户权限</span>
+              <router-link slot="title" tag='span' to='/user'>用户权限</router-link>
             </el-menu-item>
             <el-menu-item index="6">
               <i class="el-icon-notebook-1"></i>
-              <span slot="title">知识产权</span>
+              <router-link slot="title" tag='span' to='/intellectual'>知识产权</router-link>
             </el-menu-item>
           </el-menu>
           <!-- 导航栏 结束-->
         </el-aside>
         <el-main>
+          <router-view></router-view>
           <!-- 这里是内容展示 -->
         </el-main>
       </el-container>
