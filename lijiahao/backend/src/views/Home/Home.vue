@@ -88,7 +88,7 @@ export default {
 };
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
 
     .app-el-container{
         height: 100vh;
