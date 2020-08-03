@@ -1,3 +1,24 @@
-# h52003 Vue 实战项目
-# 这里是高清平小组的仓库
-# 这段话是在我自己仓库写的，我fork成功了
+# groupproject
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
