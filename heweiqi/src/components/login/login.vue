@@ -5,7 +5,7 @@
     <div class="login_box">
       <!-- head头像区域 -->
       <div class="login_img">
-        <img src="./../../assets/logo.png" alt />
+        <img src="./../../assets/head.png" alt />
       </div>
 
       <!-- 表单区域 -->
