@@ -1,3 +1,5 @@
-export default= {
-    
+module.exports = {
+    lintOnSave:false,
+    publicPath:"./",
+    productionSourceMap:false, 
 }
