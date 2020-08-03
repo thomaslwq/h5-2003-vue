@@ -1,6 +1,8 @@
 <template>
     <el-container>
-        <el-header>Header</el-header>
+        <el-header>
+            <h1>子然电商后台管理系统</h1>
+        </el-header>
         <el-container class="app-el-container">
             <el-aside width="200px">
                 <el-menu
@@ -15,7 +17,7 @@
                         <i class="el-icon-s-tools"></i>
                         <span slot="title">系统首页</span>
                     </el-menu-item>
-                    <el-submenu index="2">
+                    <el-submenu index="1">
                         <template slot="title">
                             <i class="el-icon-goods"></i>
                             <span>商品管理</span>
@@ -28,7 +30,7 @@
                         </el-menu-item-group>
 
                     </el-submenu>
-                    <el-submenu index="3">
+                    <el-submenu index="2">
                         <template slot="title">
                             <i class="el-icon-sell"></i>
                             <span>交易管理</span>
@@ -41,7 +43,7 @@
                         </el-menu-item-group>
 
                     </el-submenu>
-                    <el-submenu index="4">
+                    <el-submenu index="3">
                         <template slot="title">
                             <i class="el-icon-location"></i>
                             <span>活动管理</span>
@@ -54,7 +56,7 @@
                         </el-menu-item-group>
 
                     </el-submenu>
-                    <el-submenu index="5">
+                    <el-submenu index="4">
                         <template slot="title">
                             <i class="el-icon-message-solid"></i>
                             <span>消息管理</span>
@@ -69,7 +71,7 @@
                     </el-submenu>
                 </el-menu>
             </el-aside>
-            <el-main>Main的撒大大大法国</el-main>
+            <el-main>Main</el-main>
         </el-container>
     </el-container>
 </template>
@@ -89,7 +91,6 @@ export default {
 
 </script>
 <style lang="less" scoped>
-
     .app-el-container{
         height: 100vh;
     }
@@ -98,6 +99,9 @@ export default {
         color: #333;
         /*text-align: center;*/
         line-height: 60px;
+        h1{
+            color: #fff;
+        }
     }
 
     .el-aside {
