@@ -3,8 +3,6 @@
       <h1>欢迎来到子然电商后台管理系统</h1>
       <div class="login-tab">
           <h4>管理员登录</h4>
-<!--          <el-input v-model="input" placeholder="请输入内容"></el-input>-->
-<!--          <el-input placeholder="请输入密码" v-model="password" show-password></el-input>-->
           <ul>
               <li>
                   <span>用户名：</span>

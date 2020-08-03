@@ -13,5 +13,6 @@ var schema = new mongooes.Schema({
     price: Number,
     id: Number
 })
+
 var dataCol = mongooes.model("goods", schema);
 module.exports = dataCol;

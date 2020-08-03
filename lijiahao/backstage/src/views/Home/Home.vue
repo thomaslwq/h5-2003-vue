@@ -14,8 +14,9 @@
                         text-color="#fff"
                        >
                     <el-menu-item index="1">
-                        <i class="el-icon-s-tools"></i>
-                        <span slot="title">系统首页</span>
+
+<!--                        <span slot="title">系统首页</span>-->
+                        <router-link to="index"> <i class="el-icon-s-tools"></i>系统首页</router-link>
                     </el-menu-item>
                     <el-submenu index="1">
                         <template slot="title">
@@ -24,8 +25,12 @@
                         </template>
                         <el-menu-item-group>
 
-                            <el-menu-item index="2-1">选项1</el-menu-item>
-                            <el-menu-item index="2-2">选项2</el-menu-item>
+                            <el-menu-item index="2-1">
+                                <router-link to="goodsList" >商品列表</router-link>
+                            </el-menu-item>
+                            <el-menu-item index="2-2">
+                                <router-link to="">选项1</router-link>
+                            </el-menu-item>
 
                         </el-menu-item-group>
 
@@ -37,8 +42,12 @@
                         </template>
                         <el-menu-item-group>
 
-                            <el-menu-item index="3-1">选项1</el-menu-item>
-                            <el-menu-item index="3-2">选项2</el-menu-item>
+                            <el-menu-item index="3-1">
+                                <router-link to="">选项1</router-link>
+                            </el-menu-item>
+                            <el-menu-item index="3-2">
+                                <router-link to="">选项1</router-link>
+                            </el-menu-item>
 
                         </el-menu-item-group>
 
@@ -50,8 +59,12 @@
                         </template>
                         <el-menu-item-group>
 
-                            <el-menu-item index="4-1">选项1</el-menu-item>
-                            <el-menu-item index="4-2">选项2</el-menu-item>
+                            <el-menu-item index="4-1">
+                                <router-link to="">选项1</router-link>
+                            </el-menu-item>
+                            <el-menu-item index="4-2">
+                                <router-link to="">选项1</router-link>
+                            </el-menu-item>
 
                         </el-menu-item-group>
 
@@ -63,21 +76,28 @@
                         </template>
                         <el-menu-item-group>
 
-                            <el-menu-item index="5-1">选项1</el-menu-item>
-                            <el-menu-item index="5-2">选项2</el-menu-item>
+                            <el-menu-item index="5-1">
+                                <router-link to="">选项1</router-link>
+                            </el-menu-item>
+                            <el-menu-item index="5-2">
+                                <router-link to="">选项1</router-link>
+                            </el-menu-item>
 
                         </el-menu-item-group>
 
                     </el-submenu>
                 </el-menu>
             </el-aside>
-            <el-main>Main</el-main>
+            <el-main>
+                <router-view></router-view>
+            </el-main>
         </el-container>
     </el-container>
 </template>
 
 <script>
 // @ is an alias to /src
+
 export default {
     methods: {
         handleOpen(key, keyPath) {
@@ -86,11 +106,16 @@ export default {
         handleClose(key, keyPath) {
             console.log(key, keyPath);
         }
-    }
+    },
+
 };
 
 </script>
 <style lang="less" scoped>
+    a{
+        display: block;
+        width: 100%;
+    }
     .app-el-container{
         height: 100vh;
     }

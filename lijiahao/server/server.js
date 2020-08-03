@@ -4,7 +4,9 @@ const listRouter = require("./router/goodsList");
 const xqRouter = require("./router/details");
 const delDataRouter = require('./router/deleteData');
 const addDataRouter = require('./router/addData');
-const modifyData = require('./router/modifyData')
+const modifyData = require('./router/modifyData');
+app.use(express.json());
+app.use(express.urlencoded());
 app.use("/list", listRouter)
 app.use("/details", xqRouter)
 app.use('/delete',delDataRouter)
