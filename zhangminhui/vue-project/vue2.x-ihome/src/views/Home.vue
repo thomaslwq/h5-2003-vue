@@ -3,6 +3,7 @@
 <div id='home'>
   <Header></Header>
   <Swiper></Swiper>
+  <Newdesign></Newdesign>
   <Video></Video>
   <Footer></Footer>
 </div>
@@ -11,7 +12,8 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import Header from "../components/Header.vue";
+import Header from "../components/Header";
+import Newdesign from "../components/NewDesign.vue"
 import Swiper from "../components/Swiper.vue";
 import Video from "../components/Video.vue";
 import Footer from "../components/Footer.vue";
@@ -21,7 +23,8 @@ components: {
   Header,
   Swiper,
   Video,
-  Footer
+  Footer,
+  Newdesign
 },
 data() {
 //这里存放数据
