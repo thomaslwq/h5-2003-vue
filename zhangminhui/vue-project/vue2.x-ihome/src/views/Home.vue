@@ -4,6 +4,8 @@
   <Header></Header>
   <Bigswiper></Bigswiper>
   <Qianggou></Qianggou>
+  <Swiper></Swiper>
+  <Newdesign></Newdesign>
   <Video></Video>
   <Footer></Footer>
 </div>
@@ -15,6 +17,8 @@
 import Header from "../components/Header.vue";
 import Bigswiper from "../components/Swiper.vue";
 import Qianggou from "../components/Qianggou.vue";
+import Newdesign from "../components/NewDesign.vue"
+import Swiper from "../components/Swiper.vue";
 import Video from "../components/Video.vue";
 import Footer from "../components/Footer.vue";
 export default {
@@ -24,7 +28,8 @@ components: {
   Bigswiper,
   Qianggou,
   Video,
-  Footer
+  Footer,
+  Newdesign
 },
 data() {
 //这里存放数据
