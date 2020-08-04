@@ -131,10 +131,15 @@ export default {
 </script>
 <style lang="less" scoped>
 .article {
+    position: relative;
   padding-top: 50px;
   .container {
-    width: 1100px;
+    width: 1140px;
+    left: 0;
+    right: 0;
     margin: 0 auto;
+    position: absolute;
+    z-index: 888;
     .article-top {
       display: flex;
       justify-content: space-between;
@@ -169,6 +174,10 @@ export default {
         width: 380px;
         height: 480px;
         padding: 0 15px;
+         &:hover .blog-thumb img {
+            transition: 0.3s linear;
+            transform: scale(1.05);
+          }
         .blog-thumb {
           width: 350px;
           height: 236px;
@@ -177,17 +186,15 @@ export default {
             width: 100%;
             height: 100%;
           }
-          &:hover img {
-            transition: 0.3s linear;
-            transform: scale(1.05);
-          }
+         
         }
 
         .blog-content {
           position: relative;
           padding: 35px 25px;
           background: #fff;
-          .blog-meta {
+          border: 1px solid #ccc;
+          .blog-meta { 
             background: #a3bbc8;
             padding: 8px 25px;
             position: absolute;
@@ -207,6 +214,10 @@ export default {
               a {
                 color: #262626;
                 text-decoration: none;
+                &:hover{
+                  color: rgb(252,215,182);
+                  transition: .8s;
+                }
               }
             }
           }

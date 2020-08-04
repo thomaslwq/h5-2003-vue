@@ -118,7 +118,7 @@ export default {
     toTop: function () {
       clearInterval(timer);
       var timer = setInterval(() => {
-        document.documentElement.scrollTop -= 8;
+        document.documentElement.scrollTop -= 15;
         if (document.documentElement.scrollTop == 0) {
           clearInterval(timer);
         }
@@ -162,7 +162,7 @@ export default {
   }
   padding: 50px 0;
   .container {
-    width: 1000px;
+    width: 1140px;
     margin: 0 auto;
     display: flex;
     .footer-widget.about-widget {
@@ -269,7 +269,7 @@ export default {
   .footer-bottom {
     .container {
       padding: 20px 0;
-      width: 1000px;
+      width: 1140px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;

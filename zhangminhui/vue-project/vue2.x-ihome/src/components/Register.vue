@@ -20,19 +20,25 @@
       <div class="container">
         <div class="input-username">
           <label for="username">用户名*</label>
-          <input type="text" id="username" v-model="username" />
+          <input type="text" id="username" v-model="username" @blur="userBlur" />
         </div>
         <div class="input-password">
           <label for="password">密码 *</label>
-          <input type="text" id="password" v-model="password" />
+          <input type="text" id="password" v-model="password" @blur="psdBlur" />
         </div>
         <div class="input-email">
           <label for="email">邮箱*</label>
-          <input type="email" id="email" v-model="email" />
+          <input type="email" id="email" v-model="email" @blur="emailBlur" />
         </div>
         <div class="input-phone">
           <label for="phone">手机号 *</label>
-          <input type="text" id="phone" v-model="telephone" />
+          <input type="text" id="phone" v-model="telephone" @blur="phoneBlur" />
+        </div>
+        <div class="input-sex">
+          <label for="sex">性别 *</label>
+          <br />
+          <el-radio v-model="radio" label="0">男</el-radio>
+          <el-radio v-model="radio" label="1">女</el-radio>
         </div>
         <button type="submit" class="submit-btn" @click.stop="confirm">注册</button>
         <div class="create-info">
@@ -60,8 +66,8 @@ export default {
       username: "",
       password: "",
       email: "",
-      telephone: "", 
-      sex:"1"
+      telephone: "",
+      radio: "0",
     };
   },
   //监听属性 类似于data概念
@@ -76,36 +82,83 @@ export default {
       let username = this.username;
       let email = this.email;
       let telephone = this.telephone;
-      let sex = this.sex;
+      let sex = this.radio;
       // 关键词
       //debugger
       //2. 账号密码为空的情况下 提示用户不能为空
       if (!password || !email || !username || !phone) {
         this.$message({
-          message: "账号、邮箱或密码不能为空！",
+          message: "账号、邮箱、手机号或密码不能为空！",
         });
         return false;
       }
       // 发送注册信息给后台
       this.$axios
-        .post("http://10.36.149.43:10500/api/user/regist", {
-          username,
-          email,
-          password,
-          telephone,
-          sex
-        })
+        .post(
+          "http://175.24.122.212:10500/api/user/regist",
+          this.$qs.stringify({
+            username,
+            email,
+            password,
+            telephone,
+            sex,
+          })
+        )
         .then((res) => {
-          // console.log(res);
-          this.$message({
-            msg: res.msg,
-          });
-          if (res.status == 0) {
+          if (res.status == 200) {
             // 注册成功
-            this.$router.push({ name: "userLogin" }); // 跳转回登录页
+            this.$message({
+              message: "注册成功,即将为您跳转登陆页面",
+            });
+            console.log("注册成功");
+            this.$router.push({ name: "Login" }); // 跳转回登录页
           }
         })
         .catch((err) => err);
+    },
+    userBlur: function () {
+      let username = this.username;
+      var reg1 = /^[a-zA-Z]\w{5,14}$/;
+      if (!reg1.test(username)) {
+        this.$message({
+          message: "请输入6-15个字符，并且以英文字母开头的用户名！",
+          type: "error",
+        });
+        return false;
+      }
+    },
+    psdBlur: function () {
+      let password = this.password;
+      var reg2 = /^[a-zA-Z0-9]{6,15}$/;
+      if (!reg2.test(password)) {
+        this.$message({
+          message: "请输入长度为6-15位由英文字母和数字组成的密码！",
+          type: "error",
+        });
+        return false;
+      }
+    },
+    emailBlur: function () {
+      let email = this.email;
+      var reg3 = /^\w+@\w+\.(com)$|(cn)$/;
+      if (!reg3.test(email)) {
+        this.$message({
+          message: "请输入包含@和.符号，且以.com或者.cn结尾的邮箱！",
+          type: "error",
+        });
+        return false;
+      }
+    },
+    phoneBlur: function () {
+      let telephone = this.telephone;
+      var reg4 = /^1\d{10}$/;
+      if (!reg4.test(telephone)) {
+        this.$message({
+          message: "请输入11位数字，且以1开头的手机号码！",
+          type: "error",
+        });
+        return false;
+      }
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -230,6 +283,16 @@ export default {
         height: 60px;
         padding: 0 20px;
         margin-top: 14px;
+      }
+    }
+    .input-sex {
+      margin-bottom: 25px;
+      label {
+        display: inline-block;
+        height: 30px;
+      }
+      span {
+        margin-right: 50px;
       }
     }
     button.submit-btn {
