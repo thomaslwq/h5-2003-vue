@@ -1,134 +1,50 @@
+<!--  -->
 <template>
-  <div id="app">
-    <el-container>
-      <!-- header!!!!!!!!! -->
-      <el-header style="height:8vh">
-        <!-- log!!!!!!!! -->
-        <img src="./assets/logo.png" alt="" />
-       商品管理
-      </el-header>
-      <!-- 版心内容 -->
-      <el-container style="height:92vh">
-        <!-- 侧边导航栏 -->
-        <el-aside width="200px">
-          <!-- 用户信息 -->
-
-          <!-- 导航栏 开始-->
-          <el-menu
-            default-active="2"
-            class="el-menu-vertical-demo"
-            @open="handleOpen"
-            @close="handleClose"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b"
-          >
-            <el-menu-item index="1">
-              <i class="el-icon-s-home"></i>
-              <router-link tag="span" slot="title" to='/home'>后台主页</router-link>
-            </el-menu-item>
-            <el-submenu index="2">
-              <template slot="title">
-                <i class="el-icon-s-custom"></i>
-                <span>代理商</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="2-1"><router-link tag='span' to='/merchant'>代理商管理</router-link></el-menu-item>
-                <el-menu-item index="2-2"><router-link tag='span' to='/merchantAdd'>添加代理商</router-link></el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-             <el-submenu index="3">
-              <template slot="title">
-                <i class="el-icon-shopping-bag-2"></i>
-                <span>商品管理</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="3-1"><router-link tag='span' to='/shopAdd'>商品添加</router-link></el-menu-item>
-                <el-menu-item index="3-2"><router-link tag='span' to='/shop'>商品列表</router-link></el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-menu-item index="4">
-              <i class="el-icon-s-data"></i>
-              <router-link slot="title" tag='span' to='/statistics'>统计报表</router-link>
-            </el-menu-item>
-            <el-menu-item index="5">
-              <i class="el-icon-setting"></i>
-              <router-link slot="title" tag='span' to='/user'>用户权限</router-link>
-            </el-menu-item>
-            <el-menu-item index="6">
-              <i class="el-icon-notebook-1"></i>
-              <router-link slot="title" tag='span' to='/intellectual'>知识产权</router-link>
-            </el-menu-item>
-          </el-menu>
-          <!-- 导航栏 结束-->
-        </el-aside>
-        <el-main>
-          <router-view></router-view>
-          <!-- 这里是内容展示 -->
-        </el-main>
-      </el-container>
-    </el-container>
-  </div>
+    <div id='app'>
+     <router-view></router-view>
+    </div>
 </template>
 
 <script>
+//这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
+//例如：import 《组件名称》 from '《组件路径》';
+
 export default {
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    }
-  }
+//import引入的组件需要注入到对象中才能使用
+components: {},
+data() {
+//这里存放数据
+return {
+
 };
+},
+//监听属性 类似于data概念
+computed: {},
+//监控data中的数据变化
+watch: {},
+//方法集合
+methods: {
+
+},
+//生命周期 - 创建完成（可以访问当前this实例）
+created() {
+
+},
+//生命周期 - 挂载完成（可以访问DOM元素）
+mounted() {
+
+},
+beforeCreate() {}, //生命周期 - 创建之前
+beforeMount() {}, //生命周期 - 挂载之前
+beforeUpdate() {}, //生命周期 - 更新之前
+updated() {}, //生命周期 - 更新之后
+beforeDestroy() {}, //生命周期 - 销毁之前
+destroyed() {}, //生命周期 - 销毁完成
+activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
+}
 </script>
+<style lang='less' scoped>
 
-<style lang="less">
-body{
-  padding: 0;
-  margin: 0;
-}
-//  布局css
-.el-header {
-  background-color: #409EFF;
-  color: #333;
-  text-align: center;
-  line-height: 60px;
-}
-.el-header {
-  font-size: 34px;
-  img {
-    width: 50px;
-    height: 50px;
-    float: left;
-  }
-}
-.el-aside {
-  background-color: rgb(84, 92, 100);
-  color: #333;
-  text-align: center;
-  line-height: 200px;
-}
-
-.el-main {
-  background-color: #e9eef3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
-}
-
-body > .el-container {
-  margin-bottom: 40px;
-}
-
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-  line-height: 260px;
-}
-
-.el-container:nth-child(7) .el-aside {
-  line-height: 320px;
-}
-//   侧边栏css
 </style>
+
+
