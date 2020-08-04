@@ -48,8 +48,17 @@
           </template>
         </el-table-column>
       </el-table>
+       <div class="page">
+           <el-pagination
+                   @next-click="handleClicks"
+                   background
+                   layout="prev, pager, next"
+                   :total="1000">
+           </el-pagination>
+       </div>
     </section>
   </section>
+
 </template>
 
 <script>
@@ -57,7 +66,10 @@ export default {
     methods: {
       handleClick(row) {
         console.log(row);
-      }
+      },
+        handleClicks(){
+            console.log(1)
+        }
     },
     mounted() {
       this.axios({
@@ -81,6 +93,11 @@ export default {
   }
 </script>
 <style lang='less' scoped>
+    .page{
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 5px;
+    }
 .deal {
   .top {
     height: 140px;
