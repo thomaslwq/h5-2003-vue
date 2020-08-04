@@ -2,6 +2,20 @@
     <el-container>
         <el-header>
             <h1>子然电商后台管理系统</h1>
+            <div class="el-login-username">
+                <el-dropdown >
+                    <span class="el-dropdown-link">
+                        admin<i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>切换账户</el-dropdown-item>
+                        <el-dropdown-item>退出登录</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </div>
+            <div class="demo-type" >
+                <el-avatar src="https://dss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=416160078,4249346239&fm=5"></el-avatar>
+            </div>
         </el-header>
         <el-container class="app-el-container">
             <el-aside width="200px">
@@ -12,10 +26,8 @@
                         @close="handleClose"
                         background-color="#545c64"
                         text-color="#fff"
-                       >
+                >
                     <el-menu-item index="1">
-
-<!--                        <span slot="title">系统首页</span>-->
                         <router-link to="index"> <i class="el-icon-s-tools"></i>系统首页</router-link>
                     </el-menu-item>
                     <el-submenu index="1">
@@ -91,59 +103,102 @@
 </template>
 
 <script>
-// @ is an alias to /src
-export default {
-	methods: {
-		handleOpen(key, keyPath) {
-			console.log(key, keyPath);
-		},
-		handleClose(key, keyPath) {
-			console.log(key, keyPath);
-		},
-	},
-};
+    // @ is an alias to /src
+    export default {
+        methods: {
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+
+        },
+
+    };
+
 </script>
 <style lang="less" scoped>
-a {
-	display: block;
-	width: 100%;
-}
-.app-el-container {
-	height: 100vh;
-}
-.el-header,
-.el-footer {
-	background-color: rgb(67, 142, 185);
-	color: #333;
-	/*text-align: center;*/
-	line-height: 60px;
-	h1 {
-		color: #fff;
-	}
-}
+    .demo-type {
+        float: right;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .el-login-username {
+        text-align: right;
+        float: right;
+        margin: 0 15px;
+        .el-dropdown {
+            .el-dropdown-link {
+                cursor: pointer;
+                color: #fff;
+            }
+            .el-icon-arrow-down {
+                font-size: 12px;
+            }
+        }
+    }
+    .btn-fullscreen {
+        transform: rotate(45deg);
+        margin-right: 5px;
+        font-size: 24px;
+        float:right
+    }
+    .btn-bell,
+    .btn-fullscreen {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-top: 6px;
+    }
+    .el-icon-rank:before {
+        color: #fff;
+    }
+    a{
+        display: block;
+        width: 100%;
+    }
+    .app-el-container{
+        height: 100vh;
+    }
+    .el-header, .el-footer {
+        background-color: rgb(67,142,185);
+        color: #333;
+        /*text-align: center;*/
+        line-height: 60px;
+        h1{
+            color: #fff;
+            float: left;
+        }
+    }
 
-.el-aside {
-	background-color: rgb(84, 92, 100);
-	color: #333;
-	text-align: center;
-	line-height: 200px;
-}
+    .el-aside {
+        background-color: rgb(84,92,100);
+        color: #333;
+        text-align: center;
+        line-height: 200px;
+    }
 
-.el-main {
-	background-color: #e9eef3;
-	color: #333;
-}
+    .el-main {
+        background-color: #E9EEF3;
+        color: #333;
+    }
 
-body > .el-container {
-	margin-bottom: 40px;
-}
+    body > .el-container {
+        margin-bottom: 40px;
+    }
 
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-	line-height: 260px;
-}
+    .el-container:nth-child(5) .el-aside,
+    .el-container:nth-child(6) .el-aside {
+        line-height: 260px;
+    }
 
-.el-container:nth-child(7) .el-aside {
-	line-height: 320px;
-}
+    .el-container:nth-child(7) .el-aside {
+        line-height: 320px;
+    }
 </style>
