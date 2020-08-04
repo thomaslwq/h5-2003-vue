@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<el-container>
 		<el-header>
 			<h1>子然电商后台管理系统</h1>
@@ -82,11 +83,100 @@
 			</el-main>
 		</el-container>
 	</el-container>
+=======
+    <el-container>
+        <el-header>
+            <h1>子然电商后台管理系统</h1>
+        </el-header>
+        <el-container class="app-el-container">
+            <el-aside width="200px">
+                <el-menu
+                        default-active="2"
+                        class="el-menu-vertical-demo"
+                        @open="handleOpen"
+                        @close="handleClose"
+                        background-color="#545c64"
+                        text-color="#fff"
+                       >
+                    <el-menu-item index="1">
+
+<!--                        <span slot="title">系统首页</span>-->
+                        <router-link to="index"> <i class="el-icon-s-tools"></i>系统首页</router-link>
+                    </el-menu-item>
+                    <el-submenu index="1">
+                        <template slot="title">
+                            <i class="el-icon-goods"></i>
+                            <span>商品管理</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item index="2-1">
+                                <router-link to="goodslist">商品信息</router-link>
+                            </el-menu-item>
+                            <el-menu-item index="2-2">
+                                <router-link to="manage">商品活动</router-link>
+                            </el-menu-item>
+
+                        </el-menu-item-group>
+
+                    </el-submenu>
+                    <el-submenu index="2">
+                        <template slot="title">
+                            <i class="el-icon-sell"></i>
+                            <span>交易管理</span>
+                        </template>
+                        <el-menu-item-group>
+
+                            <el-menu-item index="2-1">
+                                <router-link to="order" >商品订单</router-link>
+                            </el-menu-item>
+
+
+                        </el-menu-item-group>
+
+                    </el-submenu>
+                    <el-submenu index="3">
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span>商家管理</span>
+                        </template>
+                        <el-menu-item-group>
+
+                            <el-menu-item index="4-1">
+                                <router-link to="information">商家信息</router-link>
+                            </el-menu-item>
+
+                        </el-menu-item-group>
+
+                    </el-submenu>
+                    <el-submenu index="4">
+                        <template slot="title">
+                            <i class="el-icon-message-solid"></i>
+                            <span>消息管理</span>
+                        </template>
+                        <el-menu-item-group>
+
+                            <el-menu-item index="5-1">
+                                <router-link to="user">个人信息</router-link>
+                            </el-menu-item>
+                            <el-menu-item index="5-2">
+                                <router-link to="caretaker">管理员</router-link>
+                            </el-menu-item>
+
+                        </el-menu-item-group>
+
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
+            <el-main>
+                <router-view></router-view>
+            </el-main>
+        </el-container>
+    </el-container>
+>>>>>>> 28abef286ec453b619d257ea84747b1d606c0db5
 </template>
 
 <script>
 // @ is an alias to /src
-
 export default {
 	methods: {
 		handleOpen(key, keyPath) {

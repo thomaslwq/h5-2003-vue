@@ -3,7 +3,11 @@
    <div class="panel margin-big-top">
       <div class="text-center">
          <br>
-         <div class="padding-top"> <p>404错误！抱歉您要找的页面不存在</p> </div>
+<<<<<<< HEAD
+         <div class="padding-top"> <p>404错误！抱歉您要找的页面不存在</p></div>
+=======
+         <div class="padding-top"> <p>404错误！抱歉您要找的页面不存在,请不要联系管理员，联系也不理你</p> </div>
+>>>>>>> 7455f0e80fd627400c16ab87c9f1ffb503c026c9
          <div class=""> 
             <div class="float-left">
                 <img :src=img1>
