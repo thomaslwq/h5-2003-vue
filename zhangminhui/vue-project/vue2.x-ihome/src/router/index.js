@@ -1,49 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Register from '../components/Register.vue'
-import Login from '../components/Login.vue'
-import Footer from '../components/Footer.vue'
-import Qianggou from '../components/Qianggou.vue'
-import Article from '../components/Article.vue'
+import Home from "../views/Home.vue";
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
-  {
-    path: '/Login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/Register',
-    name: 'Register',
-    component: Register
-  },
-  {
-    path: '/Footer',
-    name: 'Footer',
-    component: Footer
-  },
-  {
-    path: '/Qianggou',
-    name: 'Qianggou',
-    component: Qianggou
-  },
-  {
-    path: '/Article',
-    name: 'Article',
-    component: Article
+    path:"/",
+    name:"Home",
+    component:Home
   }
 ]
 

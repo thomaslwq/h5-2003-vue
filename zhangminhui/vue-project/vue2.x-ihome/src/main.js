@@ -1,12 +1,12 @@
 import Vue from 'vue'
+import { Icon,Message} from 'element-ui';
 import App from './App.vue'
 import router from './router'
 import store from './store'
-
-import axios from "axios";
+import axios from "../common/myaxios";
+axios.defaults.baseURL = process.env.VUE_APP_URL
 import qs from "qs";
-import { Message, Radio} from "element-ui";
-Vue.use(Radio);
+
 // import VueAwesomeSwiper from 'vue-awesome-swiper'
 // import 'swiper/swiper-bundle.css'
 
@@ -25,3 +25,4 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+Vue.use(Icon);

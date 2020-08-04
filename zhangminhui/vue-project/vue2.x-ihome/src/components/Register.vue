@@ -95,7 +95,7 @@ export default {
       // 发送注册信息给后台
       this.$axios
         .post(
-          "http://175.24.122.212:10500/api/user/regist",
+          "api/user/regist",
           this.$qs.stringify({
             username,
             email,
