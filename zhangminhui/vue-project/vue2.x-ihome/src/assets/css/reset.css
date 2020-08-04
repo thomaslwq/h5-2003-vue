@@ -1,0 +1,67 @@
+@charset "utf-8";
+/* 清除标签默认的margin值和padding值 */
+html,
+body,
+ul,
+li,
+ol,
+dl,
+dd,
+dt,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+fieldset,
+legend,
+img,
+input,
+table,
+figure{
+    margin: 0;
+    padding:0;
+}
+*{
+    box-sizing: border-box;
+}
+body{
+    font-size:16px;
+    font-family:"微软雅黑";
+}
+ul,ol,li{
+    list-style:none;
+}
+b,strong{
+    font-weight:normal;
+}
+i,em{
+    font-style:normal;
+}
+a,u{
+    text-decoration:none;
+}
+a{
+    color:inherit;
+}
+h1,h2,h3,h4,h5,h6{
+    font-size:16px;
+    font-weight:normal;
+}
+input,select,button,textarea{
+    outline:none;
+    border:none;
+}
+img{
+    display:block;
+    border:0;
+}
+fieldset{
+    border:0;
+}
+textarea{
+    resize:none;
+}

@@ -1,7 +1,7 @@
 <!-- 小swiper -->
 <template>
 <div class='litterSwiper'>
-    <div class="swiper-container">
+    <div class="litterswiper-container">
         <swiper :options="swiperOptions" ref="mySwiper">
             <!-- slides -->
             <swiper-slide class="swiper-item" v-for='item of swiperList' :key='item.id'>
@@ -96,8 +96,8 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 </script>
 <style lang="less" scoped>
 .litterSwiper {
-  background: rgba(252, 215, 182, 0.2);
-  .swiper-container {
+  background:#fff7f0;
+  .litterswiper-container {
     width: 1110px;
     height: 226px;
     line-height: 226px;

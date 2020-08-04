@@ -11,10 +11,11 @@
           折
         </p>
         <h5>本周爱家 倒计时</h5>
+        <h6 class="dayTime">5天</h6>
         <p>
-          <span class="time">{{ hours }}</span>:
-          <span class="time">{{ minute }}</span>:
-          <span class="time">{{ second }}</span>
+          <span class="time">{{hours}}</span>:
+          <span class="time">{{minutes}}</span>:
+          <span class="time">{{seconds}}</span>
         </p>
       </div>
       <div class="qianggou-container">
@@ -84,39 +85,43 @@ function timeDiff(time1, time2) {
   obj.seconds = seconds;
   return obj;
 }
-function randomNum(x, y) {
-  var min = Math.min(x, y);
-  var max = Math.max(x, y);
-  var n = Math.floor(Math.random() * (max - min + 1) + min);
-  return n;
-}
-
 export default {
   //import引入的组件需要注入到对象中才能使用
+
   components: {},
   data() {
     //这里存放数据
     return {
-      zhe: "8",
-      hours: "12",
-      minute: "33",
-      second: "46",
+      zhe: 8,
+      hours: "",
+      minutes: "",
+      seconds: "",
     };
   },
   //监听属性 类似于data概念
-  computed: {
- 
-  },
+  computed: {},
   //监控data中的数据变化
   watch: {},
   //方法集合
-  methods: {
-    
-  },
+  methods: {},
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
+  mounted() {
+    var time1 = new Date("2020-8-9 24:00:00");
+    var timeArr = document.querySelectorAll(".time");
+    var dayTime = document.querySelector(".dayTime");
+    setInterval(function () {
+      var time2 = new Date();
+      var res = timeDiff(time1, time2);
+      var str = [res.day, res.hours, res.minutes, res.seconds];
+      dayTime.innerHTML = str[0]+"天"
+      timeArr[0].innerHTML = str[1]
+      timeArr[1].innerHTML = str[2]
+      timeArr[2].innerHTML = str[3]
+      return str;
+    }, 1000);
+  },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
@@ -136,7 +141,7 @@ export default {
     width: 200px;
     height: 400px;
     margin-top: 90px;
-    background: #feefe2;
+    background: #fdefe3;
     h3 {
       font-size: 30px;
       margin: 30px 0;
@@ -148,22 +153,29 @@ export default {
       span {
         color: red;
         font-size: 18px;
-        margin-top: 20px;
       }
       .time {
-        width: 20px;
-        height: 20px;
-        background-color: #300;
-        line-height: 20px;
+        vertical-align: middle;
+        display: inline-block;
+        width: 44px;
+        height: 44px;
+        background-color: rgb(228, 213, 197);
+        line-height: 24px;
         text-align: center;
         padding: 10px;
+        font-weight: bold;
       }
     }
 
     h5 {
       font-size: 22px;
       color: orange;
-      margin: 30px 0;
+      margin: 20px 0;
+    }
+    h6 {
+      font-size: 20px;
+      color: red;
+      font-weight: bold;
     }
   }
 
@@ -213,6 +225,12 @@ export default {
           border-radius: 5px;
           text-decoration: none;
           text-align: center;
+          &:hover {
+            background-color: rgb(36, 63, 77);
+            color: #fff;
+            font-weight: bold;
+            transition: all 0.6s;
+          }
         }
       }
     }
