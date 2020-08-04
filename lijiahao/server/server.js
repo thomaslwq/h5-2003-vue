@@ -9,7 +9,7 @@ mongoose.connect('mongodb://localhost:27017/backstage', {
 
 mongoose.connection.on('connected', () => {
     // 添加数据
-    require('./add/product_add');  // 添加商品列表数据
+    // require('./add/product_add');  // 添加商品列表数据
 
     // 处理数据请求
     server.use(express.json());
@@ -17,7 +17,7 @@ mongoose.connection.on('connected', () => {
 
     // API请求
     server.use('/api/product', require('./router/productRouter'));
-
+    server.use('/api', require('./router/userRouter'));
     server.use('/images', express.static('./images'));
 
     // 响应404

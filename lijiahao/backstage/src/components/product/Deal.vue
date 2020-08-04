@@ -40,7 +40,7 @@
         <el-table-column prop="Region" label="地区" width="120"></el-table-column>
         <el-table-column prop="OriginalPrice" label="价格" width="120"></el-table-column>
         <el-table-column prop="ProductName" label="商品名称" width="300"></el-table-column>
-        <el-table-column prop="PresentPrice" label="邮编" width="120"></el-table-column>
+        <el-table-column prop="Status" label="订单状态" width="120"></el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
@@ -81,9 +81,13 @@ export default {
                     _limit:5
                 }
             }).then(res=>{
-                // console.log(res)
+                console.log(res)
                 this.listArr = res.data.data
                 this.count = res.data.count
+                this.listArr.map(item=>{
+                    return item.Status === 1 ? item.Status = '完成' : item.Status = '进行中'
+                })
+                console.log(this.listArr)
             })
         },
         //点击选择页渲染
@@ -100,8 +104,10 @@ export default {
         nextPage(){
             this.pageNum++
             this.getData()
-        }
+        },
+
     },
+
     //页面初始加载一次
     mounted() {
         this.getData()
@@ -112,7 +118,8 @@ export default {
           pageNum:1,
           count:0
       }
-    }
+    },
+
   }
 </script>
 <style lang='less' scoped>
