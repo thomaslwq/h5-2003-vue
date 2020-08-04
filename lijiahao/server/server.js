@@ -1,15 +1,33 @@
-const express = require("express");
-const app = express();
-const listRouter = require("./router/goodsList");
-const xqRouter = require("./router/details");
-const delDataRouter = require('./router/deleteData');
-const addDataRouter = require('./router/addData');
-const modifyData = require('./router/modifyData');
-app.use(express.json());
-app.use(express.urlencoded());
-app.use("/list", listRouter)
-app.use("/details", xqRouter)
-app.use('/delete',delDataRouter)
-app.use('/add',addDataRouter)
-app.use('/modify',modifyData)
-app.listen(3000)
+const express = require('express');
+const server = express();
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost:27017/backstage', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+mongoose.connection.on('connected', () => {
+    // 添加数据
+    require('./add/product_add');  // 添加商品列表数据
+
+    // 处理数据请求
+    server.use(express.json());
+    server.use(express.urlencoded());
+
+    // API请求
+    server.use('/api/product', require('./router/productRouter'));
+
+    server.use('/images', express.static('./images'));
+
+    // 响应404
+    server.use((req, res, next) => {
+        res.status(404);
+    });
+
+    // 错误处理
+    server.use((err, req, res, next) => {
+        res.status(500)
+    });
+    server.listen(3000);
+});
