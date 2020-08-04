@@ -45,33 +45,4 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 }
 </script>
 <style lang='less'>
-html,
-body,
-ul,
-li,
-ol,
-dl,
-dd,
-dt,
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-form,
-fieldset,
-legend,
-img,
-input,
-table,
-figure{
-    margin: 0;
-    padding:0;
-}
-body{
-  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-  font-size: 16px;
-}
 </style>

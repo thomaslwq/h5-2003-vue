@@ -47,8 +47,8 @@ export default {
   //方法集合
   methods: {
       videoCloseHandle:function(){
+        this.$refs.videos.pause();
           this.videoClose=true;
-          this.$refs.videos.pause();
       }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -71,6 +71,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top:50px;
   .video-play {
     width: 100px;
     height: 100px;
