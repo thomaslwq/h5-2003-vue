@@ -25,10 +25,10 @@
                         </template>
                         <el-menu-item-group>
                             <el-menu-item index="2-1">
-                                <router-link to="">商品信息</router-link>
+                                <router-link to="goodslist">商品信息</router-link>
                             </el-menu-item>
                             <el-menu-item index="2-2">
-                                <router-link to="">商品活动</router-link>
+                                <router-link to="manage">商品活动</router-link>
                             </el-menu-item>
 
                         </el-menu-item-group>
@@ -42,7 +42,7 @@
                         <el-menu-item-group>
 
                             <el-menu-item index="2-1">
-                                <router-link to="goodsList" >商品订单</router-link>
+                                <router-link to="order" >商品订单</router-link>
                             </el-menu-item>
 
 
@@ -57,7 +57,7 @@
                         <el-menu-item-group>
 
                             <el-menu-item index="4-1">
-                                <router-link to="">商家信息</router-link>
+                                <router-link to="information">商家信息</router-link>
                             </el-menu-item>
 
                         </el-menu-item-group>
@@ -71,10 +71,10 @@
                         <el-menu-item-group>
 
                             <el-menu-item index="5-1">
-                                <router-link to="">个人信息</router-link>
+                                <router-link to="user">个人信息</router-link>
                             </el-menu-item>
                             <el-menu-item index="5-2">
-                                <router-link to="">管理员</router-link>
+                                <router-link to="caretaker">管理员</router-link>
                             </el-menu-item>
 
                         </el-menu-item-group>

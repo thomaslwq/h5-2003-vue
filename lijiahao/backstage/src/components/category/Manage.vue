@@ -25,28 +25,28 @@
           <el-form-item label="活动价格描述" label-width='100px'>
             <el-input v-model="sizeForm.name"></el-input>
           </el-form-item>
-          <el-form-item label="活动时间"  label-width='100px'>
-            <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.date1" style="width: 100%;"></el-date-picker>
-            </el-col>
-            <el-col class="line" :span="2">-</el-col>
-            <el-col :span="11">
-              <el-time-picker placeholder="选择时间" v-model="sizeForm.date2" style="width: 100%;"></el-time-picker>
-            </el-col>
-          </el-form-item>
+<!--          <el-form-item label="活动时间"  label-width='100px'>-->
+<!--            <el-col :span="11">-->
+<!--              <el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.date1" style="width: 100%;"></el-date-picker>-->
+<!--            </el-col>-->
+<!--            <el-col class="line" :span="2">-</el-col>-->
+<!--            <el-col :span="11">-->
+<!--              <el-time-picker placeholder="选择时间" v-model="sizeForm.date2" style="width: 100%;"></el-time-picker>-->
+<!--            </el-col>-->
+<!--          </el-form-item>-->
         </el-form>
       </div>
-      <div class="manage-middle-right">
-        <el-upload
-          class="upload-demo"
-          drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          multiple>
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
-      </div>
+<!--      <div class="manage-middle-right">-->
+<!--        <el-upload-->
+<!--          class="upload-demo"-->
+<!--          drag-->
+<!--          action="https://jsonplaceholder.typicode.com/posts/"-->
+<!--          multiple>-->
+<!--          <i class="el-icon-upload"></i>-->
+<!--          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>-->
+<!--          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>-->
+<!--        </el-upload>-->
+<!--      </div>-->
     </div>
     <div class="manage-bottom">
       <p class="bottom-chose-type">请选择活动商品类型</p>
@@ -101,19 +101,19 @@
         </div>
       </div>
       <el-row>
-        <el-button type="success" round="true" size="small">选择活动商品</el-button>
+        <el-button type="success" >选择活动商品</el-button>
       </el-row>
       <div class="bottom-chose-all">
         <p class="bottom-chose-product">已选择商品: <span>220个</span></p>
         <p class="bottom-chose-business">已选择商家: <span>12个</span></p>
       </div>
-      <div class="bottom-inp-all">
-        <span class="bottom-inp-chose">是否上架:  </span>
-        <el-radio v-model="radio" label="1">是</el-radio>
-        <el-radio v-model="radio" label="2">否</el-radio>
-      </div>
+<!--      <div class="bottom-inp-all">-->
+<!--        <span class="bottom-inp-chose">是否上架:  </span>-->
+<!--        <el-radio v-model="radio" label="1">是</el-radio>-->
+<!--        <el-radio v-model="radio" label="2">否</el-radio>-->
+<!--      </div>-->
       <el-row >
-        <el-button type="warning" round="true" size="small">发布活动</el-button>
+        <el-button type="warning">发布活动</el-button>
       </el-row>
     </div>   
   </div>
@@ -137,16 +137,15 @@ export default {
       }
     };
   },
-  methods: {
-    onSubmit() {
-      console.log('submit!');
-    }
-  }
+  // methods: {
+  //   onSubmit() {
+  //     console.log('submit!');
+  //   }
+  // }
 };
 </script>
 <style lang='less' scoped>
 div.item-manage {
-  padding-top: 40px;
   padding-left: 40px;
   padding-right: 40px;
   width: 90%;
@@ -156,7 +155,6 @@ div.item-manage {
   overflow: hidden;
   div.manage-top {
     margin: 0 auto;
-    margin-bottom: 40px;
     width: 300px;
     img {
       display: block;
@@ -207,7 +205,7 @@ div.item-manage {
       margin-top: 20px;
       display: flex;
       justify-content: center;
-      padding-bottom: 40px;
+      padding-bottom: 20px;
       border-bottom: 1px solid #ccc;
         .bottom-chose-product {
           font-size: 14px;
@@ -225,7 +223,7 @@ div.item-manage {
     }
     .bottom-inp-all {
       text-align: center;
-      margin: 40px 0px;
+      margin: 20px 0;
       font-size: 14px;
     }
   }

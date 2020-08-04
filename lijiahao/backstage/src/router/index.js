@@ -18,8 +18,8 @@ const routes = [
         },
         component: ()=>import('../views/Home/Home'),
         children: [{
-            path: 'goodsList',
-            name: 'goodsList',
+            path: 'order',
+            name: 'order',
             component: () => import('../components/product/Deal.vue'),
             },
             {
@@ -27,6 +27,31 @@ const routes = [
                 name: 'index',
                 component: () => import('../components/home/index.vue'),
             },
+            {
+                path:'manage',
+                name:'manage',
+                component:()=>import('../components/category/Manage')
+            },
+            {
+                path:'goodslist',
+                name:'goodslist',
+                component:()=>import('../components/goodslist/goodslist.vue')
+            },
+            {
+                path:'information',
+                name:'information',
+                component:()=>import('../components/information/information.vue')
+            },
+            {
+                path:'user',
+                name:'user',
+                component:()=>import('../components/user/user.vue')
+            },
+            {
+                path:'caretaker',
+                name:'caretaker',
+                component:()=>import('../components/caretaker/caretaker.vue')
+            }
             ]
     },
     {
@@ -34,11 +59,7 @@ const routes = [
         name:'Nofind',
         component:()=>import('../views/Nofind')
     },
-    {
-        path:'/manage',
-        name:'manage',
-        component:()=>import('../views/Active/Manage')
-    }
+
 ]
 
 const router = new VueRouter({
