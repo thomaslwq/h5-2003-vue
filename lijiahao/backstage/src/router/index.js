@@ -33,6 +33,11 @@ const routes = [
         path: '*',
         name:'Nofind',
         component:()=>import('../views/Nofind')
+    },
+    {
+        path:'/manage',
+        name:'manage',
+        component:()=>import('../views/Active/Manage')
     }
 ]
 
