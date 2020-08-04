@@ -24,12 +24,11 @@
                             <span>商品管理</span>
                         </template>
                         <el-menu-item-group>
-
                             <el-menu-item index="2-1">
-                                <router-link to="goodsList" >商品列表</router-link>
+                                <router-link to="goodslist">商品信息</router-link>
                             </el-menu-item>
                             <el-menu-item index="2-2">
-                                <router-link to="">选项1</router-link>
+                                <router-link to="manage">商品活动</router-link>
                             </el-menu-item>
 
                         </el-menu-item-group>
@@ -42,12 +41,10 @@
                         </template>
                         <el-menu-item-group>
 
-                            <el-menu-item index="3-1">
-                                <router-link to="">选项1</router-link>
+                            <el-menu-item index="2-1">
+                                <router-link to="order" >商品订单</router-link>
                             </el-menu-item>
-                            <el-menu-item index="3-2">
-                                <router-link to="">选项1</router-link>
-                            </el-menu-item>
+
 
                         </el-menu-item-group>
 
@@ -55,15 +52,12 @@
                     <el-submenu index="3">
                         <template slot="title">
                             <i class="el-icon-location"></i>
-                            <span>活动管理</span>
+                            <span>商家管理</span>
                         </template>
                         <el-menu-item-group>
 
                             <el-menu-item index="4-1">
-                                <router-link to="">选项1</router-link>
-                            </el-menu-item>
-                            <el-menu-item index="4-2">
-                                <router-link to="">选项1</router-link>
+                                <router-link to="information">商家信息</router-link>
                             </el-menu-item>
 
                         </el-menu-item-group>
@@ -77,10 +71,10 @@
                         <el-menu-item-group>
 
                             <el-menu-item index="5-1">
-                                <router-link to="">选项1</router-link>
+                                <router-link to="user">个人信息</router-link>
                             </el-menu-item>
                             <el-menu-item index="5-2">
-                                <router-link to="">选项1</router-link>
+                                <router-link to="caretaker">管理员</router-link>
                             </el-menu-item>
 
                         </el-menu-item-group>
@@ -97,7 +91,6 @@
 
 <script>
 // @ is an alias to /src
-
 export default {
     methods: {
         handleOpen(key, keyPath) {

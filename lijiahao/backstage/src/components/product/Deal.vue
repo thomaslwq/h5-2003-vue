@@ -9,22 +9,22 @@
       <section class="list">
         <section>
           <i class="el-icon-s-finance"></i>
-          <em>代付款</em>
+          <em>待付款</em>
           <span>20</span>
         </section>
         <section>
           <i class="el-icon-s-shop"></i>
-          <em>代发货</em>
+          <em>待发货</em>
           <span>18</span>
         </section>
         <section>
           <i class="el-icon-s-goods"></i>
-          <em>代收货</em>
+          <em>待收货</em>
           <span>35</span>
         </section>
         <section>
           <i class="el-icon-s-order"></i>
-          <em>代反馈</em>
+          <em>待反馈</em>
           <span>38</span>
         </section>
       </section>
