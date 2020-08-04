@@ -68,7 +68,7 @@
 						</template>
 						<el-menu-item-group>
 							<el-menu-item index="5-1">
-								<router-link to>选项1</router-link>
+								<router-link to='/userinfo'>用户管理</router-link>
 							</el-menu-item>
 							<el-menu-item index="5-2">
 								<router-link to>选项1</router-link>
