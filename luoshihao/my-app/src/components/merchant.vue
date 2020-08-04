@@ -5,7 +5,7 @@
 </div>
 <div class="list-search">
   <section class="search-input">
-    <input type="text" placeholder="请输入代理商名称"/>
+    <el-input v-model="input" placeholder="请输入代理商名称" style="width:100%;height:100%;"></el-input>
   </section>
   <section class="search-btn">检索</section>
 </div>
@@ -75,6 +75,7 @@
 
     data() {
       return {
+        input:'',
         tableData: [{
           agent: '天天向上',
           code: 'DLS201802281450280741',

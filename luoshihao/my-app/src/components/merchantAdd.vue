@@ -52,7 +52,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="allClear">清空</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -243,8 +243,14 @@ export default {
         idcard: [
           { required: true, message: "请输入身份证号", trigger: 'blur' },
           {
-            pattern: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
-            message: "请输入正确的身份证号",
+            validator: function (rule, value, callback) {
+              if(/^1[34578]\d{9}$/.test(value) == false){
+                callback(new Error("请输入正确的身份证号"))
+              }else{
+                callback();
+              }
+              },
+              trigger:'blur'
           },
         ],
         fax: [],
@@ -264,8 +270,22 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log("submit!");
+
+        this.$refs.form.validate((boolean,object)=>{
+          if(boolean){
+            if(this.form.radio === '1'){
+             console.log('可以传送数据,跳转页面le')
+             }else{
+              this.$message.error({message:'请同意协议!!!',center:true});
+              return false;
+            }
+          }
+        })
+
     },
+    allClear(){
+      this.$refs.form.resetFields()
+    }
   },
 };
 </script>
