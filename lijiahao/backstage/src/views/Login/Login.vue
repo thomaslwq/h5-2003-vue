@@ -68,15 +68,22 @@
                 text-indent: 24px;
                 border-bottom: 1px solid #478fca;
             }
-            li{
-                margin-bottom: 10px;
+            ul{
+                padding: 40px  ;
+                li{
+                    margin-bottom: 10px;
+                }
+                li:last-child{
+                    text-align: right;
+                }
+                .btn{
+                    margin-right: 20px;
+                }
+                span{
+                    color: #fff;
+                }
             }
-            li:last-child{
-                text-align: right;
-            }
-            .btn{
-                margin-right: 20px;
-            }
+
         }
     }
 
