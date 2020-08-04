@@ -78,7 +78,6 @@
 				</el-menu>
 			</el-aside>
 			<el-main>
-			 <userinfo></userinfo>
 				<router-view></router-view>
 			</el-main>
 		</el-container>
@@ -87,12 +86,8 @@
 
 <script>
 // @ is an alias to /src
-import userinfo from "../../components/user/Userinfo"
 
 export default {
-    components:{
-        userinfo
-    },
 	methods: {
 		handleOpen(key, keyPath) {
 			console.log(key, keyPath);
