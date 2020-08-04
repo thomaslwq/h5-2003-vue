@@ -5,6 +5,22 @@
 </template>
 
 <style>
+
+.el-breadcrumb {
+  margin-bottom: 15px;
+}
+.el-card {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+}
+body .el-table th.gutter {
+  display: table-cell !important;
+}
+.el-row{
+  margin-bottom:15px
+}
+.el-cascader-menu{
+  height: 300px;
+}
   #app{
     height: 100%;
   }
@@ -42,5 +58,13 @@
   img {
       display: block;
       border: 0;
+  }
+  .el-card{
+    margin-top: 18px;
+    box-shadow: 0 2px 3px rgba(0,0,0,.15)!important;
+    border: 1px solid #ebeef5;
+    background-color: #fff;
+    transition: .3s;
+    color: #303133;
   }
 </style>

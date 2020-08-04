@@ -1,16 +1,16 @@
 <!--  -->
 <template>
 <div class='login'>
-  <div class="login_box">
+  <div class="login_box" @keyup.enter="login">
     <div class="login_tx">
       <img src="../assets/images/login_tx.png" alt="">
     </div>
     <el-form class="login_form" :model="loginFrom" :rules="rulesFrom" ref="loginFormRef">
       <el-form-item prop="username">
-        <el-input v-model="loginFrom.username" prefix-icon="el-icon-user-solid"></el-input>
+        <el-input v-model="loginFrom.username" prefix-icon="el-icon-user-solid" placeholder="请输入账户"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="loginFrom.password" type="password" prefix-icon="el-icon-lock"></el-input>
+        <el-input v-model="loginFrom.password" type="password" prefix-icon="el-icon-lock" placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item class="btns">
         <el-button type="primary" @click="login">登录</el-button>
@@ -32,8 +32,8 @@ data() {
 //这里存放数据
 return {
   loginFrom:{
-    username:"admin",
-    password:"123456",
+    username:"",
+    password:"",
   },
   rulesFrom:{
     username:[{ required: true, message: '请输入用户名', trigger: 'change' },{ min: 3, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur' }],
