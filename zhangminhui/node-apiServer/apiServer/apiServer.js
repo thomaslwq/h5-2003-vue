@@ -56,7 +56,7 @@ myCon.connect();
  */
 app.post("/api/user/regist", function (req, res, next) {
   var body = req.body;
-  console.log(body);
+
   //拦截检测数据库是否存在相同的手机号
   var checkSql = "select * from users where telephone='" + body.telephone + "' and email='" + body.email + "'";
   myCon.query(checkSql, function (error, results, fields) {
@@ -75,15 +75,16 @@ app.post("/api/user/regist", function (req, res, next) {
       } else {
         var tablename = "user";
         //md5加密
+        console.log(body);
         body.password = md5(spell + md5(body.password) + spell);
         var userID = SetID(tablename);
         Object.keys(userModel).forEach((keys) => {
           if (body[keys]) {
             //用户权限为0
             if (body["username"] != "admin") {
-              userModel["authority"] = "0";
+              body["authority"] = "0";
             } else {
-              userModel["authority"] = "1";
+              body["authority"] = "1";
             }
             //设置createtime
             userModel.createTime = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
@@ -91,16 +92,15 @@ app.post("/api/user/regist", function (req, res, next) {
             userModel.userID = userID;
             //设置性别
             if (body["sex"] == '0') {
-              userModel["sex"] = 0;
+              body["sex"] = 0;
             } else {
-              userModel["sex"] = 1;
+              body["sex"] = 1;
             }
             //设置初始头像
             userModel.headPortrait = "./images/user.jpg";
             userModel[keys] = body[keys];
           }
         });
-
         var sql = "select * from product where (select sortName from sort wherer sort.sortID=product.sortID)"
 
         var arrKeys = [];
@@ -270,9 +270,10 @@ app.get("/api/admin/getAllUsers", function (req, res, next) {
  * 管理员-删除用户信息
  * @param {String} userID
  */
-app.get("/api/admin/deleteUser", function (req, res, next) {
+app.post("/api/admin/deleteUser", function (req, res, next) {
   var body = req.body;
   var sql = "delete from users where userID=" + body.userID;
+  console.log(sql);
   myCon.query(sql, function (error, results, fields) {
     if (error) {
       res.send({

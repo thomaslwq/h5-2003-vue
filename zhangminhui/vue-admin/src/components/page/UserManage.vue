@@ -10,14 +10,9 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button
-                    type="primary"
-                    icon="el-icon-delete"
-                    class="handle-del mr10"
-                    
-                >批量删除</el-button>
+                <el-button type="primary" icon="el-icon-delete" class="handle-del mr10">批量删除</el-button>
 
-                <el-button type="primary" icon="el-icon-plus">添加</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="handleAddClick">添加</el-button>
             </div>
             <el-table
                 :data="tableData"
@@ -27,9 +22,10 @@
                 header-cell-class-name="table-header"
             >
                 <el-table-column type="selection" align="center"></el-table-column>
-                <el-table-column prop="username" label="用户名"></el-table-column>
+                <el-table-column prop="username" width="60" label="用户名"></el-table-column>
                 <el-table-column prop="email" label="email" align="center"></el-table-column>
                 <el-table-column label="手机号" prop="telephone"></el-table-column>
+                <el-table-column label="性别" prop="sex" width="50"></el-table-column>
                 <el-table-column label="头像(查看大图)" align="center">
                     <template slot-scope="scope">
                         <el-image
@@ -39,12 +35,22 @@
                         ></el-image>
                     </template>
                 </el-table-column>
-                <el-table-column prop="address" label="地址"></el-table-column>
+                <el-table-column prop="addresses" label="地址"></el-table-column>
                 <el-table-column prop="createtime" label="注册时间"></el-table-column>
+                <el-table-column prop="authority" label="权限等级" width="50"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
-                        <el-button type="text" icon="el-icon-edit">编辑</el-button>
-                        <el-button type="text" icon="el-icon-delete" class="red">删除</el-button>
+                        <el-button
+                            type="text"
+                            icon="el-icon-edit"
+                            @click="handleEdit(scope.$index, scope.row)"
+                        >编辑</el-button>
+                        <el-button
+                            type="text"
+                            icon="el-icon-delete"
+                            class="red"
+                            @click="handleDelete(scope.$index,scope.row)"
+                        >删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -67,6 +73,44 @@
                 <el-button type="primary" >确 定</el-button>
             </span>
         </el-dialog>-->
+        <el-dialog title="添加" :visible.sync="editVisible" width="30%">
+            <el-form ref="form" :model="form" label-width="70px">
+                <el-form-item label="用户名">
+                    <el-input v-model="form.username"></el-input>
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-input v-model="form.password"></el-input>
+                </el-form-item>
+                <el-form-item label="电话号码">
+                    <el-input v-model="form.telephone"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱">
+                    <el-input v-model="form.email"></el-input>
+                </el-form-item>
+                <el-form-item label="性别">
+                    <el-radio-group v-model="form.sex">
+                        <el-radio label="男"></el-radio>
+                        <el-radio label="女"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="权限">
+                    <el-radio-group v-model="form.authority">
+                        <el-radio label="普通"></el-radio>
+                        <el-radio label="最高"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="自我介绍">
+                    <el-input type="textarea" rows="5" v-model="form.selfIntroduce"></el-input>
+                </el-form-item>
+                <el-form-item label="地址">
+                    <el-input v-model="form.addresses"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="editVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addUserInfo">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -80,7 +124,13 @@ export default {
     data() {
         //这里存放数据
         return {
-            tableData:[]
+            //el-table绑定的数据
+            tableData: [],
+            //调用弹框
+            isAddNew: true,
+            editVisible: false,
+            //弹框中绑定的数据
+            form: {}
         };
     },
     //监听属性 类似于data概念
@@ -90,11 +140,91 @@ export default {
     //方法集合
     methods: {
         getData() {
-            this.$axios.get('/api/user/getAllUsers').then(res=>{
-                console.log(res);
-            }).catch(err=>{
-                console.log(err);
+            this.$axios
+                .get('/api/admin/getAllUsers')
+                .then((res) => {
+                    if (res.results.length > 0) {
+                        for (var i = 0; i < res.results.length; i++) {
+                            if (res.results[i].sex == '0') {
+                                res.results[i].sex = '男';
+                            } else {
+                                res.results[i].sex = '女';
+                            }
+                            if (res.results[i].authority == '0') {
+                                res.results[i].authority = '普通';
+                            } else {
+                                res.results[i].authority = '最高';
+                            }
+                        }
+                        this.tableData = res.results;
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        handleAddClick: function () {
+            this.editVisible = true;
+            this.isAddNew = true;
+        },
+        addUserInfo: function () {
+            this.editVisible = false;
+            Object.keys(this.form).forEach((keys) => {
+                if (keys == 'sex') {
+                    this.form['sex'] = this.form['sex'] == '男' ? 0 : 1;
+                }
+                if (keys == 'authority') {
+                    this.form['authority'] = this.form['sex'] == '普通' ? 0 : 1;
+                }
             });
+            console.log(this.form);
+            if (this.isAddNew) {
+                this.$axios
+                    .post('api/user/regist', this.$qs.stringify(this.form))
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+                this.$axios
+                    .post('api/user/updateUser', this.$qs.stringify(this.form))
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+        },
+        //编辑
+        handleEdit(index, row) {
+            this.idx = index;
+            this.form = row;
+            this.editVisible = true;
+            this.isAddNew = false;
+        },
+        handleDelete(index, row) {
+            this.$confirm('确定要删除吗？', '提示', {
+                type: 'warning'
+            })
+                .then(() => {
+                    console.log(row.userID);
+                    this.$axios
+                        .post('api/admin/deleteUser',this.$qs.stringify({userID:row.userID}))
+                        .then((res) => {
+                            console.log(res);
+                            if (res.code == 200) {
+                                this.$message('删除成功');
+                                this.tableData.splice(index, 1);
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                })
+                .catch(() => {});
         }
     },
     //生命周期 - 创建完成（可以访问当前this实例）
@@ -102,7 +232,9 @@ export default {
         this.getData();
     },
     //生命周期 - 挂载完成（可以访问DOM元素）
-    mounted() {},
+    mounted() {
+        this.getData();
+    },
     beforeCreate() {}, //生命周期 - 创建之前
     beforeMount() {}, //生命周期 - 挂载之前
     beforeUpdate() {}, //生命周期 - 更新之前
