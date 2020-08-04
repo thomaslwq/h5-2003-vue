@@ -73,7 +73,7 @@ export default {
       //登录时的表单验证validate方法
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return
-        const res = await this.$axios.post('login', this.loginForm)
+        const res = await this.$http.post('login', this.loginForm)
         if (res.meta.status !== 200) return this.$message.error('登录失败')
         this.$message({
           message: '登录成功',

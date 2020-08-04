@@ -9,15 +9,24 @@
       </div>
       <el-button type="info" @click="loginOut">退出</el-button>
     </el-header>
+
+
+    
     <el-container>
       <!-- 侧边栏区域 -->
       <el-aside :width="collapse?'64px':'200px'">
-        <div class="toggle-button" @click="toggleFold">
-          |||
-        </div>
-        <el-menu background-color="#262c34" text-color="#fff" active-text-color="#4ca0fb"
-        :unique-opened="true" :collapse='collapse' :collapse-transition='false' router>
-        <!-- router == :router='true' 简写-->
+        <div class="toggle-button" @click="toggleFold">|||</div>
+        <el-menu
+          background-color="#262c34"
+          text-color="#fff"
+          active-text-color="#4ca0fb"
+          :unique-opened="true"
+          :collapse="collapse"
+          :collapse-transition="false"
+          router
+          :default-active="activePath"
+        >
+          <!-- router == :router='true' 简写-->
           <!-- 一级菜单模板区域 -->
           <!-- index只接受字符串，所以id后面加个空字符转字符串-->
           <el-submenu :index="item.id+''" v-for="item in menulist" :key="item.id">
@@ -29,7 +38,12 @@
             </template>
             <!-- 二级菜单模板 -->
             <!-- 开启router模式后 拼接路径/path-->
-            <el-menu-item :index="'/'+val.path" v-for="val,idx in item.children" :key="val.id">
+            <el-menu-item
+              :index="'/'+val.path"
+              v-for="val,idx in item.children"
+              :key="val.id"
+              @click="activeState('/'+val.path)"
+            >
               <!-- 文本 -->
               <template slot="title">
                 <!-- 图标 -->
@@ -41,6 +55,9 @@
           <!--  -->
         </el-menu>
       </el-aside>
+
+
+
       <!-- 主体main区域 -->
       <el-main>
         <!-- main区域设置个占位符 内容出口 -->
@@ -57,7 +74,9 @@ export default {
   data() {
     //这里存放数据
     return {
+      // 菜单栏的数据
       menulist: [],
+      // 一级菜单的iconfont
       icons: {
         '125': 'iconfont icon-yonghuguanli',
         '103': 'iconfont icon-zhangshangcaifuyemianshoujiban345 ',
@@ -65,7 +84,10 @@ export default {
         '102': 'iconfont icon-dingdan',
         '145': 'iconfont icon-caidanshujutongji-copy-copy-copy'
       },
-      collapse:false
+      // 侧边栏折叠
+      collapse: false,
+      // 二级菜单被激活项
+      activePath: ''
     }
   },
   //监听属性 类似于data概念
@@ -85,21 +107,26 @@ export default {
       this.$router.push('/login')
     },
     // 页面创建时获取菜单栏数据
-    // 因为axios返回值是promise，用async和await简化
+    // 因为http返回值是promise，用async和await简化
     async getMenuList() {
-      const res = await this.$axios.get('menus')
+      const res = await this.$http.get('menus')
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.menulist = res.data
-      console.log(this.menulist)
     },
     // 菜单栏 折叠按钮
-    toggleFold(){
-      this.collapse= !this.collapse
+    toggleFold() {
+      this.collapse = !this.collapse
+    },
+    // 保存二级菜单激活的状态，动态绑定
+    activeState(activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
     this.getMenuList()
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
@@ -149,7 +176,7 @@ export default {
   .el-container {
     .el-aside {
       background-color: #333744;
-      .toggle-button{
+      .toggle-button {
         color: #fff;
         font-size: 14px;
         background-color: #4b5063;
@@ -159,10 +186,10 @@ export default {
         cursor: pointer;
         letter-spacing: 1px;
       }
-      .el-menu{
+      .el-menu {
         border: none;
       }
-      .iconfont{
+      .iconfont {
         margin-right: 10px;
       }
     }

@@ -3,8 +3,8 @@ import VueRouter from 'vue-router'
 import login from '../components/login/login.vue'
 import Home from './../components/Home.vue'
 import Welcome from './../components/Welcome.vue'
-
-
+import Users from './../components/user/Users.vue'
+import authority from './../components/authority/list.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -13,10 +13,13 @@ const routes = [
   {
     path: '/home', component: Home, redirect: '/welcome',
     // home首页组件设置一个子路由 welcome欢迎页面组件
-    children: [{
-      path: '/welcome', component: Welcome,
-    }]
+    children: [
+      { path: '/welcome', component: Welcome, },
+      { path: '/users', component: Users },
+      { path: '/roles', component: authority },
+    ]
   },
+
 
 ]
 

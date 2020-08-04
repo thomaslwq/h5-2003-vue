@@ -5,8 +5,8 @@ import store from './store'
 import './plugins/element.js'
 // 引入axios
 import axios from "./common/myaxios"
-// 挂载axiosS
-Vue.prototype.$axios = axios
+// 挂载axiosS 
+Vue.prototype.$http = axios
 // 引入字体图标
 import './assets/font/iconfont.css'
 // 导入全局样式表
@@ -14,7 +14,6 @@ import './assets/css/global.css'
 
 // Vue.use(HighchartsVue)
 // 按需引入组件
-
 
 
 
