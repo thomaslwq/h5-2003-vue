@@ -3,36 +3,36 @@
 <div class='glee-login'>
     <!-- login home/login区域 -->
     <div class="glee-login-top">
-        <h2 class="login-top-title">Login</h2>
+        <h2 class="login-top-title">登录</h2>
         <section class="login-top-link">
-            <a href="">Home</a>&nbsp; / &nbsp;<a href="">Login</a>
+            <a href="">主页</a>&nbsp; / &nbsp;<a href="">登录</a>
         </section>
     </div>
     <!-- 账号登录区域 -->
     <div class="glee-login-middle">
         <div class="login-middle-user">
-            <label for="name-notice">Username or email address *</label>
-            <input type="text" id="name-notice" v-model="username">
+            <label for="name-notice">用户名或者邮箱地址 *</label>
+            <input type="text" id="name-notice" v-model="username" @blur="lossName()">
         </div>
         <div class="login-middle-pass">
-            <label for="pass-notice">Password *</label>
-            <input type="password" id="pass-notice" v-model="userpass">
+            <label for="pass-notice">密码 *</label>
+            <input type="password" id="pass-notice" v-model="userpass" @blur="lossPass()">
         </div>
         <div class="login-middle-btn" @click="loginHandler">
-            Login
+            登录
         </div>
         <div class="login-middle-remerber">
             <div class="middle-remerber-right">
                 <input type="checkbox" name="" id="middle-remerber">
-                <label for="middle-remerber">Remember me</label>
+                <label for="middle-remerber">  记住选项</label>
             </div>
             <div class="middle-remerber-left">
-                <a href="">Lost your password?</a>
+                <a href="">忘记了密码?</a>
             </div>       
         </div>
         <div class="login-middle-register">
-            <span>Not registered? No problem</span>
-            <div class="middle-register">Create an account</div>
+            <span>还没注册? 没关系！</span>
+            <div class="middle-register"><a href="">创建一个账号</a></div>
         </div>
     </div>
 </div>
@@ -59,27 +59,70 @@ watch: {},
 //方法集合
 methods: {
     loginHandler(){
+        
+        let email = this.username;
+        let password = this.userpass;
+
+        let reg1 = /^[a-zA-Z]\w{5,14}$/;
+        let reg2 = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+        //验证账号密码栏是否为空
         if(!(this.username && this.userpass)){
              this.$message.error('请输入账号或者密码后再点击登录！');
-        }else{
-            this.$axios.post("http://175.24.122.212:10500/api/user/login",{
-            username:this.username,
-            password:this.userpass
-            }).then((res)=>{
-                console.log(res)
-            }).catch((err)=>{
-                console.log(err)
+             return false;
+             //验证账号栏的规格是否正确
+        }else if(!(reg1.test(email) || reg2.test(email))){
+            this.$message({
+                message:"请输入正确规格的邮箱号或者账号！提示:账号为字母开头,最少为五位数",
+                type:"warning",
             })
+            return false;
         }
-        //邮箱验证暂不启用
-        // let email = this.username.value;
-        // let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-        // if(!reg.test(email)){
-        //     this.$message({
-        //         message:"请输入正确的邮箱号！",
-        //         type:"warning",
-        //     })
-        // }
+
+        //验证密码是否为六位数以上
+        if(!reg1.test(password)){
+            this.$message({
+                message:"请输入正确长度的密码！提示:密码最少为五位数",
+                type:"warning",
+            })
+            return false;
+        }
+        
+        this.$axios.post("api/user/login",this.$qs.stringify({
+            logauthority:this.username,
+            password:this.userpass
+        })).then((res)=>{
+            console.log(res)
+        }).catch((err)=>{
+            console.log(err)
+        })  
+    },
+    lossName(){
+        let email = this.username;
+
+        let reg1 = /^[a-zA-Z]\w{5,14}$/;
+        let reg2 = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+
+        if(!(reg1.test(email) || reg2.test(email))){
+            this.$notify({
+                title: '提示',
+                message: '请输入正确的邮箱或者账号！账号为字母开头',
+                offset: 100
+            });
+        }
+    },
+    lossPass(){
+
+        let password = this.userpass;
+
+        let reg1 = /^[a-zA-Z]\w{5,14}$/;
+
+        if(!(reg1.test(password))){
+            this.$notify({
+                title: '提示',
+                message: '请输入正确的密码！',
+                offset: 100
+            });
+        }
     }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
@@ -121,6 +164,9 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
         a {
           text-decoration: none;
           color: #9a9ea2;
+        }
+        a:nth-child(2){
+            color:#FCD9CC
         }
       }
  }
@@ -213,12 +259,17 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
         padding:30px 0 30px 0;
     }
     .middle-register {
-        transition: .5s;
-        &:hover{
-            background: rgb(163,187,200);
-            color:#fff;
-            cursor: pointer;
-
+        a{
+            display: block;
+            height: 100%;
+            text-decoration: none;
+            color: #243f4d;
+            transition: .5s;
+            &:hover{
+                background: rgb(163,187,200);
+                color:#fff;
+                cursor: pointer;
+            }
         }
         width: 100%;
         background: #fff;

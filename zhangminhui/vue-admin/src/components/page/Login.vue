@@ -32,8 +32,8 @@ export default {
     data: function() {
         return {
             param: {
-                username: 'admin',
-                password: '123123',
+                username: '',
+                password: '',
             },
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -43,18 +43,25 @@ export default {
     },
     methods: {
         submitForm() {
-            this.$refs.login.validate(valid => {
-                if (valid) {
+            this.$axios.post('http://localhost:10500/api/user/login',
+            this.$qs.stringify({
+                logauthority:this.param.username,
+                password:this.param.password
+            })).then(res=>{
+                console.log(res);
+                if(res.data.results.length>0){
                     this.$message.success('登录成功');
                     localStorage.setItem('ms_username', this.param.username);
                     this.$router.push('/');
-                } else {
-                    this.$message.error('请输入账号和密码');
+                }else{
+                     this.$message.error(res.data.content);
                     console.log('error submit!!');
                     return false;
                 }
-            });
-        },
+            }).catch(error=>{
+                console.log(error);
+            })
+        }
     },
 };
 </script>
