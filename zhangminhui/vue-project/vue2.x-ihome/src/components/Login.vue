@@ -62,10 +62,10 @@ methods: {
         if(!(this.username && this.userpass)){
              this.$message.error('请输入账号或者密码后再点击登录！');
         }else{
-            this.$axios.post("http://localhost:10500/api/user/login",this.$qs.stringify({
+            this.$axios.post("http://175.24.122.212:10500/api/user/login",{
             username:this.username,
             password:this.userpass
-            })).then((res)=>{
+            }).then((res)=>{
                 console.log(res)
             }).catch((err)=>{
                 console.log(err)

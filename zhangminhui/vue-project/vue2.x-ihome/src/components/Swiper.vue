@@ -28,7 +28,7 @@
     
         <div class="support-wrap">
             <div class="icon">
-                <img src="../assets/img/icon/icon-5.png" alt="">
+                <img src="../assets/img/icon/icon-8.png" alt="">
             </div>
             <div class="content">
                 <h4>
@@ -41,7 +41,7 @@
         </div>
         <div class="support-wrap">
             <div class="icon">
-                <img src="../assets/img/icon/icon-6.png" alt="">
+                <img src="../assets/img/icon/icon-9.png" alt="">
             </div>
             <div class="content">
                 <h4>
@@ -134,7 +134,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
         padding: 0px;
     }}
     .swiper-container{
-        width:100%;
+        min-width: 1200px;
         height:48vw;
         overflow: hidden;
         img{
