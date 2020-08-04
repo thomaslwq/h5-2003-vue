@@ -26,7 +26,8 @@ const routes = [
                 path: 'index',
                 name: 'index',
                 component: () => import('../components/home/index.vue'),
-            }]
+            },
+            ]
     },
     {
         path: '*',
