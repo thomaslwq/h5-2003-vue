@@ -1,19 +1,16 @@
 <template>
   <div class="home">
-    <Login></Login>
-    <LitterSwiper></LitterSwiper>
+    <BestGoods></BestGoods>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Login from "../components/Login"
-import LitterSwiper from "../components/LitterSwiper"
+import BestGoods from "../components/BestGoods"
 export default {
   name: 'Home',
   components: {
-   Login,
-   LitterSwiper
+    BestGoods
   }
 }
 </script>

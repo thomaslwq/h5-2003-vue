@@ -4,7 +4,10 @@ import router from './router'
 import store from './store'
 
 import axios from "axios"
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 import { Message } from "element-ui"
+//引入iconfont样式
+import './assets/iconfont/iconfont.css'
 
 // import VueAwesomeSwiper from 'vue-awesome-swiper'
 // import 'swiper/swiper-bundle.css'
