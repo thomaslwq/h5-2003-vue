@@ -11,12 +11,6 @@
 				<el-button class="delete mr10" type="primary">
 					<i class="el-icon-delete"></i>批量删除
 				</el-button>
-				<el-select class="select mr10" v-model="value" placeholder="请选择">
-					<el-option key="1" label="广东省" value="广东省"></el-option>
-					<el-option key="2" label="湖南省" value="湖南省"></el-option>
-				</el-select>
-				<el-input type="text" placeholder="用户名" v-model="text" class="handle-input mr10"></el-input>
-				<el-button type="primary" data-con="el-icon-search">搜索</el-button>
 			</div>
 			<div class="table-body">
 				<el-table
@@ -157,12 +151,12 @@ export default {
 	}
 	.uso-table {
 		padding: 30px;
-		background: #ccc;
+		background: #fff;
 		.table-header {
 			margin-bottom: 20px;
 			.handle-input {
 				width: 300px;
-				display: datanline-block;
+				display: inline-block;
 			}
 			.handle-select {
 				padding-right: 30px;

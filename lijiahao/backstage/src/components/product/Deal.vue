@@ -50,10 +50,14 @@
       </el-table>
        <div class="page">
            <el-pagination
-                   @next-click="handleClicks"
+                   @current-change="changePage()"
+                   @prev-click="previous"
+                   @next-click="nextPage"
                    background
                    layout="prev, pager, next"
-                   :total="1000">
+                   :current-page.sync ="pageNum"
+                   :total=count
+                    :page-size="5">
            </el-pagination>
        </div>
     </section>
@@ -67,27 +71,46 @@ export default {
       handleClick(row) {
         console.log(row);
       },
-        handleClicks(){
-            console.log(1)
+        //获取数据
+        getData(){
+            this.axios({
+                url:'/api/list',
+                method:'get',
+                params:{
+                    _page:this.pageNum,
+                    _limit:5
+                }
+            }).then(res=>{
+                // console.log(res)
+                this.listArr = res.data.data
+                this.count = res.data.count
+            })
+        },
+        //点击选择页渲染
+        changePage(){
+            // console.log(this.pageNum);
+            this.getData()
+        },
+        //点击上一页渲染数据
+        previous(){
+          this.pageNum--
+            this.getData()
+        },
+        //点击下一页渲染数据
+        nextPage(){
+            this.pageNum++
+            this.getData()
         }
     },
+    //页面初始加载一次
     mounted() {
-      this.axios({
-          url:'/api/list',
-          method:'get',
-          params:{
-              _page:1,
-              _limit:5
-          }
-      })
-        .then(res=>{
-            console.log(res)
-            this.listArr = res.data.data
-        })
+        this.getData()
     },
     data() {
       return {
-          listArr:[]
+          listArr:[],
+          pageNum:1,
+          count:0
       }
     }
   }

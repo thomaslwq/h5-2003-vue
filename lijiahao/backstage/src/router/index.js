@@ -50,7 +50,7 @@ const routes = [
             {
                 path:'caretaker',
                 name:'caretaker',
-                component:()=>import('../components/caretaker/caretaker.vue')
+                component:()=>import('../components/user/caretaker.vue')
             }
             ]
     },

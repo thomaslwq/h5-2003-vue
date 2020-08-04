@@ -81,6 +81,9 @@ export default {
   },
 
   methods: {
+      handleSelectionChange(){
+
+      },
     handleEdit(index, row) {
       console.log(index, row);
     },
