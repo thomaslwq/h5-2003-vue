@@ -90,6 +90,7 @@
             </el-aside>
             <el-main>
                 <router-view></router-view>
+                <Manage></Manage>
             </el-main>
         </el-container>
     </el-container>
@@ -97,7 +98,11 @@
 
 <script>
 // @ is an alias to /src
+import Manage from '../../components/category/Goods'
 export default {
+    components: {
+        Manage
+    },
     methods: {
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
