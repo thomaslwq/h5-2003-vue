@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 
 import axios from "axios"
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 import { Message } from "element-ui"
 
 // import VueAwesomeSwiper from 'vue-awesome-swiper'
