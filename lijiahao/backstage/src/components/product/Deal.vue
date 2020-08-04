@@ -55,7 +55,7 @@
 <script>
 export default {
     methods: {
-      handleClick(scope,row) {
+      handleClick(row) {
         console.log(row);
       }
     },
