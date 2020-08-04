@@ -2,12 +2,24 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../components/login/login.vue'
 import Home from './../components/Home.vue'
+import Welcome from './../components/Welcome.vue'
+import Users from './../components/user/User.vue'
+import authority from './../components/authority/list.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', name: 'login', redirect: '/login' },
-  { path: '/login', name: 'login', component: login },
-  { path: '/home', name: 'home', component: Home },
+  { path: '/', redirect: '/login' },
+  { path: '/login', component: login },
+  {
+    path: '/home', component: Home, redirect: '/welcome',
+    // home首页组件设置一个子路由 welcome欢迎页面组件
+    children: [
+      { path: '/welcome', component: Welcome, },
+      { path: '/users', component: Users },
+      { path: '/roles', component: authority },
+    ]
+  },
+
 
 ]
 
