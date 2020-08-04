@@ -14,11 +14,11 @@
                 <div class="padding-big">
                     <router-link to='/'>返回首页</router-link>
                 </div>
-                </div>
-
             </div>
 
     </div>
+
+
 </template>
 
 <script>
