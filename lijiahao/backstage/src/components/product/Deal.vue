@@ -34,13 +34,13 @@
         订单管理
         <span>订单列表管理今日已完成更新</span>
       </h3>
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column fixed prop="date" label="日期" width="150"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-        <el-table-column prop="province" label="省份" width="120"></el-table-column>
-        <el-table-column prop="city" label="市区" width="120"></el-table-column>
-        <el-table-column prop="address" label="地址" width="300"></el-table-column>
-        <el-table-column prop="zip" label="邮编" width="120"></el-table-column>
+      <el-table :data="listArr" border style="width: 100%">
+        <el-table-column fixed prop="ProductNum" label="产品编号" width="150"></el-table-column>
+        <el-table-column prop="JoiningTime" label="日期" width="120"></el-table-column>
+        <el-table-column prop="Region" label="地区" width="120"></el-table-column>
+        <el-table-column prop="OriginalPrice" label="价格" width="120"></el-table-column>
+        <el-table-column prop="ProductName" label="商品名称" width="300"></el-table-column>
+        <el-table-column prop="PresentPrice" label="邮编" width="120"></el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
@@ -59,38 +59,23 @@ export default {
         console.log(row);
       }
     },
-
+    mounted() {
+      this.axios({
+          url:'/api/list',
+          method:'get',
+          params:{
+              _page:1,
+              _limit:5
+          }
+      })
+        .then(res=>{
+            console.log(res)
+            this.listArr = res.data.data
+        })
+    },
     data() {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1517 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1519 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1516 弄',
-          zip: 200333
-        }]
+          listArr:[]
       }
     }
   }
@@ -154,8 +139,7 @@ export default {
     }
   }
   .bottom {
-    height: 410px;
-    min-width: 700px;
+    /*min-width: 700px;*/
     background-color: #fff;
     border-radius: 5px;
     padding: 20px;
