@@ -26,10 +26,10 @@
                         <el-menu-item-group>
 
                             <el-menu-item index="2-1">
-                                <router-link to="goodsList" >商品订单</router-link>
+                                <router-link to="goodsList" >商品列表</router-link>
                             </el-menu-item>
                             <el-menu-item index="2-2">
-                                <router-link to="">上架商品</router-link>
+                                <router-link to="">选项1</router-link>
                             </el-menu-item>
 
                         </el-menu-item-group>
@@ -90,6 +90,7 @@
             </el-aside>
             <el-main>
                 <router-view></router-view>
+                <Manage></Manage>
             </el-main>
         </el-container>
     </el-container>
@@ -97,7 +98,11 @@
 
 <script>
 // @ is an alias to /src
+import Manage from '../../components/category/Goods'
 export default {
+    components: {
+        Manage
+    },
     methods: {
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
