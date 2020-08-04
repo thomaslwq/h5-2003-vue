@@ -4,8 +4,10 @@
       <!-- header!!!!!!!!! -->
       <el-header style="height:8vh">
         <!-- log!!!!!!!! -->
-        <img src="../assets/logo.png" alt="" />
-        商品管理
+        <router-link tag="span" to="/login">登录</router-link>
+        <div class="header-log">
+          <HeaderLog></HeaderLog>
+        </div>
       </el-header>
       <!-- 版心内容 -->
       <el-container style="height:92vh">
@@ -33,12 +35,12 @@
                 <span>代理商</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/home/merchant"
-                  ><span>代理商管理</span></el-menu-item
-                >
-                <el-menu-item index="/home/merchantAdd"
-                  ><span>添加代理商</span></el-menu-item
-                >
+                <el-menu-item index="/home/merchant">
+                  <span>代理商管理</span>
+                </el-menu-item>
+                <el-menu-item index="/home/merchantAdd">
+                  <span>添加代理商</span>
+                </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="3">
@@ -47,10 +49,12 @@
                 <span>商品管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/home/shopAdd"
-                  ><span>商品添加</span></el-menu-item
-                >
-                <el-menu-item index="/home/shop"><span>商品列表</span></el-menu-item>
+                <el-menu-item index="/home/shopAdd">
+                  <span>商品添加</span>
+                </el-menu-item>
+                <el-menu-item index="/home/shop">
+                  <span>商品列表</span>
+                </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-menu-item index="/home/statistics">
@@ -78,15 +82,20 @@
 </template>
 
 <script>
+import HeaderLog from './HeaderLog'
 export default {
+  //import引入的组件需要注入到对象中才能使用
+components: {
+  HeaderLog,
+},
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -97,10 +106,17 @@ body {
 }
 //  布局css
 .el-header {
-  background-color: #409eff;
+  background-color: #3c8dbc;
   color: #333;
   text-align: center;
   line-height: 60px;
+
+  .header-log {
+    float: right;
+    // width: 200px;
+    height: 100%;
+    margin-right: 50px;
+  }
 }
 .el-header {
   font-size: 34px;

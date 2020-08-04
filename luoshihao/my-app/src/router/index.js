@@ -11,6 +11,7 @@ import Shop from "../components/shop";
 import Statistics from "../components/statistics";
 import User from "../components/user";
 import Intellectual from "../components/intellectual";
+import Login from "../views/home/Login"
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -22,7 +23,7 @@ const router = new VueRouter({
       name: "Home",
       component: Home,
       children: [{
-        path:'',
+        path:'/',
       component:home
       }
         ,
@@ -64,9 +65,14 @@ const router = new VueRouter({
       ]
     },
     {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
       path: "*",
       redirect: "/home"
-    }
+    },
   ]
 });
 //  全局守卫
