@@ -59,16 +59,17 @@ watch: {},
 //方法集合
 methods: {
     loginHandler(){
+        console.log(this.username)
         if(!(this.username && this.userpass)){
              this.$message.error('请输入账号或者密码后再点击登录！');
         }else{
-            this.$axios.post("http://175.24.122.212:10500/api/user/login",{
-            username:this.username,
-            password:this.userpass
-            }).then((res)=>{
-                console.log(res)
-            }).catch((err)=>{
-                console.log(err)
+            this.$axios.post("http://130.36.149.43:10500/api/user/login",{
+                logauthority:this.username,
+                password:this.userpass
+                }).then((res)=>{
+                    console.log(res)
+                }).catch((err)=>{
+                    console.log(err)
             })
         }
         //邮箱验证暂不启用
