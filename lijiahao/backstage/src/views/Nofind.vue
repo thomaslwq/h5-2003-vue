@@ -26,7 +26,7 @@
       data(){
           return{
               img1:require('@/assets/images/ds-1.png'),
-              img2:require('@/assets/images/ds-2.png')
+              img2:require('@/assets/images/ds-2.png'),
           }
       }
     };
