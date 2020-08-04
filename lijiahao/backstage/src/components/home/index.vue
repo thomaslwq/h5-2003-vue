@@ -12,19 +12,22 @@
         </div>
         <div class="bottom">
             <div class="btm btm-1">
-                <i class="el-icon-s-custom"></i>
+                <i class="el-icon-user-solid"></i>
                 <p>11047</p>
                 <span>总用户人数</span>
             </div>
             <div class="btm btm-2">
+                <i class="el-icon-box"></i>
                 <p>40</p>
                 <span>材料商</span>
             </div>
             <div class="btm btm-3">
+                <i class="el-icon-pie-chart"></i>
                 <p>503</p>
                 <span>设计师</span>
             </div>
             <div class="btm btm-4">
+                <i class="el-icon-data-line"></i>
                 <p>10504</p>
                 <span>C端用户</span>
             </div>
@@ -68,7 +71,6 @@
         min-width: 700px;
         margin-top: 20px;
         height: 300px;
-        // padding-bottom: 80px;
         box-sizing: border-box;
         display: flex;
         justify-content: center;
@@ -83,18 +85,21 @@
             flex-direction: column;
             justify-content: flex-end;
             i{
-                font-size: 50px;
+                font-size: 35px;
                 color: rgba(180,222,150);
             }
             p{
                 font-size: 20px;
+                line-height: 40px;
                 color: rgba(180,222,150);
             }
             span{
                 font-size: 14px;
             }
         }
-            
+        .btm-1 i{
+            font-size: 50px;
+        }
     }
 }
 </style>
