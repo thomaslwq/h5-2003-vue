@@ -32,7 +32,7 @@
         </div>
         <div class="input-phone">
           <label for="phone">手机号 *</label>
-          <input type="text" id="phone" v-model="phone" />
+          <input type="text" id="phone" v-model="telephone" />
         </div>
         <button type="submit" class="submit-btn" @click.stop="confirm">注册</button>
         <div class="create-info">
@@ -60,7 +60,8 @@ export default {
       username: "",
       password: "",
       email: "",
-      phone: "",
+      telephone: "", 
+      sex:"1"
     };
   },
   //监听属性 类似于data概念
@@ -74,7 +75,8 @@ export default {
       let password = this.password;
       let username = this.username;
       let email = this.email;
-      let phone = this.phone;
+      let telephone = this.telephone;
+      let sex = this.sex;
       // 关键词
       //debugger
       //2. 账号密码为空的情况下 提示用户不能为空
@@ -86,18 +88,19 @@ export default {
       }
       // 发送注册信息给后台
       this.$axios
-        .post("/http://175.24.122.212:10500/api/user/regist", {
+        .post("http://10.36.149.43:10500/api/user/regist", {
           username,
           email,
           password,
-          phone,
+          telephone,
+          sex
         })
         .then((res) => {
           // console.log(res);
           this.$message({
             msg: res.msg,
           });
-          if (res.status === 0) {
+          if (res.status == 0) {
             // 注册成功
             this.$router.push({ name: "userLogin" }); // 跳转回登录页
           }

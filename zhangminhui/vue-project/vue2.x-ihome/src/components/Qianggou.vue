@@ -7,14 +7,15 @@
         <img src="../assets/img/logo/logo.png" alt />
         <p>
           本周折扣为
-          <span>{{ zhe }}</span>
+          <span>{{ res }}</span>
           折
         </p>
         <h5>本周爱家 倒计时</h5>
+        <h6>5天</h6>
         <p>
-          <span class="time">{{ hours }}</span>:
-          <span class="time">{{ minute }}</span>:
-          <span class="time">{{ second }}</span>
+          <span class="time">{{res}}</span>:
+          <span class="time">{{res}}</span>:
+          <span class="time">{{res}}</span>
         </p>
       </div>
       <div class="qianggou-container">
@@ -84,35 +85,29 @@ function timeDiff(time1, time2) {
   obj.seconds = seconds;
   return obj;
 }
-function randomNum(x, y) {
-  var min = Math.min(x, y);
-  var max = Math.max(x, y);
-  var n = Math.floor(Math.random() * (max - min + 1) + min);
-  return n;
+function res() {
+  var spanArr = document.querySelector(".")
+  let time1 = new Date("2020-8-9 24:00:00");
+  return setInterval(function () {
+    var time2 = new Date();
+    var res = timeDiff(time1, time2);
+    return res;
+  }, 1000);
 }
-
+res();
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     //这里存放数据
-    return {
-      zhe: "8",
-      hours: "12",
-      minute: "33",
-      second: "46",
-    };
+    return {};
   },
   //监听属性 类似于data概念
-  computed: {
- 
-  },
+  computed: {},
   //监控data中的数据变化
   watch: {},
   //方法集合
-  methods: {
-    
-  },
+  methods: {},
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
@@ -148,13 +143,14 @@ export default {
       span {
         color: red;
         font-size: 18px;
-        margin-top: 20px;
       }
       .time {
-        width: 20px;
-        height: 20px;
+        vertical-align: middle;
+        display: inline-block;
+        width: 44px;
+        height: 44px;
         background-color: #300;
-        line-height: 20px;
+        line-height: 24px;
         text-align: center;
         padding: 10px;
       }
@@ -163,7 +159,12 @@ export default {
     h5 {
       font-size: 22px;
       color: orange;
-      margin: 30px 0;
+      margin: 20px 0;
+    }
+    h6 {
+      font-size: 20px;
+      color: red;
+      font-weight: bold;
     }
   }
 
