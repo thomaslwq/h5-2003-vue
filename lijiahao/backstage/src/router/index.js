@@ -13,6 +13,9 @@ const routes = [
     {
         path: '/',
         name: 'Home',
+        redirect() {
+            return '/index'
+        },
         component: ()=>import('../views/Home/Home'),
         children: [{
             path: 'goodsList',
