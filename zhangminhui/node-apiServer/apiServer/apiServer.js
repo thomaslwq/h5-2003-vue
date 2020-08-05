@@ -17,6 +17,9 @@ const {
 } = require("./model/productModel");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
+var multer = require('multer')
+const upload = multer({ dest: '../uploads/' });
+
 const app = express();
 
 //设置跨域
@@ -38,7 +41,7 @@ app.use(
     },
   })
 );
-
+app.use(upload.single('file'));
 //路由拦截
 
 //建立数据库连接
@@ -97,7 +100,7 @@ app.post("/api/user/regist", function (req, res, next) {
               body["sex"] = 1;
             }
             //设置初始头像
-            userModel.headPortrait = "./images/user.jpg";
+            userModel.headPortrait = "../assets/images/user.jpg";
             userModel[keys] = body[keys];
           }
         });
@@ -230,9 +233,6 @@ app.post("/api/user/updateUser", function (req, res, next) {
   });
 });
 
-/** 
- * 
- */
 
 //#endregion
 
@@ -295,7 +295,7 @@ app.post("/api/admin/deleteUser", function (req, res, next) {
  */
 app.post('/api/admin/deleteAllUsers', function (req, res, next) {
   var body = req.body;
-  var sql = "delete from users where userID in ("+body.userIDs+")";
+  var sql = "delete from users where userID in (" + body.userIDs + ")";
   console.log(sql);
   myCon.query(sql, function (error, results, fields) {
     if (error) {
@@ -318,6 +318,7 @@ app.post('/api/admin/deleteAllUsers', function (req, res, next) {
  */
 app.post('/api/admin/addProduct', function (req, res, next) {
   var body = req.body;
+  console.log(body);
   var tablename = 'product';
   var productID = SetID(tablename);
   Object.keys(productModel).forEach((keys) => {
@@ -331,20 +332,153 @@ app.post('/api/admin/addProduct', function (req, res, next) {
   Object.keys(productModel).forEach((keys) => {
     if (productModel[keys]) {
       arrKeys.push(keys);
-      arrValues.push("'" + productModel[keys] + "'");
+      arrValues.push(productModel[keys]);
     }
   });
-  console.log(arrKeys + arrValues);
-
+  var sql =
+    "insert into product(" +
+    arrKeys.toString() +
+    ") values('" +
+    arrValues.join("','") +
+    "')";
+  console.log(sql);
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: 'connect failed' + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: 'insert product success',
+        results
+      });
+    }
+  })
 });
 
 /**
- * 管理员-修改商品
+ * 管理员-修改商品信息
  * @param {String} productID
  * @param {Object} productModel
  */
-app.get('/api/admin/updateProduct', function (req, res, next) {
+app.post("/api/admin/updateProduct", function (req, res, next) {
+  var body = req.body;
 
+  Object.keys(productModel).forEach((keys) => {
+    userModel[keys] = body[keys];
+  });
+
+  var arr = [];
+  Object.keys(productModel).forEach((keys) => {
+    if (productModel[keys]) {
+      arr.push(keys + "='" + productModel[keys] + "'");
+    }
+  });
+  var sql =
+    "update product set " + arr.toString() + " where productID=" + body.productID;
+  console.log(sql);
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: "connect failed" + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: "update product success",
+        results
+      });
+    }
+  });
+});
+
+/**
+ * 管理员-查看全部商品
+ */
+app.get('/api/admin/getAllProduct', function (req, res, next) {
+  var sql = "select * from product";
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: 'connect failed' + error
+      });
+    } else {
+      if (results.length > 0) {
+        res.send({
+          code: 200,
+          content: 'find product success',
+          results
+        });
+      } else {
+        res.send({
+          code: 404,
+          content: 'connect success but no exist product',
+          results
+        });
+      }
+    }
+  })
+});
+
+/**
+ * 管理员-删除商品
+ * @param {String} productID
+ */
+app.post("/api/admin/deleteProduct", function (req, res, next) {
+  var body = req.body;
+  console.log(body);
+  var sql = "delete from product where productID=" + body.productID;
+  console.log(sql);
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: "connect failed" + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: "delete product success",
+        results
+      });
+    }
+  });
+});
+
+
+/**
+ * 管理员-批量删除商品
+ *  @param {String} productIDs
+ */
+app.post("/api/admin/deleteAllProducts", function (req, res, next) {
+  var body = req.body;
+  var sql = "delete from product where productID in (" + body.productIDs + ")";
+  console.log(sql);
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: "connect failed" + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: "delete product success",
+        results
+      });
+    }
+  });
+});
+
+/**
+ * 管理员-上传商品图片
+ */
+app.post('/api/admin/uploadProductPicture',function(req,res,next){
+  console.log(req.file);
 });
 //#endregion
 
@@ -452,15 +586,22 @@ app.post("/api/admin/deleteColor", function (req, res, next) {
  * 颜色管理-删除全部颜色
  * @param {String} colorIDs
  */
-app.post('/api/admin/deleteAllColors',function(req,res,next){
-  var body=req.body;
-  var sql="delete from color where colorID in ("+colorIDs+")";
-  myCon.query(sql,function(error,results,fields){
-  if(error){
-  res.send({code:400,content:'connect failed'+error});
-  }else{
-  res.send({code:0,content:'delete success',results});
-  }
+app.post('/api/admin/deleteAllColors', function (req, res, next) {
+  var body = req.body;
+  var sql = "delete from color where colorID in (" + colorIDs + ")";
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: 'connect failed' + error
+      });
+    } else {
+      res.send({
+        code: 0,
+        content: 'delete success',
+        results
+      });
+    }
   });
 });
 
@@ -598,7 +739,7 @@ app.post("/api/admin/deleteSort", function (req, res, body) {
  */
 app.post("/api/admin/deleteAllSorts", function (req, res, body) {
   var body = req.body;
-  var sql = "delete from sort where sortID in (" + body.sortIDs+")";
+  var sql = "delete from sort where sortID in (" + body.sortIDs + ")";
   console.log(sql);
   myCon.query(sql, function (error, results, fields) {
     if (error) {
@@ -736,7 +877,7 @@ app.post("/api/admin/deleteSpecification", function (req, res, next) {
  */
 app.post("/api/admin/deleteAllSpecifications", function (req, res, next) {
   var body = req.body;
-  var sql = "delete from specification where specificationID in(" + body.specificationIDs+")";
+  var sql = "delete from specification where specificationID in(" + body.specificationIDs + ")";
   console.log(sql);
   myCon.query(sql, function (error, results, fields) {
     if (error) {
@@ -892,7 +1033,7 @@ app.post("/api/admin/deleteSeries", function (req, res, next) {
  */
 app.post("/api/admin/deleteAllSeries", function (req, res, next) {
   var body = req.body;
-  var sql = "delete from series where seriesID in (" + body.seriesIDs+")";
+  var sql = "delete from series where seriesID in (" + body.seriesIDs + ")";
   myCon.query(sql, function (error, results, fields) {
     if (error) {
       res.send({
@@ -1037,15 +1178,22 @@ app.post("/api/admin/deleteMaterial", function (req, res, next) {
  * 材质管理-批量删除材质
  *@param {String} materialIDs
  */
-app.post('/api/admin/deleteAllMaterials',function(req,res,next){
-  var body=req.body;
-  var sql="delete from material where materialID in ("+body.materialIDs+")";
-  myCon.query(sql,function(error,results,fields){
-  if(error){
-  res.send({code:400,content:'connection failed'+error});
-  }else{
-  res.send({code:200,content:'delete success',results});
-  }
+app.post('/api/admin/deleteAllMaterials', function (req, res, next) {
+  var body = req.body;
+  var sql = "delete from material where materialID in (" + body.materialIDs + ")";
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: 'connection failed' + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: 'delete success',
+        results
+      });
+    }
   })
 })
 /**

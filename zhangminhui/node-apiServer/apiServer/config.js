@@ -34,7 +34,7 @@ function SetID(tablename){
         case "material":
             num = num+6;
         break;
-        case "comment":
+        case "usercomment":
             num = num+7;
         break;
         case "cart":
