@@ -4,7 +4,7 @@
       <!-- header!!!!!!!!! -->
       <el-header style="height:8vh">
         <!-- log!!!!!!!! -->
-        <router-link tag="span" to="/login">登录</router-link>
+        <div class="header-bar">admin</div>
         <div class="header-log">
           <HeaderLog></HeaderLog>
         </div>
@@ -82,12 +82,12 @@
 </template>
 
 <script>
-import HeaderLog from './HeaderLog'
+import HeaderLog from "./HeaderLog";
 export default {
   //import引入的组件需要注入到对象中才能使用
-components: {
-  HeaderLog,
-},
+  components: {
+    HeaderLog,
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -106,17 +106,30 @@ body {
 }
 //  布局css
 .el-header {
-  background-color: #3c8dbc;
+  background-color: rgb(241, 248, 250);
   color: #333;
   text-align: center;
   line-height: 60px;
-
-  .header-log {
-    float: right;
-    // width: 200px;
+  padding: 0 !important;
+  .header-bar {
+    width: 200px;
     height: 100%;
-    margin-right: 50px;
+    justify-content: center;
+    color: red;
+    background-image: -webkit-linear-gradient(bottom, #ff537e, #02a898);
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    font-size: 28px;
+    box-shadow: 2px 0 4px rgba(0, 150, 136, 0.1);
+    width: 200px;
+    float: left;
   }
+}
+.header-log {
+  float: right;
+  // width: 200px;
+  height: 100%;
 }
 .el-header {
   font-size: 34px;
