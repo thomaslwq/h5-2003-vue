@@ -3,10 +3,11 @@
 <div id='home'>
   <Header></Header>
   <Bigswiper></Bigswiper>
+  <BestGoods></BestGoods>
   <Qianggou></Qianggou>
-  <Swiper></Swiper>
   <Newdesign></Newdesign>
   <Video></Video>
+  <Article></Article>
   <Footer></Footer>
 </div>
 </template>
@@ -16,10 +17,11 @@
 //例如：import 《组件名称》 from '《组件路径》';
 import Header from "../components/Header.vue";
 import Bigswiper from "../components/Swiper.vue";
+import BestGoods from "../components/BestGoods.vue";
 import Qianggou from "../components/Qianggou.vue";
 import Newdesign from "../components/NewDesign.vue"
-import Swiper from "../components/Swiper.vue";
 import Video from "../components/Video.vue";
+import Article from "../components/Article.vue";
 import Footer from "../components/Footer.vue";
 import Login from "../components/Login"
 export default {
@@ -27,11 +29,13 @@ export default {
 components: {
   Header,
   Bigswiper,
+  BestGoods,
   Qianggou,
+  Newdesign,
   Video,
+  Article,
   Footer,
   Login,
-  Newdesign
 },
 data() {
 //这里存放数据

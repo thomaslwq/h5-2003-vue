@@ -7,7 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import './assets/css/icon.css';
 import './components/common/directives';
 import 'babel-polyfill';
-import axios from "../common/myaxios";
+import axios from "./common/myaxios";
 axios.defaults.baseURL = process.env.VUE_APP_URL
 import qs from "qs";
 Vue.config.productionTip = false;

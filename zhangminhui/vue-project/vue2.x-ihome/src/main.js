@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from "../common/myaxios";
+import './assets/iconfont/iconfont.css'
 axios.defaults.baseURL = process.env.VUE_APP_URL
 import qs from "qs";
 
