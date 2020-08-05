@@ -124,6 +124,7 @@ body {
     box-shadow: 2px 0 4px rgba(0, 150, 136, 0.1);
     width: 200px;
     float: left;
+    user-select: none;
   }
 }
 .header-log {

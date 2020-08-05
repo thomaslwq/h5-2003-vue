@@ -46,6 +46,7 @@
       width="400px"
       :before-close="handleClose"
       center
+      show-message
     >
       <el-form ref="regForm" :rules="rules" :model="ruleForm" width="300px">
         <el-form-item label="账号" prop="user">
@@ -125,13 +126,15 @@ export default {
   //方法集合
   methods: {
     handleClose(done) {
+      let _this = this;
       this.$confirm("确认关闭？")
         .then((_) => {
+          _this.$refs.regForm.resetFields();
+
           done();
         })
         .catch((_) => {});
     },
-    // 登录 validate 对整个表单进行校验的方法，参数为一个回调函数。该回调函数会在校验结束后被调用，
     //并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise
     loginClick() {
       this.$axios({
@@ -147,10 +150,11 @@ export default {
           this.$notify({
             title: "成功",
             message: res.data.msg,
-            type: 'success'
+            type: "success",
           });
           // localStorage.setItem('token', res.data.token);
-          sessionStorage.setItem('token', res.data.token);
+          sessionStorage.setItem("token", res.data.token);
+
           this.$router.push("/home");
         }
         if (res.data.code === 400) {
@@ -170,22 +174,37 @@ export default {
     },
     // 注册确定  方法resetFields();	对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
     resclick() {
+
+      if (this.ruleForm.user === "") {
+        this.$notify.error({
+          title: "失败",
+          message: "请输入账号",
+        });
+        this.dialogVisible = false;
+        return;
+      } else if (this.ruleForm.pass === "") {
+        this.$notify.error({
+          title: "失败",
+          message: "请输入密码",
+        });
+        this.dialogVisible = false;
+        return;
+      }
       this.$axios({
-        url:"/register",
-        method:"post",
-        data:{
+        url: "/register",
+        method: "post",
+        data: {
           user: this.ruleForm.user,
           pwd: this.ruleForm.pass,
         },
-      }).then(res=>{
-          this.$notify({
-            title: "成功",
-            message: res.data.msg,
-            type: 'success'
-          });
-      })
-      console.log(this.$refs.regForm);
-      console.log(this.rules);
+      }).then((res) => {
+        console.log(res);
+        this.$notify({
+          title: "成功",
+          message: res.data.msg,
+          type: "success",
+        });
+      });
       this.$refs.regForm.resetFields();
       this.dialogVisible = false;
     },
@@ -194,7 +213,8 @@ export default {
 </script>
 <style lang="less"  scoped>
 .login-box {
-  background-image: url("~@/assets/bg.png");
+  height: 100vh;
+  background-image: url("../../assets/bg.png");
   .login-content {
     width: 1140px;
     height: 400px;
