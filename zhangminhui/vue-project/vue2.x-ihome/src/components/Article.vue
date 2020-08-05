@@ -3,6 +3,7 @@
   <div class>
     <!-- 见解和文章开始 -->
     <div class="article">
+      <div class="color-bottom"></div>
       <div class="container">
         <div class="article-top">
           <div class="article-topLeft">
@@ -131,13 +132,22 @@ export default {
 </script>
 <style lang="less" scoped>
 .article {
-    position: relative;
+  width: 100%;
+  height: 582px;
+  position: relative;
   padding-top: 50px;
+  .color-bottom{
+    width: 100%;
+    height: 150px;
+    position: absolute;
+    bottom: 0;
+    background-color: #fff7f0;
+  }
   .container {
     width: 1140px;
+    margin: 0 auto;
     left: 0;
     right: 0;
-    margin: 0 auto;
     position: absolute;
     z-index: 888;
     .article-top {
@@ -174,10 +184,10 @@ export default {
         width: 380px;
         height: 480px;
         padding: 0 15px;
-         &:hover .blog-thumb img {
-            transition: 0.3s linear;
-            transform: scale(1.05);
-          }
+        &:hover .blog-thumb img {
+          transition: 0.3s linear;
+          transform: scale(1.05);
+        }
         .blog-thumb {
           width: 350px;
           height: 236px;
@@ -186,7 +196,6 @@ export default {
             width: 100%;
             height: 100%;
           }
-         
         }
 
         .blog-content {
@@ -194,7 +203,7 @@ export default {
           padding: 35px 25px;
           background: #fff;
           border: 1px solid #ccc;
-          .blog-meta { 
+          .blog-meta {
             background: #a3bbc8;
             padding: 8px 25px;
             position: absolute;
@@ -214,9 +223,9 @@ export default {
               a {
                 color: #262626;
                 text-decoration: none;
-                &:hover{
-                  color: rgb(252,215,182);
-                  transition: .8s;
+                &:hover {
+                  color: rgb(252, 215, 182);
+                  transition: 0.8s;
                 }
               }
             }

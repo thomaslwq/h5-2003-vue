@@ -11,7 +11,7 @@
     <div class="navbox" ref="navScroll">
       <div class="nav">
         <div class="logo">
-          <img src="../assets/img/logo/logo-3.png" alt />
+          <img src="../assets/img/logo/logo.png" alt />
         </div>
         <div class="menu">
           <ul>
@@ -249,6 +249,10 @@ export default {
       .logo {
         flex: 2;
         cursor: pointer;
+        img {
+          width: 150px;
+          height: 40px;
+        }
       }
       .menu {
         flex: 3;

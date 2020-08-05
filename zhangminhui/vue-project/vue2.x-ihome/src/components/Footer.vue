@@ -7,7 +7,7 @@
         <div class="footer-widget about-widget">
           <div class="about-logo">
             <a href="index.html">
-              <img src="../assets/img/logo/logo-3.png" alt="logo" />
+              <img src="../assets/img/logo/logo.png" alt="logo" />
             </a>
           </div>
           <ul>
@@ -66,7 +66,7 @@
           </p>
           <form action="#">
             <div class="input-wrap">
-              <input type="text" placeholder="Email" />
+              <span class="iconfont icon-caidan news"></span><input type="text" placeholder="Email" />
               <button>订阅</button>
             </div>
           </form>
@@ -121,7 +121,7 @@ export default {
     toTop: function () {
       clearInterval(timer);
       var timer = setInterval(() => {
-        document.documentElement.scrollTop -= 15;
+        document.documentElement.scrollTop -= 30;
         if (document.documentElement.scrollTop == 0) {
           clearInterval(timer);
         }
@@ -175,6 +175,7 @@ export default {
       .about-logo {
         a {
           img {
+            margin-bottom: 20px;
           }
         }
       }
@@ -245,6 +246,15 @@ export default {
       form {
         .input-wrap {
           display: flex;
+          .news{
+             background: rgba(252, 215, 182, 0.5);
+            width: 50px;
+            height: 60px;
+            padding-left: 10px;
+            font-size: 20px;
+            color: #999;
+            line-height: 60px;
+          }
           input {
             border-radius: 0;
             background: rgba(252, 215, 182, 0.5);
