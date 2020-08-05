@@ -4,11 +4,12 @@
 <div class="slider-area slider-spacing">
     <!-- swiper开始的位置 -->
     <div class='swiper-container'>
-        <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="imgsrc,index in imgs" :key="index">
-                <img :src="imgsrc" :alt="'banner'+index">
-            </div>
-        </div>
+        <swiper class="swiper" :options="swiperOption"  ref="bigSwiper">
+            <swiper-slide class="swiper-slide" v-for="item,index in imgList" :key="item.id">
+                <img :src="require('../assets/img/banner/' + item.img)" :alt="'banner'+index">
+            </swiper-slide>
+            <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
     </div>
     <!-- swiper结束的位置 -->
     <div class="support">
@@ -28,7 +29,7 @@
     
         <div class="support-wrap">
             <div class="icon">
-                <img src="../assets/img/icon/icon-5.png" alt="">
+                <img src="../assets/img/icon/icon-8.png" alt="">
             </div>
             <div class="content">
                 <h4>
@@ -41,7 +42,7 @@
         </div>
         <div class="support-wrap">
             <div class="icon">
-                <img src="../assets/img/icon/icon-6.png" alt="">
+                <img src="../assets/img/icon/icon-9.png" alt="">
             </div>
             <div class="content">
                 <h4>
@@ -60,23 +61,47 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import Swiper from "swiper/swiper-bundle.js";
-import "swiper/swiper-bundle.css";
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import 'swiper/swiper-bundle.css'
 export default {
+name:"bigSwiper",
 //import引入的组件需要注入到对象中才能使用
-components: {},
+components: {
+    Swiper,
+    SwiperSlide
+},
 data() {
 //这里存放数据
 return {
-    imgs:[
-        "./images/banner/banner-big1.jpg",
-        "./images/banner/banner-big2.jpg",
-        "./images/banner/banner-big3.jpg",
+    swiperOption: {
+          loop:true,
+          pagination: {
+            el: '.swiper-pagination',
+            dynamicBullets: true
+          }
+        },
+    imgList:[
+        {
+            id:"001",
+            img:"banner-big1.jpg",
+        },
+        {
+            id:"002",
+            img:"banner-big2.jpg",
+        },
+        {
+            id:"003",
+            img:"banner-big3.jpg",
+        },
     ]
 };
 },
 //监听属性 类似于data概念
-computed: {},
+computed: {
+    swiper() {
+        return this.$refs.bigSwiper.$swiper
+    }
+},
 //监控data中的数据变化
 watch: {},
 //方法集合
@@ -89,26 +114,12 @@ created() {
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
-    var mySwiper = new Swiper ('.swiper-container', {
-            direction: 'horizontal', // 垂直切换选项
-            loop: true, // 循环模式选项
-            autoplay:true,
-            // 如果需要分页器
-            pagination: {
-            el: '.swiper-pagination',
-            },
-            
-            // 如果需要前进后退按钮
-            navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-            },
-            
-            // 如果需要滚动条
-            scrollbar: {
-            el: '.swiper-scrollbar',
-            },
-      })
+    var that = this;
+    this.swiper.slideTo(0, 0, false)
+    //自动播放
+    setInterval(function(){
+        that.swiper.slideNext(1000);
+    },5000)
 },
 beforeCreate() {}, //生命周期 - 创建之前
 beforeMount() {}, //生命周期 - 挂载之前
@@ -134,7 +145,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
         padding: 0px;
     }}
     .swiper-container{
-        width:100%;
+        min-width: 1200px;
         height:48vw;
         overflow: hidden;
         img{
