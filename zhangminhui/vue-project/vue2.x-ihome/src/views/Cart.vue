@@ -71,17 +71,27 @@
             </div>
             <div class="price sAll">￥{{goodsitem.goodsprice*goodsitem.neednum}}</div>
             <div class="price">
-              <a class="del" href="#2" @click="delHandle(goodsitem)">删除</a>
+              <el-popconfirm
+              confirmButtonText='好的'
+              cancelButtonText='不用了'
+              icon="el-icon-info"
+              iconColor="red"
+              title="确定删除当前商品吗？"
+              @onConfirm="delHandle(goodsitem)"
+              >
+                <el-button slot="reference">删除</el-button>
+              </el-popconfirm>
             </div>
           </div>
         </div>
-        <div class="goOn">
+        <div class="goOn" v-show="cartList.length<=0">
           您的购物车空空如也~
           <a href="/productgrid">去逛逛</a>
         </div>
         <div class="tr clearfix">
           <label class="fl">
             <input 
+            id="checkAll"
             type="checkbox"
             :class="['checkAll',{checked:checked}]" 
             :checked="checked"
@@ -90,8 +100,17 @@
             <span></span>
           </label>
           <p class="fl">
-            <a href="#">全选</a>
-            <a href="#" class="del delAll" @click="delCheckedHandle">删除</a>
+            <label for="checkAll">全选</label>
+            <el-popconfirm
+              confirmButtonText='好的'
+              cancelButtonText='不用了'
+              icon="el-icon-info"
+              iconColor="red"
+              title="确定删除所选商品吗？"
+              @onConfirm="delCheckedHandle()"
+              >
+                <el-button slot="reference">删除</el-button>
+              </el-popconfirm>
           </p>
           <p class="fr">
             <span>
@@ -232,13 +251,12 @@ export default {
             return this.checkedGoods.indexOf(v)===-1;
         })
         this.checkedGoods = [];
-    }
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-      
   },
                                                                                                           
   beforeCreate() {}, //生命周期 - 创建之前
@@ -471,7 +489,6 @@ export default {
   font-size: 16px;
   color: #436372;
   text-align: center;
-  display: none;
 }
 .table .goOn a {
   color: #c10000;

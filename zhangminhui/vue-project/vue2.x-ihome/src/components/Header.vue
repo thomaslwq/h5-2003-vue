@@ -50,7 +50,7 @@
               <div class="userImg">
                 <img src="../assets/img/touxiang.png" alt />
               </div>
-              <span>{{user.name}}</span>
+              <span>{{user.username}}</span>
             </div>
             <div class="email">
               <div>我的邮箱</div>
@@ -58,11 +58,11 @@
             </div>
             <div class="phone">
               <div>电话号码</div>
-              <span>{{user.phone}}</span>
+              <span>{{user.telephone}}</span>
             </div>
             <div class="address">
               <div>我的地址</div>
-              <span>{{user.address}}</span>
+              <span>{{user.addresses}}</span>
             </div>
             <div class="changeMessage">
               <button class="btn1" @click="change">修改信息</button>
@@ -123,10 +123,10 @@ export default {
         },
       ],
       user: {
-        name: "杨洋",
+        username: "杨洋",
         email: "1239201872@qq.com",
-        phone: 13156879024,
-        address: "广东省深圳市宝安区西部硅谷",
+        telephone: 13156879024,
+        addresses: "广东省深圳市宝安区西部硅谷",
       },
       chengeMess: { name: false, email: false, phone: false, address: false },
     };
@@ -180,10 +180,23 @@ export default {
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
+    var userID = localStorage.getItem("userID")
     window.addEventListener("scroll", this.handleScroll);
+    if(userID){
+        this.isLogin = true
+        console.log(userID)
+    }
+    this.$axios.post("api/user/getUserInfoByID",this.$qs.stringify({
+      userID:userID
+    })).then((res)=>{
+      if(res.code==200){
+        this.user = res.results[0]
+      } 
+    })
   },
   beforeCreate() {}, //生命周期 - 创建之前
-  beforeMount() {}, //生命周期 - 挂载之前
+  beforeMount() {
+  }, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
   updated() {}, //生命周期 - 更新之后
   beforeDestroy() {}, //生命周期 - 销毁之前
