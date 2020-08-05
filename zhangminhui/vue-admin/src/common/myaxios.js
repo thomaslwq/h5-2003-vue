@@ -1,7 +1,7 @@
 // 1. 引入 axios
 import axios from "axios"
 // 配置公共的ulr 
-axios.defaults.baseURL = "http://localhost:10500/"
+axios.defaults.baseURL = "http://175.24.122.212:10500/"
 // 配置一个 请求 的拦截器
 axios.interceptors.request.use(function (config) {
     return config;

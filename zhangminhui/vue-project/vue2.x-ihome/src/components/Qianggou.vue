@@ -7,10 +7,10 @@
         <img src="../assets/img/logo/logo.png" alt />
         <p>
           本周折扣为
-          <span>{{ zhe }}</span>
+          <span class="zhe">{{ zhe }}</span>
           折
         </p>
-        <h5>本周爱家 倒计时</h5>
+        <h5>爱家 倒计时</h5>
         <h6 class="dayTime">5天</h6>
         <p>
           <span class="time">{{hours}}</span>:
@@ -144,22 +144,30 @@ export default {
     background: #fdefe3;
     h3 {
       font-size: 30px;
+          color: #243f4d;
       margin: 30px 0;
       text-shadow: 5px 5px 5px #ccc;
+    }
+    img{
+      margin: 0 auto;
     }
     p {
       font-size: 18px;
       margin: 30px 0;
       span {
-        color: red;
+        color: #fff;
         font-size: 18px;
+      }
+      .zhe{
+        color: red;
+        font-weight: bold;
       }
       .time {
         vertical-align: middle;
         display: inline-block;
         width: 44px;
         height: 44px;
-        background-color: rgb(228, 213, 197);
+        background-color: rgb(47,52,48);
         line-height: 24px;
         text-align: center;
         padding: 10px;
@@ -171,6 +179,7 @@ export default {
       font-size: 22px;
       color: orange;
       margin: 20px 0;
+      font-weight: bold;
     }
     h6 {
       font-size: 20px;
@@ -190,6 +199,7 @@ export default {
       margin-top: 90px;
       margin-left: 20px;
       .thumb {
+        flex: 3;
         img {
           margin-top: -60px;
           margin-bottom: 60px;
@@ -197,6 +207,7 @@ export default {
       }
 
       .content {
+        flex: 7;
         width: 300px;
         padding-right: 10px;
         h4 {
