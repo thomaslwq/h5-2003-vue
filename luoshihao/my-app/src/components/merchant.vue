@@ -73,7 +73,7 @@
 <script>
 export default {
   methods: {
-    handleClickEdit(row){this.rowObj = row;},
+    handleClickEdit(row){this.rowObj = row;console.log(row)},
     handleClick(row) {
       this.rowObj = row;
       const h = this.$createElement;
@@ -156,6 +156,15 @@ export default {
         },
       });
     },
+  },
+  mounted(){
+    this.$axios.get('http://easy-mock.ncgame.cc/mock/5f29fb29b7d01c445ce4a0d5/myapp/merchant')
+    .then(function(res){
+      console.log(res);
+    })
+    .catch(function(err){
+      console.log(err)
+    })
   },
 
   data() {
