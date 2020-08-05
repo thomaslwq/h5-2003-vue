@@ -178,12 +178,12 @@ export default {
       cursor: pointer;
     }
   }
-  .designMore{
-      font-size: 18px;
-      float: right;
-      cursor: pointer;
-      font-weight: bolder;
-      margin-right: 70px;
+  .designMore {
+    font-size: 18px;
+    float: right;
+    cursor: pointer;
+    font-weight: bolder;
+    margin-right: 70px;
   }
   .design-list {
     width: 1140px;

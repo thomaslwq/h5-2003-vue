@@ -5,7 +5,9 @@ import Productgrid from "../views/Productgrid.vue";
 
 
 Vue.use(VueRouter)
-
+import Changemessage from "../components/ChangeMessage.vue"
+import Wish from "../components/Wish.vue"
+import Login from "../components/Login.vue"
 const routes = [
   {
     path:"/",
@@ -16,6 +18,18 @@ const routes = [
     path:"/productgrid",
     name:"Productgrid",
     component:Productgrid
+  },
+  {
+    path:"/ChangeMessage",
+    component:Changemessage
+  },
+  {
+    path:"/Wish",
+    component:Wish
+  },
+  {
+    path:"/Login",
+    component:Login
   }
 ]
 

@@ -28,7 +28,7 @@
         <div class="nav-icon">
           <span class="iconfont icon-fangdajing" @click="searchShow"></span>
           <span class="nav-icon-shoucang">
-            <i class="iconfont icon-shoucang"></i>
+            <i class="iconfont icon-shoucang" @click="GotoWish"></i>
             <span class="icon-shoucang-tip">0</span>
           </span>
           <span class="nav-icon-gouwuche">
@@ -38,28 +38,37 @@
           <span class="iconfont icon-caidan" @click="move"></span>
         </div>
       </div>
-      <div class="user" ref="users">
-        <div class="close" @click="close">X</div>
-        <div class="userMessage">
-          <div class="userImg">
-            <img src="../assets/img/touxiang.png" alt />
+      <div class="userBox" ref="userBox">
+        <div class="user" ref="users">
+          <div class="close" @click="close">X</div>
+          <div class="NOLogin" v-if="!isLogin">
+            还没登录哦，点我去
+            <span @click="Login">登录</span>
           </div>
-          <span>{{user.name}}</span>
-        </div>
-        <div class="email">
-          <div>我的邮箱</div>
-          <span>{{user.email}}</span>
-        </div>
-        <div class="phone">
-          <div>电话号码</div>
-          <span>{{user.phone}}</span>
-        </div>
-        <div class="address">
-          <div>我的地址</div>
-          <span>{{user.address}}</span>
-        </div>
-        <div class="changeMessage">
-          <button class="btn" @click="change">修改信息</button>
+          <div v-else>
+            <div class="userMessage">
+              <div class="userImg">
+                <img src="../assets/img/touxiang.png" alt />
+              </div>
+              <span>{{user.name}}</span>
+            </div>
+            <div class="email">
+              <div>我的邮箱</div>
+              <span>{{user.email}}</span>
+            </div>
+            <div class="phone">
+              <div>电话号码</div>
+              <span>{{user.phone}}</span>
+            </div>
+            <div class="address">
+              <div>我的地址</div>
+              <span>{{user.address}}</span>
+            </div>
+            <div class="changeMessage">
+              <button class="btn1" @click="change">修改信息</button>
+              <button class="btn2" @click="quit">退出登录</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -73,6 +82,7 @@ export default {
   components: {},
   data() {
     return {
+      isLogin: false,
       hidden: false,
       searchHiddle: false,
       navmenu: [
@@ -120,7 +130,7 @@ export default {
   methods: {
     handleScroll() {
       let scrollY = document.documentElement.scrollTop;
-      if (scrollY > 200) {
+      if (scrollY > 130) {
         this.$refs.navScroll.id = "nav-scroll";
         this.hidden = true;
       } else {
@@ -129,10 +139,16 @@ export default {
       }
     },
     move() {
-      this.$refs.users.style.display = "block";
+      this.$refs.userBox.style.display = "block";
+      this.$refs.userBox.style.background = "rgba(0,0,0,.5)";
+      this.$refs.users.className = "openUser user"
     },
     close() {
-      this.$refs.users.style.display = "none";
+      this.$refs.users.className = "closeUser user"
+      this.$refs.userBox.style.background = "rgba(0,0,0,0)";
+      setTimeout(() => {
+        this.$refs.userBox.style.display = "none";
+      }, 500);
     },
     change() {
       this.$router.push("/changeMessage");
@@ -143,6 +159,13 @@ export default {
     searchHid() {
       this.searchHiddle = false;
     },
+    GotoWish() {
+      this.$router.push("/Wish");
+    },
+    quit() {},
+    Login(){
+      this.$router.push("/Login")
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
@@ -170,6 +193,15 @@ export default {
     left: 0;
     background: white;
     z-index: 9999;
+    animation: go 1s linear;
+  }
+  @keyframes go {
+    from {
+      top: -130px;
+    }
+    to {
+      top: 0;
+    }
   }
   .hidden {
     width: 100%;
@@ -204,6 +236,7 @@ export default {
       position: absolute;
       right: 10px;
       top: 10px;
+      cursor: pointer;
     }
   }
   .search {
@@ -423,101 +456,153 @@ export default {
         }
       }
     }
-    .openUser {
-      transition: go 2s;
+    .openUser{
+      animation: gogo .5s linear;
+    };
+    .closeUser{
+      animation:  to .5s linear;
     }
-    .user {
+    @keyframes gogo {
+      from{right: -300px;}
+      to{right: 0;}
+    }
+    @keyframes to {
+      from{right: 0;}
+      to{right: -300px;}
+    }
+    .userBox {
       display: none;
-      position: absolute;
-      top: 0;
-      width: 300px;
-      height: 600px;
-      position: absolute;
+      position: fixed;
+      top:0;
+      left: 0;
+      bottom: 0;
       right: 0;
-      top: 0;
-      border: 1px solid #cccccc;
-      z-index: 2;
-      background: white;
-      .close {
-        margin: 20px;
-        cursor: pointer;
-        font-weight: bolder;
-      }
-      .userMessage {
-        width: 100px;
-        margin: 10px auto;
-        .userImg {
-          width: 100px;
-          height: 100px;
-          border-radius: 50%;
-          overflow: hidden;
-          img {
-            width: 100%;
-            height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      .user {
+        position: absolute;
+        width: 300px;
+        min-height: 600px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        border: 1px solid #cccccc;
+        z-index: 2;
+        background: white;
+        .close {
+          margin: 20px;
+          cursor: pointer;
+          font-weight: bolder;
+        }
+        .NOLogin {
+          width: 100%;
+          text-align: center;
+          margin: 300px auto;
+          span {
+            color: rgb(163, 187, 200);
+            cursor: pointer;
+            &:hover {
+              color: rgb(252, 215, 182);
+            }
           }
         }
-        span {
-          display: inline-block;
+        .userMessage {
           width: 100px;
-          height: 30px;
-          text-align: center;
-          line-height: 30px;
+          margin: 10px auto;
+          .userImg {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          span {
+            display: inline-block;
+            width: 100px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+          }
+          .users-inp {
+            width: 200px;
+            height: 30px;
+            outline: none;
+          }
         }
-        .users-inp {
-          width: 200px;
-          height: 30px;
-          outline: none;
+        .email {
+          width: 100%;
+          height: 100px;
+          padding: 10px;
+          box-sizing: border-box;
+          div {
+            margin: 10px 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: rgb(252, 215, 182);
+          }
         }
-      }
-      .email {
-        width: 100%;
-        height: 100px;
-        padding: 10px;
-        box-sizing: border-box;
-        div {
+        .phone {
+          width: 100%;
+          height: 100px;
+          padding: 10px;
+          box-sizing: border-box;
           margin: 10px 0;
-          font-size: 22px;
-          font-weight: bold;
-          color: rgb(252, 215, 182);
+          div {
+            margin: 10px 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: rgb(252, 215, 182);
+          }
         }
-      }
-      .phone {
-        width: 100%;
-        height: 100px;
-        padding: 10px;
-        box-sizing: border-box;
-        margin: 10px 0;
-        div {
-          margin: 10px 0;
-          font-size: 22px;
-          font-weight: bold;
-          color: rgb(252, 215, 182);
+        .address {
+          width: 100%;
+          height: 100px;
+          padding: 10px;
+          box-sizing: border-box;
+          div {
+            margin: 10px 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: rgb(252, 215, 182);
+          }
         }
-      }
-      .address {
-        width: 100%;
-        height: 100px;
-        padding: 10px;
-        box-sizing: border-box;
-        div {
-          margin: 10px 0;
-          font-size: 22px;
-          font-weight: bold;
-          color: rgb(252, 215, 182);
-        }
-      }
-      .changeMessage {
-        width: 100%;
-        .btn {
-          width: 100px;
-          height: 30px;
-          border-radius: 5px;
-          margin: 10px 100px;
-          border: 0;
-          font-weight: bolder;
-          background: rgb(252, 215, 182);
-          outline: none;
-          cursor: pointer;
+        .changeMessage {
+          width: 100%;
+          .btn1 {
+            width: 100px;
+            height: 30px;
+            border-radius: 5px;
+            margin: 10px 100px;
+            border: 0;
+            font-weight: bolder;
+            background: rgb(163, 187, 200);
+            outline: none;
+            color: white;
+            cursor: pointer;
+            &:hover {
+              background: rgb(252, 215, 182);
+              transition: 0.5s;
+            }
+          }
+          .btn2 {
+            width: 100px;
+            height: 30px;
+            border-radius: 5px;
+            margin: 0px 100px 20px 100px;
+            border: 0;
+            font-weight: bolder;
+            background: rgb(163, 187, 200);
+            color: white;
+            outline: none;
+            cursor: pointer;
+            &:hover {
+              background: rgb(252, 215, 182);
+              transition: 0.5s;
+            }
+          }
         }
       }
     }
