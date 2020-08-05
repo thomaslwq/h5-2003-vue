@@ -5,50 +5,60 @@
       <div class="login-pic">
         <img :src="imgUrl" alt />
       </div>
+
+      <!-- 登录组件 -->
       <div class="login-from">
-        <!-- <div class="login-form--title"> -->
-          <router-link tag="div" class="login-form--title" to="/home">登录</router-link>
-          <!-- </div> -->
-        <section class="el-input">
-          <el-input
-            type="text"
-            @onblur="namefoo"
-            v-model="username"
-            placeholder="请输入手机/邮箱/用户名"
-            name
-            id
-            :class="{'el_input__inner_err':isName}"
-          />
-          <div class="el-form-item__error" v-show="isName">请输入用户名</div>
-        </section>
-         <section class="el-input">
-          <el-input type="password"  @blur="passfoo"   v-model="userpass" autocomplete="off"  placeholder="请输入密码" show-password></el-input>
-          <div class="el-form-item__error" v-show="isPass" >请输入密码</div>
-        </section>
-        <button class="el-button login-form_button el-button--primary is-round">登录</button>
-        <el-button type="text" @click="dialogFormVisible = true" class="login-form-register">注册</el-button>
+        <div class="login-form--title">登录</div>
+
+        <!-- 输入框1  prop -->
+
+        <el-form ref="loginFrom" :rules="loginRules" class="el-input" :model="loginFrom">
+          <el-form-item prop="username">
+            <el-input
+              v-model="loginFrom.username"
+              placeholder="请输入手机/邮箱/用户名"
+              prefix-icon="el-icon-user"
+            />
+          </el-form-item>
+          <el-form-item prop="userpass">
+            <el-input
+              v-model="loginFrom.userpass"
+              placeholder="请输入密码"
+              show-password
+              prefix-icon="el-icon-lock"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <button
+          tag="button"
+          class="el-button login-form_button el-button--primary is-round"
+          @click="loginClick"
+        >登录</button>
+        <el-button type="text" @click="dialogVisible = true" class="login-form-register">注册</el-button>
       </div>
     </div>
 
-    <el-dialog title="注册页面" :visible.sync="dialogFormVisible" center width="400px">
-      <el-form
-        :model="ruleForm"
-        status-icon
-        :rules="rules"
-        ref="ruleForm"
-        width="300px"
-        class="demo-ruleForm"
-      >
+    <!-- 注册 -->
+
+    <el-dialog
+      title="注册页面"
+      :visible.sync="dialogVisible"
+      width="400px"
+      :before-close="handleClose"
+      center
+      show-message
+    >
+      <el-form ref="regForm" :rules="rules" :model="ruleForm" width="300px">
         <el-form-item label="账号" prop="user">
-          <el-input type="password" v-model="ruleForm.user" autocomplete="off"></el-input>
+          <el-input v-model="ruleForm.user" prefix-icon="el-icon-user"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
-          <el-input type="password" v-model="ruleForm.pass" autocomplete="off" ></el-input>
+          <el-input v-model="ruleForm.pass" prefix-icon="el-icon-lock" show-password></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button @click="dialogClick">取 消</el-button>
+        <el-button type="primary" @click="resclick">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -59,55 +69,53 @@ export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
-    var validateUser = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入账号"));
-      } else {
-        if (this.form.name !== "") {
-          this.$refs.ruleForm.validateField("checkUser");
-        }
-        callback();
+    // 验证密码
+    var checkPass = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("密码不能为空"));
       }
-    };
-    var validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else {
-        if (this.form.name !== "") {
-          this.$refs.ruleForm.validateField("checkPass");
+      setTimeout(() => {
+        let respass = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$)([^\u4e00-\u9fa5\s]){8,20}$/;
+        if (!respass.test(value)) {
+          callback(
+            new Error(
+              "请输入8-20位英文字母、数字或者符号（除空格），且字母、数字和标点符号至少包含两种"
+            )
+          );
+        } else {
+          callback();
         }
-        callback();
-      }
+      }, 100);
     };
     //这里存放数据
     return {
       imgUrl: require("@/assets/bg.jpg"),
-      isName: false,
-      isPass: false,
-      username: "",
-      userpass: "",
-      dialogTableVisible: false,
-      dialogFormVisible: false,
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+      loginFrom: {
+        username: "",
+        userpass: "",
+      },
+      ruleForm: {
+        user: "",
+        pass: "",
       },
       formLabelWidth: "70px",
-      ruleForm: {
-        pass: "",
-        user: "",
+      dialogVisible: false,
+      loginRules: {
+        username: [
+          { required: true, message: "请输入账号", trigger: "blur" },
+          { min: 6, max: 12, message: "长度在3到5个字符", trigger: "blur" },
+        ],
+        userpass: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 12, message: "长度在6到8个字符", trigger: "blur" },
+        ],
       },
-      //表单验证规则
       rules: {
-        user: [{ validator: validateUser, trigger: "blur" }],
-        pass: [{ validator: validatePass, trigger: "blur" }],
-
+        user: [
+          { required: true, message: "请输入账号", trigger: "blur" },
+          { min: 6, max: 12, message: "长度在6到8个字符", trigger: "blur" },
+        ],
+        pass: [{ validator: checkPass, trigger: "change" }],
       },
     };
   },
@@ -117,24 +125,96 @@ export default {
   watch: {},
   //方法集合
   methods: {
-    // 失去焦点判断账号
-    namefoo() {
-      if (this.username === "") {
-        this.isName = true;
-      }
-    },
-    passfoo() {
-      if (this.userpass === "") {
-        this.isPass = true;
-      }
+    handleClose(done) {
+      let _this = this;
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          _this.$refs.regForm.resetFields();
 
+          done();
+        })
+        .catch((_) => {});
+    },
+    //并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise
+    loginClick() {
+      this.$axios({
+        url: "/login",
+        method: "post",
+        data: {
+          user: this.loginFrom.username,
+          pwd: this.loginFrom.userpass,
+        },
+      }).then((res) => {
+        // console.log(res);
+        if (res.data.code === 200) {
+          this.$notify({
+            title: "成功",
+            message: res.data.msg,
+            type: "success",
+          });
+          // localStorage.setItem('token', res.data.token);
+          sessionStorage.setItem("token", res.data.token);
+
+          this.$router.push("/home");
+        }
+        if (res.data.code === 400) {
+          this.$notify.error({
+            title: "警告",
+            message: res.data.msg,
+          });
+        }
+      });
+      // .catch(err=>{
+      //   console.log(err);
+      // })
+    },
+    dialogClick() {
+      this.$refs.regForm.resetFields();
+      this.dialogVisible = false;
+    },
+    // 注册确定  方法resetFields();	对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
+    resclick() {
+
+      if (this.ruleForm.user === "") {
+        this.$notify.error({
+          title: "失败",
+          message: "请输入账号",
+        });
+        this.dialogVisible = false;
+        return;
+      } else if (this.ruleForm.pass === "") {
+        this.$notify.error({
+          title: "失败",
+          message: "请输入密码",
+        });
+        this.dialogVisible = false;
+        return;
+      }
+      this.$axios({
+        url: "/register",
+        method: "post",
+        data: {
+          user: this.ruleForm.user,
+          pwd: this.ruleForm.pass,
+        },
+      }).then((res) => {
+        console.log(res);
+        this.$notify({
+          title: "成功",
+          message: res.data.msg,
+          type: "success",
+        });
+      });
+      this.$refs.regForm.resetFields();
+      this.dialogVisible = false;
     },
   },
 };
 </script>
 <style lang="less"  scoped>
 .login-box {
-  background-image: url("~@/assets/bg.png");
+  height: 100vh;
+  background-image: url("../../assets/bg.png");
   .login-content {
     width: 1140px;
     height: 400px;
@@ -167,6 +247,7 @@ export default {
       text-align: center;
       padding: 36px;
       .login-form--title {
+        user-select: none;
         font-size: 32px;
         text-align: center;
         margin-bottom: 36px;
