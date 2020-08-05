@@ -19,7 +19,6 @@ const routes = [
     name:"Productgrid",
     component:Productgrid
   },
-<<<<<<< HEAD
   {
     path:"/ChangeMessage",
     component:Changemessage
@@ -32,8 +31,6 @@ const routes = [
     path:"/Login",
     component:Login
   }
-=======
->>>>>>> f3050cd394db9f74d2c63078df12f261e1d12e99
 ]
 
 const router = new VueRouter({
