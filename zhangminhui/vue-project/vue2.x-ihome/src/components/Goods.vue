@@ -8,9 +8,9 @@
     <section class="item-imgbox">
         <img :src="require('../assets/img/product/'+item.img)" alt="">
         <div class="hidden_link">
-            <a href="#"><i class="iconfont icon-ditumap29"></i></a>
-            <a href="#"><i class="iconfont icon-gouwu"></i></a>
-            <a href="#"><i class="iconfont icon-youxi1"></i></a>
+            <a href="#"><i class="iconfont icon-fangdajing"></i></a>
+            <a href="#"><i class="iconfont icon-aixin"></i></a>
+            <a href="#"><i class="iconfont icon-gouwuche"></i></a>
         </div>
     </section>
     <section class="item-name"><span><a href="">{{item.name}}</a></span></section>
