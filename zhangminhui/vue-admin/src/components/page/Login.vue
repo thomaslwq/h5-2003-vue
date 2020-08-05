@@ -43,7 +43,7 @@ export default {
     },
     methods: {
         submitForm() {
-            this.$axios.post('http://localhost:10500/api/user/login',
+            this.$axios.post('api/user/login',
             this.$qs.stringify({
                 logauthority:this.param.username,
                 password:this.param.password

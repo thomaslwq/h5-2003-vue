@@ -1,16 +1,21 @@
 <!--  -->
 <template>
-    <div class>
+    <div>
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 基础表格
+                    <i class="el-icon-lx-cascades"></i> 用户管理
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" icon="el-icon-delete" class="handle-del mr10">批量删除</el-button>
+                <el-button
+                    type="primary"
+                    icon="el-icon-delete"
+                    class="handle-del mr10"
+                    @click="handleDeleteAll"
+                >批量删除</el-button>
 
                 <el-button type="primary" icon="el-icon-plus" @click="handleAddClick">添加</el-button>
             </div>
@@ -20,6 +25,7 @@
                 class="table"
                 ref="multipleTable"
                 header-cell-class-name="table-header"
+                @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" align="center"></el-table-column>
                 <el-table-column prop="username" width="60" label="用户名"></el-table-column>
@@ -59,20 +65,6 @@
             </div>
         </div>
 
-        <!-- <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="70px">
-                <el-form-item label="用户名">
-                    <el-input v-model="form.username"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" >确 定</el-button>
-            </span>
-        </el-dialog>-->
         <el-dialog title="添加" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="70px">
                 <el-form-item label="用户名">
@@ -130,7 +122,10 @@ export default {
             isAddNew: true,
             editVisible: false,
             //弹框中绑定的数据
-            form: {}
+            form: {},
+            //删除全选
+            delList: [],
+            multipleSelection: []
         };
     },
     //监听属性 类似于data概念
@@ -183,6 +178,10 @@ export default {
                     .post('api/user/regist', this.$qs.stringify(this.form))
                     .then((res) => {
                         console.log(res);
+                        if (res.code==200) {
+                            this.$message('添加用户成功');
+                            this.getData();
+                        }
                     })
                     .catch((err) => {
                         console.log(err);
@@ -192,6 +191,9 @@ export default {
                     .post('api/user/updateUser', this.$qs.stringify(this.form))
                     .then((res) => {
                         console.log(res);
+                        if (res.code == 200) {
+                            this.$message('更新用户信息成功');
+                        }
                     })
                     .catch((err) => {
                         console.log(err);
@@ -212,7 +214,7 @@ export default {
                 .then(() => {
                     console.log(row.userID);
                     this.$axios
-                        .post('api/admin/deleteUser',this.$qs.stringify({userID:row.userID}))
+                        .post('api/admin/deleteUser', this.$qs.stringify({ userID: row.userID }))
                         .then((res) => {
                             console.log(res);
                             if (res.code == 200) {
@@ -225,6 +227,35 @@ export default {
                         });
                 })
                 .catch(() => {});
+        },
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+        },
+        handleDeleteAll: function () {
+            const length = this.multipleSelection.length;
+            if (length <= 0) {
+                this.$message('还没选择用户');
+                return;
+            } else {
+                this.$confirm('是否确认删除？').then(() => {
+                    let str = '';
+                    this.delList = this.delList.concat(this.multipleSelection);
+                    for (let i = 0; i < length; i++) {
+                        str += this.multipleSelection[i].userID + ',';
+                    }
+
+                    str = str.substr(0, str.length - 1);
+                    console.log(str);
+                    this.$axios.post('api/admin/deleteAllUsers', this.$qs.stringify({ userIDs: str })).then((res) => {
+                        if (res.code == 200) {
+                            this.$message('批量删除成功');
+                            this.multipleSelection=[];
+                        }
+                    });
+                }).catch(()=>{
+
+                });
+            }
         }
     },
     //生命周期 - 创建完成（可以访问当前this实例）

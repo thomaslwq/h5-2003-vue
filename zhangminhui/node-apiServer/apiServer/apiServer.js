@@ -161,7 +161,7 @@ app.post("/api/user/login", function (req, res, next) {
     "' and password='" +
     body.password +
     "'";
-    console.log(sql);
+  console.log(sql);
   myCon.query(sql, function (error, results, fields) {
     if (error) {
       res.send({
@@ -290,6 +290,29 @@ app.post("/api/admin/deleteUser", function (req, res, next) {
   });
 });
 /**
+ * 管理员-批量删除
+ * @param {String} userIDs
+ */
+app.post('/api/admin/deleteAllUsers', function (req, res, next) {
+  var body = req.body;
+  var sql = "delete from users where userID in ("+body.userIDs+")";
+  console.log(sql);
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: 'connect failed' + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: 'delete success',
+        results
+      });
+    }
+  })
+});
+/**
  * 管理员-新增商品
  * @param {Object} productModel
  */
@@ -336,7 +359,7 @@ app.get('/api/admin/updateProduct', function (req, res, next) {
  * @param {String} colorValue 颜色值("#ffffff")
  * @param {string} colorName
  */
-app.get("/api/admin/addColor", function (req, res, next) {
+app.post("/api/admin/addColor", function (req, res, next) {
   var body = req.body;
   var tablename = "color";
   var colorID = SetID(tablename);
@@ -374,7 +397,7 @@ app.get("/api/admin/addColor", function (req, res, next) {
  * @param {String} colorValue
  * @param {string} colorName
  */
-app.get("/api/admin/updateColor", function (req, res, next) {
+app.post("/api/admin/updateColor", function (req, res, next) {
   var body = req.body;
   var sql =
     "update color set colorName='" +
@@ -405,7 +428,7 @@ app.get("/api/admin/updateColor", function (req, res, next) {
  * 颜色管理-删除颜色
  * @param {String} colorID
  */
-app.get("/api/admin/deleteColor", function (req, res, next) {
+app.post("/api/admin/deleteColor", function (req, res, next) {
   var body = req.body;
   var sql = "delete from color where colorID='" + body.colorID + "'";
   console.log(sql);
@@ -423,6 +446,21 @@ app.get("/api/admin/deleteColor", function (req, res, next) {
         results
       });
     }
+  });
+});
+/**
+ * 颜色管理-删除全部颜色
+ * @param {String} colorIDs
+ */
+app.post('/api/admin/deleteAllColors',function(req,res,next){
+  var body=req.body;
+  var sql="delete from color where colorID in ("+colorIDs+")";
+  myCon.query(sql,function(error,results,fields){
+  if(error){
+  res.send({code:400,content:'connect failed'+error});
+  }else{
+  res.send({code:0,content:'delete success',results});
+  }
   });
 });
 
@@ -460,7 +498,7 @@ app.get("/api/admin/getAllColor", function (req, res, next) {
  * @param {Number} fitnum 适用人数
  * @param {string} shape 形状
  */
-app.get("/api/admin/addSort", function (req, res, next) {
+app.post("/api/admin/addSort", function (req, res, next) {
   var body = req.body;
   var tablename = "sort";
   var sortID = SetID(tablename);
@@ -501,7 +539,7 @@ app.get("/api/admin/addSort", function (req, res, next) {
  * @param {string} shape
  * @param {String} sortID
  */
-app.get("/api/admin/updateSort", function (req, res, next) {
+app.post("/api/admin/updateSort", function (req, res, next) {
   var body = req.body;
   var sql =
     "update sort set shape='" +
@@ -518,7 +556,8 @@ app.get("/api/admin/updateSort", function (req, res, next) {
     if (error) {
       res.send({
         code: 400,
-        content: "update sort failed" + error
+        content: "update sort failed" + error,
+        results
       });
     } else {
       res.send({
@@ -533,7 +572,7 @@ app.get("/api/admin/updateSort", function (req, res, next) {
  * 分类管理-删除分类
  * @param {String} sortID
  */
-app.get("/api/admin/deleteSort", function (req, res, body) {
+app.post("/api/admin/deleteSort", function (req, res, body) {
   var body = req.body;
   var sql = "delete from sort where sortID=" + body.sortID;
   console.log(sql);
@@ -541,7 +580,32 @@ app.get("/api/admin/deleteSort", function (req, res, body) {
     if (error) {
       res.send({
         code: 400,
-        content: "delete sort failed" + error
+        content: "delete sort failed" + error,
+        results
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: "delete sort success",
+        results
+      });
+    }
+  });
+});
+/**
+ * 分类管理-删除分类
+ * @param {String} sortIDs
+ */
+app.post("/api/admin/deleteAllSorts", function (req, res, body) {
+  var body = req.body;
+  var sql = "delete from sort where sortID in (" + body.sortIDs+")";
+  console.log(sql);
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: "delete sort failed" + error,
+        results
       });
     } else {
       res.send({
@@ -585,7 +649,7 @@ app.get("/api/admin/getAllSort", function (req, res, next) {
  * 规格管理-增加规格
  * @param {String} specificationValue 规格值
  */
-app.get("/api/admin/addSpecification", function (req, res, next) {
+app.post("/api/admin/addSpecification", function (req, res, next) {
   var body = req.body;
   var tablename = "specification";
   var specificationID = SetID(tablename);
@@ -620,7 +684,7 @@ app.get("/api/admin/addSpecification", function (req, res, next) {
  * @param {String} specificationValue
  * @param {String} specificationID
  */
-app.get("/api/admin/updateSpecification", function (req, res, next) {
+app.post("/api/admin/updateSpecification", function (req, res, next) {
   var body = req.body;
   var sql =
     "update specification set specificationValue='" +
@@ -647,9 +711,9 @@ app.get("/api/admin/updateSpecification", function (req, res, next) {
  * 规格管理-删除规格
  * @param {String} specificationID
  */
-app.get("/api/admin/deleteSpecification", function (req, res, next) {
+app.post("/api/admin/deleteSpecification", function (req, res, next) {
   var body = req.body;
-  var sql = "delete from specification where id=" + body.specificationID;
+  var sql = "delete from specification where specificationID=" + body.specificationID;
   console.log(sql);
   myCon.query(sql, function (error, results, fields) {
     if (error) {
@@ -666,6 +730,30 @@ app.get("/api/admin/deleteSpecification", function (req, res, next) {
     }
   });
 });
+/**
+ * 规格管理-批量删除规格
+ * @param {String} specificationIDs
+ */
+app.post("/api/admin/deleteAllSpecifications", function (req, res, next) {
+  var body = req.body;
+  var sql = "delete from specification where specificationID in(" + body.specificationIDs+")";
+  console.log(sql);
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: "delete specification failed" + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: "delete specification success",
+        results
+      });
+    }
+  });
+});
+
 
 /**
  * 规格管理-查看规格
@@ -689,6 +777,7 @@ app.get("/api/admin/getAllSpecification", function (req, res, next) {
         res.send({
           code: 201,
           content: "find specification success but no list",
+          results
         });
       }
     }
@@ -701,7 +790,7 @@ app.get("/api/admin/getAllSpecification", function (req, res, next) {
  *@param {String} bandName
  *@param {String} style
  */
-app.get("/api/admin/addSeries", function (req, res, next) {
+app.post("/api/admin/addSeries", function (req, res, next) {
   var body = req.body;
   console.log(body);
 
@@ -724,7 +813,8 @@ app.get("/api/admin/addSeries", function (req, res, next) {
     if (error) {
       res.send({
         code: 400,
-        content: "add Series failed" + error
+        content: "add Series failed" + error,
+        results
       });
     } else {
       res.send({
@@ -743,7 +833,7 @@ app.get("/api/admin/addSeries", function (req, res, next) {
  *@param {String} style
  *@param {String} seriesID
  */
-app.get("/api/admin/updateSeries", function (req, res, next) {
+app.post("/api/admin/updateSeries", function (req, res, next) {
   var body = req.body;
   var sql =
     "update series set seriesName='" +
@@ -760,7 +850,8 @@ app.get("/api/admin/updateSeries", function (req, res, next) {
     if (error) {
       res.send({
         code: 400,
-        content: "update specification failed" + error
+        content: "update specification failed" + error,
+        results
       });
     } else {
       res.send({
@@ -776,14 +867,38 @@ app.get("/api/admin/updateSeries", function (req, res, next) {
  * 系列管理-删除系列
  *@param {String} seriesID
  */
-app.get("/api/admin/deleteSeries", function (req, res, next) {
+app.post("/api/admin/deleteSeries", function (req, res, next) {
   var body = req.body;
   var sql = "delete from series where seriesID= " + body.seriesID;
   myCon.query(sql, function (error, results, fields) {
     if (error) {
       res.send({
         code: 400,
-        content: "delete series failed" + error
+        content: "delete series failed" + error,
+        results
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: "delete series success",
+        results
+      });
+    }
+  });
+});
+/**
+ * 系列管理-批量删除系列
+ *@param {String} seriesIDs
+ */
+app.post("/api/admin/deleteAllSeries", function (req, res, next) {
+  var body = req.body;
+  var sql = "delete from series where seriesID in (" + body.seriesIDs+")";
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: "delete series failed" + error,
+        results
       });
     } else {
       res.send({
@@ -799,24 +914,26 @@ app.get("/api/admin/deleteSeries", function (req, res, next) {
  * 系列管理-查看系列
  */
 app.get("/api/admin/getAllSeries", function (req, res, next) {
-  var sql = "select * from specification";
+  var sql = "select * from Series";
   myCon.query(sql, function (error, results, fields) {
     if (error) {
       res.send({
         code: 400,
-        content: "find specification failed" + error
+        content: "find specification failed" + error,
+        results
       });
     } else {
       if (results.length > 0) {
         res.send({
           code: 200,
-          content: "find specification success",
+          content: "find Series success",
           results
         });
       } else {
         res.send({
           code: 201,
-          content: "find specification success but no list",
+          content: "find Series success but no list",
+          results
         });
       }
     }
@@ -828,8 +945,9 @@ app.get("/api/admin/getAllSeries", function (req, res, next) {
  * @param {String} materialName
  * @param {String} materialInstructions
  */
-app.get("/api/admin/addMaterial", function (req, res, next) {
+app.post("/api/admin/addMaterial", function (req, res, next) {
   var body = req.body;
+  console.log(body);
   var tablename = "material";
   var materialID = SetID(tablename);
   var sql =
@@ -865,7 +983,7 @@ app.get("/api/admin/addMaterial", function (req, res, next) {
  * @param {String} materialInstructions
  * @param {String} materialID
  */
-app.get("/api/admin/updateMaterial", function (req, res, next) {
+app.post("/api/admin/updateMaterial", function (req, res, next) {
   var body = req.body;
   var sql =
     "update material set materialName='" +
@@ -896,7 +1014,7 @@ app.get("/api/admin/updateMaterial", function (req, res, next) {
  * 材质管理-删除材质
  *@param {String} materialID
  */
-app.get("/api/admin/deleteMaterial", function (req, res, next) {
+app.post("/api/admin/deleteMaterial", function (req, res, next) {
   var body = req.body;
   var sql = "delete from material where materialID= " + body.materialID;
   myCon.query(sql, function (error, results, fields) {
@@ -915,6 +1033,21 @@ app.get("/api/admin/deleteMaterial", function (req, res, next) {
   });
 });
 
+/**
+ * 材质管理-批量删除材质
+ *@param {String} materialIDs
+ */
+app.post('/api/admin/deleteAllMaterials',function(req,res,next){
+  var body=req.body;
+  var sql="delete from material where materialID in ("+body.materialIDs+")";
+  myCon.query(sql,function(error,results,fields){
+  if(error){
+  res.send({code:400,content:'connection failed'+error});
+  }else{
+  res.send({code:200,content:'delete success',results});
+  }
+  })
+})
 /**
  * 材质管理-查看材质
  */
@@ -937,6 +1070,7 @@ app.get("/api/admin/getAllMaterial", function (req, res, next) {
         res.send({
           code: 201,
           content: "find material success but no list",
+          results
         });
       }
     }
