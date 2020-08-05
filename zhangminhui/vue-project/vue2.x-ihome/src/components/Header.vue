@@ -11,7 +11,7 @@
     <div class="navbox" ref="navScroll">
       <div class="nav">
         <div class="logo">
-          <img src="../assets/img/logo/logo-3.png" alt />
+          <img src="../assets/img/logo/logo.png" alt />
         </div>
         <div class="menu">
           <ul>
@@ -28,7 +28,7 @@
         <div class="nav-icon">
           <span class="iconfont icon-fangdajing" @click="searchShow"></span>
           <span class="nav-icon-shoucang">
-            <i class="iconfont icon-shoucang"></i>
+            <i class="iconfont icon-aixin"></i>
             <span class="icon-shoucang-tip">0</span>
           </span>
           <span class="nav-icon-gouwuche">
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import "../assets/icon/iconfont.css";
+import "../assets/iconfont/iconfont.css";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -78,30 +78,39 @@ export default {
       navmenu: [
         {
           id: 1,
-          tag: true,
-          text: "Home+",
-          childrenMenu: ["Home1", "Home2", "Home3", "Home4"],
+          tag: false,
+          text: "主页",
         },
-        { id: 2, tag: false, text: "About" },
+        {
+          id: 2,
+          tag: true,
+          text: "家居用品",
+          childrenMenu: ["保暖防护", "收纳用品", "浴室洗晒", "居家布艺"],
+        },
         {
           id: 3,
           tag: true,
-          text: "Shop+",
-          childrenMenu: ["Shop Grid", "Shop List", "Shop Datails", "Wish List"],
+          text: "品牌",
+          childrenMenu: ["顾家家居", "喜临门", "中派", "舍己屋"],
         },
         {
           id: 4,
           tag: true,
-          text: "Pages+",
-          childrenMenu: ["Faq", "Blog", "Terms"],
+          text: "装饰品",
+          childrenMenu: ["装饰画", "照片墙", "十字绣"],
         },
         {
           id: 5,
           tag: true,
-          text: "Blog+",
-          childrenMenu: ["Blog", "Blog Datails"],
+          text: "家纺",
+          childrenMenu: ["清凉夏被", "抱枕靠垫"],
         },
-        { id: 6, tag: false, text: "Contact" },
+        {
+          id: 6,
+          tag: true,
+          text: "儿童",
+          childrenMenu: ["儿童纺织", "儿童饰品", "儿童灯具"],
+        },
       ],
       user: {
         name: "杨洋",
@@ -249,6 +258,10 @@ export default {
       .logo {
         flex: 2;
         cursor: pointer;
+        img {
+          width: 150px;
+          height: 40px;
+        }
       }
       .menu {
         flex: 3;
@@ -262,6 +275,9 @@ export default {
             color: #436372;
             height: 80px;
             line-height: 80px;
+            font-size: 18px;
+            text-align: center;
+            font-weight: 500;
           }
           .menu-item {
             &:hover {
@@ -275,7 +291,7 @@ export default {
               .menu-item-ul {
                 background: white;
                 position: absolute;
-                width: 210px;
+                width: 200px;
                 border-top: 2px solid rgb(252, 215, 182);
                 display: flex;
                 flex-flow: column;
@@ -284,8 +300,11 @@ export default {
                   flex: 1;
                   height: 55px;
                   line-height: 55px;
-                  padding-left: 30px;
                   box-sizing: border-box;
+                  text-align: left;
+                  padding-left: 20px;
+                  font-size: 16px;
+                  font-weight: 400;
                   &:hover {
                     color: rgb(252, 215, 182);
                   }
@@ -300,6 +319,8 @@ export default {
         flex: 2;
         position: relative;
         margin-left: 50px;
+        display: flex;
+        justify-content: flex-end;
         .icon-fangdajing {
           display: inline-block;
           width: 50px;
@@ -338,7 +359,7 @@ export default {
               color: rgb(252, 215, 182);
             }
           }
-          .icon-shoucang {
+          .icon-aixin {
             display: inline-block;
             width: 30px;
             text-align: center;
@@ -416,9 +437,12 @@ export default {
           background: rgb(163, 187, 200);
           text-align: center;
           line-height: 50px;
+          font-size: 26px;
           cursor: pointer;
+          transition: all 0.5s;
           &:hover {
             background: rgb(252, 215, 182);
+            color: #fff;
           }
         }
       }

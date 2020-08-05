@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Productgrid from "../views/Productgrid.vue";
 import Cart from "../views/Cart.vue";
 
+import Login from "../components/Login.vue"
 
 Vue.use(VueRouter)
 
