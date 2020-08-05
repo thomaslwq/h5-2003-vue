@@ -101,6 +101,12 @@ export default {
                     index: 'commetManage',
                     title: '评论管理'
                 },
+                 {
+                    icon: 'el-icon-lx-redpacket_fill',
+                    index: 'testUpload',
+                    title: '测试上传'
+                },
+                
                 
             ]
         };
