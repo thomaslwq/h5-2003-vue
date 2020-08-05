@@ -135,10 +135,8 @@ export default {
   padding-top: 50px;
   .container {
     width: 1140px;
-    left: 0;
-    right: 0;
     margin: 0 auto;
-    position: absolute;
+    // position: absolute;
     z-index: 888;
     .article-top {
       display: flex;
