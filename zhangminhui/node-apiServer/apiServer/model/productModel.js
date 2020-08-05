@@ -1,6 +1,6 @@
 const productModel = {
-  producID:'',
-  poductname: "",
+  productID:'',
+  productName: "",
   productCode: "",
   amount: 0,
   salesNum: 0,

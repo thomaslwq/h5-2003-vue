@@ -41,9 +41,9 @@
                 </el-aside>
                 <!-- aside侧边的导航开始位置 -->
                 <!-- main商品部分开始位置 -->
-                <el-container>
+                <el-container style="display:block">
                     <div class="pro-content">
-                        <div class="pro-item" v-for="(product,index) in goodsList" :key="product.id">
+                        <div class="pro-item" v-for="(product,index) in currentList" :key="product.id">
                             <dl>
                                 <dt>
                                     <img :src="require('../assets/img/product/'+product.img)" :alt="product.name">
@@ -60,6 +60,14 @@
                             </dl>
                         </div>
                     </div>
+                    <!-- 分页器 -->
+                    <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :total="Math.ceil(goodsList.length/15)*10"
+                    v-on:current-change="currentPage">
+                    </el-pagination>
+                    <!-- 分页器 -->
                 </el-container>
                 <!-- main商品部分结束位置 -->
             </el-container>
@@ -146,16 +154,157 @@ return {
             price:300,
             img:"product-34.jpg"
         },
-    ]
+        
+        {
+            id:"goods08",
+            name:"单人沙发",
+            price:300,
+            img:"product-28.jpg"
+        },
+        {
+            id:"goods09",
+            name:"单人沙发",
+            price:300,
+            img:"product-29.jpg"
+        },
+        {
+            id:"goods10",
+            name:"单人沙发",
+            price:300,
+            img:"product-30.jpg"
+        },
+        {
+            id:"goods11",
+            name:"单人沙发",
+            price:300,
+            img:"product-31.jpg"
+        },
+        {
+            id:"goods12",
+            name:"单人沙发",
+            price:300,
+            img:"product-32.jpg"
+        },
+        {
+            id:"goods13",
+            name:"单人沙发",
+            price:300,
+            img:"product-33.jpg"
+        },
+        {
+            id:"goods14",
+            name:"单人沙发",
+            price:300,
+            img:"product-34.jpg"
+        },
+        
+        {
+            id:"goods15",
+            name:"单人沙发",
+            price:300,
+            img:"product-28.jpg"
+        },
+        {
+            id:"goods16",
+            name:"单人沙发",
+            price:300,
+            img:"product-29.jpg"
+        },
+        {
+            id:"goods17",
+            name:"单人沙发",
+            price:300,
+            img:"product-30.jpg"
+        },
+        {
+            id:"goods18",
+            name:"单人沙发",
+            price:300,
+            img:"product-31.jpg"
+        },
+        {
+            id:"goods19",
+            name:"单人沙发",
+            price:300,
+            img:"product-32.jpg"
+        },
+        {
+            id:"goods20",
+            name:"单人沙发",
+            price:300,
+            img:"product-33.jpg"
+        },
+        {
+            id:"goods21",
+            name:"单人沙发",
+            price:300,
+            img:"product-34.jpg"
+        },
+        
+        {
+            id:"goods22",
+            name:"单人沙发",
+            price:300,
+            img:"product-28.jpg"
+        },
+        {
+            id:"goods23",
+            name:"单人沙发",
+            price:300,
+            img:"product-29.jpg"
+        },
+        {
+            id:"goods24",
+            name:"单人沙发",
+            price:300,
+            img:"product-30.jpg"
+        },
+        {
+            id:"goods25",
+            name:"单人沙发",
+            price:300,
+            img:"product-31.jpg"
+        },
+        {
+            id:"goods26",
+            name:"单人沙发",
+            price:300,
+            img:"product-32.jpg"
+        },
+        {
+            id:"goods27",
+            name:"单人沙发",
+            price:300,
+            img:"product-33.jpg"
+        },
+        {
+            id:"goods28",
+            name:"单人沙发",
+            price:300,
+            img:"product-34.jpg"
+        }
+    
+    ],
+    currentpage:1,
+    perpagenum:15
 };
 },
 //监听属性 类似于data概念
-computed: {},
+computed: {
+    currentList:function(){
+        var index = (this.currentpage-1)*this.perpagenum;
+        return this.goodsList.filter((value,idx)=>{
+            return idx>=index && idx<index+15;
+        })
+    }
+},
 //监控data中的数据变化
 watch: {},
 //方法集合
 methods: {
-
+    currentPage:function(page){
+        this.currentpage = page;
+    }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
@@ -174,7 +323,7 @@ destroyed() {}, //生命周期 - 销毁完成
 activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 }
 </script>
-<style lang='less'>
+<style lang='less' scoped>
 @import url("../assets/css/reset.css");
 .container{
     width: 1140px;
@@ -265,14 +414,17 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
               float: left;
               overflow: hidden;
               border-radius: 5px;
-              box-shadow: 0px 6px 47px 3px rgba(37, 37, 37, 0.05);
+              box-shadow: 0px 6px 47px 3px rgba(37, 37, 37, 0.06);
               margin-left:20px;
               margin-right: 20px;
               margin-bottom: 30px;
             dl {
                 dt {
+                position: relative;
+                overflow: hidden;
                     img {
-
+                        width:100%;
+                        transition: 1s;
                     }
 
                     .pro-action {
@@ -284,17 +436,23 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
                         visibility: hidden;
                         opacity: 0;
                         z-index: 3;
+                        transition: 1s;
                         .act-btn {
                             display: inline-block;
                             width: 45px;
                             height: 45px;
                             line-height: 45px;
                             background: #fff;
-                            color: #a3bbc8;
-                            font-size: 16px;
+                            color: #91b3c5;
+                            font-size: 18px;
                             text-align: center;
                             margin: 0 8px;
                             border-radius: 50%;
+                            transition:1s;
+                            &:hover{
+                                background: #91b3c5;
+                                color:#fff;
+                            }
                         }
                     }
                 }
@@ -316,7 +474,41 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
                     }
                 }
             }
+            &:hover{
+                dl dt img{
+                    transform: scale(1.1);
+                }
+                .pro-action{
+                    visibility: visible;
+                    bottom:10px;
+                    opacity: 1;
+                }
+            }
         }
+      }
+      .el-pagination{
+          width:500px;
+          margin:30px auto;
+          button[type="button"]{
+              width:50px;
+              height:50px;
+              line-height: 50px;
+              font-size: 18px;
+          }
+          .el-pager li{
+              width: 50px;
+              height:50px;
+              line-height: 50px;
+              transition:.5s;
+              &:hover{
+                background: #a3bbc8;
+                color:#fff;
+              }
+          }
+          .el-pager li.active{
+              background: #a3bbc8;
+              color:#fff;
+          }
       }
     }
   }
