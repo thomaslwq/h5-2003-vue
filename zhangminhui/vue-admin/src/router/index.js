@@ -82,6 +82,14 @@ export default new Router({
                         title: '评论管理'
                     }
 
+                },
+                {
+                    path: '/testupload',
+                    component: () => import( '../components/page/TestUpload.vue'),
+                    meta: {
+                        title: '测试上传'
+                    }
+
                 }
 
             ]

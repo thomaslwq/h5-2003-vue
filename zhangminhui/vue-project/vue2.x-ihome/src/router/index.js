@@ -2,22 +2,42 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from "../views/Home.vue";
 import Productgrid from "../views/Productgrid.vue";
-import Cart from "../views/Cart.vue";
+import ProductDetails from "../views/ProductDetails";
 
 import Login from "../components/Login.vue"
+import Cart from "../views/Cart.vue";
 
 Vue.use(VueRouter)
+import Changemessage from "../components/ChangeMessage.vue"
+import Wish from "../components/Wish.vue"
 
 const routes = [
   {
-    path:"/",
-    name:"Home",
-    component:Home
+    path: "/",
+    name: "Home",
+    component: Home
   },
   {
-    path:"/productgrid",
-    name:"Productgrid",
-    component:Productgrid
+    path: "/productgrid",
+    name: "Productgrid",
+    component: Productgrid
+  },
+  {
+    path:"/productDetails",
+    name:"ProductDetails",
+    component:ProductDetails
+  },
+  {
+    path: "/ChangeMessage",
+    component: Changemessage
+  },
+  {
+    path: "/Wish",
+    component: Wish
+  },
+  {
+    path: "/Login",
+    component: Login
   },
   {
     path:"/cart",
