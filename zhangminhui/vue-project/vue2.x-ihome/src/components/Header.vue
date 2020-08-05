@@ -437,6 +437,7 @@ export default {
           background: rgb(163, 187, 200);
           text-align: center;
           line-height: 50px;
+          font-size: 26px;
           cursor: pointer;
           transition: all 0.5s;
           &:hover {
