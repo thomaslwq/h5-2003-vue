@@ -20,7 +20,7 @@
                 <!-- 左边的三张展示图片 -->
                 <div class="content-top-left">
                     <div class="top-left-imgbox" 
-                        @click="changeImg(item.name)" 
+                        @click="changeImg(item.name,item.price,item.type)" 
                         v-for="item in imgList" 
                         :key="item.id">
                         <img :src="require('../assets/img/product/' + item.name)">
@@ -30,41 +30,41 @@
                 <!-- 中间的大图区域 -->
                 <div class="content-top-center">
                     <div class="top-center-imgbox">
-                        <img :src="require('../assets/img/product/' + nowImg)" alt="">
+                        <img :src="require('../assets/img/product/' + nowImg.name)" alt="">
                     </div>
                 </div>
 
                 <!-- 右边选择数量 -->
                 <div class="content-top-right">
                     <section class="top-right-title">
-                        吊灯
+                        {{nowImg.type}}
                     </section>
                     <section class="top-right-rank">
                         <ul>
-                            <li><i class="iconfont icon-jipiao1"></i></li>
-                            <li><i class="iconfont icon-jipiao1"></i></li>
-                            <li><i class="iconfont icon-jipiao1"></i></li>
-                            <li><i class="iconfont icon-jipiao1"></i></li>
-                            <li><i class="iconfont icon-jipiao1"></i></li>
+                            <li><i class="iconfont icon-xingxing1"></i></li>
+                            <li><i class="iconfont icon-xingxing1"></i></li>
+                            <li><i class="iconfont icon-xingxing1"></i></li>
+                            <li><i class="iconfont icon-xingxing1"></i></li>
+                            <li><i class="iconfont icon-xingxing1"></i></li>
                         </ul>
                     </section>
                     <section class="top-right-price">
-                        $29.00
+                        {{nowImg.price}}
                     </section>
                     <section class="top-right-describe">
                         <p>奉献者，塞德·杜伊斯莫德临时禁运和劳动者联合会。Ut enim ad minim veniam，quis nostrud exercitation ullamco labouris nisi ut aliquip ex ea commodo</p>
                     </section>
                     <section class="top-right-select">
                         <div class="select-left">
-                            <button>-</button><span>1</span><button>+</button>
+                            <button @click="subProduct()">-</button><span>{{nowImg.num}}</span><button @click="addProduct()">+</button>
                         </div>
                         <div class="select-right">
-                            添加到购物车
+                            <a href="">添加到购物车</a>
                         </div>
                     </section>
                     <section class="top-right-type">
                         <p>SKU : <em>014</em></p>
-                        <p>分类 : <em>灯</em></p>
+                        <p>分类 : <em>家具</em></p>
                         <p>标签 : <em>装饰</em></p>
                     </section>
                 </div>
@@ -107,8 +107,8 @@
         <div class="litterswiper-container">
             <div class="rel-product">
                 相关产品
-                <div @click="prevOne()" class="swiper-prev-one"> <i class="iconfont icon-jiantouarrowhead7"></i></div>
-                <div @click="nextOne()" class="swiper-next-two"> <i class="iconfont icon-jiantou1"></i> </div>
+                <div @click="prevOne()" class="swiper-prev-one"> <i class="iconfont icon-zuojiantou"></i></div>
+                <div @click="nextOne()" class="swiper-next-two"> <i class="iconfont icon-youjiantou"></i> </div>
             </div>
             <swiper :options="swiperOptions" ref="mySwiper">
                 <!-- slides -->
@@ -118,6 +118,8 @@
             </swiper>
         </div>
     </div>
+    <Article></Article>
+    <Footer></Footer>
 </div>
 </template>
 
@@ -126,15 +128,19 @@
 //例如：import 《组件名称》 from '《组件路径》';
 import Header from "../components/Header";
 import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
+import Article from "../components/Article";
 import Goods from "../components/Goods";
-import 'swiper/swiper-bundle.css'
+import Footer from "../components/Footer"
+import 'swiper/swiper-bundle.css';
 export default {
 //import引入的组件需要注入到对象中才能使用
 components: {
     Header,
     Swiper,
     SwiperSlide,
-    Goods
+    Goods,
+    Article,
+    Footer
 },
 data() {
 //这里存放数据
@@ -143,7 +149,7 @@ return {
         loop:true,
         slidesPerView : 4,
         grabCursor : true,
-       
+        slidesPerGroupSkip: 0,
     },
     swiperList:[
         {
@@ -183,15 +189,15 @@ return {
             id:"3",msg:"评论",type:"comment"
         }
     ],
-    nowImg:"product-63.jpg",
+    nowImg:{name:"product-62.jpg",price:"$29.00",type:"椅子",num:"1"},
     imgList:[
         {
-            id:"1",name:"product-63.jpg"
+            id:"1",name:"product-62.jpg",price:"$29.00",type:"椅子"
         }, {
-            id:"2",name:"product-64.jpg"
+            id:"2",name:"product-60.jpg",price:"$39.00",type:"凳子"
         },
          {
-            id:"3",name:"product-65.jpg"
+            id:"3",name:"product-61.jpg",price:"$59.00",type:"摇椅"
         }
     ]
 };
@@ -206,8 +212,20 @@ computed: {
 watch: {},
 //方法集合
 methods: {
-    changeImg(name){
-        this.nowImg = name;
+    addProduct(){
+      this.nowImg.num ++;
+    },
+    subProduct(){
+      if(this.nowImg.num-1<0){
+        return false;
+      }
+      this.nowImg.num --;
+    },
+    changeImg(name,price,type){
+        this.nowImg.name = name;
+        this.nowImg.price = price;
+        this.nowImg.type = type;
+        this.nowImg.num = 1;
     },
     changeBtn(type){
         this.btnType = type;
@@ -228,9 +246,10 @@ mounted() {
     var that = this;
     this.swiper.slideTo(0, 0, false)
     //自动播放
-    // setInterval(function(){
-    //     that.swiper.slideNext(1000);
-    // },1000)
+    clearInterval(this.$el.timer)
+     this.$el.timer = setInterval(function(){
+        that.swiper.slideNext(500);
+     },2000)
 },
 beforeCreate() {}, //生命周期 - 创建之前
 beforeMount() {}, //生命周期 - 挂载之前
@@ -297,7 +316,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
             width: 160px;
             height: 188px;
             border: 2px solid #f2f2f2;
-
+            cursor: pointer;
             img {
               width: 100%;
               height: 100%;
@@ -384,6 +403,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 
               button {
                 display: block;
+                cursor: pointer;
                 width: 50px;
                 height: 50px;
                 border: 1px solid #a3bbc8;
@@ -419,8 +439,12 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
               color: #fff;
               transition: .5s;
               border-radius: 4px;
+              cursor: pointer;
               &:hover {
                 background: #FCD7B6;
+              }
+              a{
+                display: block;
               }
             }
           }
@@ -468,6 +492,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
                 border-radius: 12px;
                 margin: 0 14px;
                 transition: .5s;
+                cursor: pointer;
                 &:hover{
                     background: #a3bbc8;
                     color: #fff;
@@ -479,14 +504,15 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
           .comment-check {
             padding-top: 26px;
             
-            // .check-item.active{
-            //     // opacity:1;
-            // }
+            .check-item.active{
+                opacity:1;
+            }
+
             .check-item.noActive{
                 opacity:0;
             }
             p {
-                opacity: 1;
+                opacity: 0;
                 font-size: 16px;
                 color: #243f4d;
                 line-height: 32px;
@@ -541,6 +567,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
             border: 2px solid #A3BBC8;
             border-radius: 8px;
             transition: .5s;
+            font-size: 24px;
             &:hover{
               background: #A3BBC8;
               color: #fff;

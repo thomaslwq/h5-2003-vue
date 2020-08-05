@@ -32,6 +32,7 @@ export default {
         loop: true,
         slidesPerView: 5,
         grabCursor: true,
+        slidesPerGroupSkip: 0,
       },
       swiperList: [
         {
@@ -74,7 +75,8 @@ export default {
     var that = this;
     this.swiper.slideTo(0, 0, false);
     //自动播放
-    setInterval(function () {
+    clearInterval(this.$el.timer)
+    this.$el.timer = setInterval(function () {
       that.swiper.slideNext(1000);
     }, 1000);
   },

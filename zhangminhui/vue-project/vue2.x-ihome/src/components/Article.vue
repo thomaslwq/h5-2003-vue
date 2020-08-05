@@ -30,7 +30,7 @@
                 <h4>
                   <a
                     href="blog-details.html"
-                  >Diusmod tempor indicidunt ut Labore et dolore magna aliqua。Ut enim ad minim veniam</a>
+                  >风之意 餐桌 北欧实木餐桌日式可折叠餐桌椅组合现代简约多功能家用饭桌FR-102 胡桃色</a>
                 </h4>
               </div>
               <div class="blog-footer">
@@ -55,7 +55,7 @@
                 <h4>
                   <a
                     href="blog-details.html"
-                  >Aonsectetur奉献精英，sius do eiusmod tempor indicidunt ut Labore et dolore</a>
+                  >美睿厨房橱柜定制厨房柜石英石台面现代简约地柜吊柜定做详情咨询客服 樱桃色</a>
                 </h4>
               </div>
               <div class="blog-footer">
@@ -80,7 +80,7 @@
                 <h4>
                   <a
                     href="blog-details.html"
-                  >Rncididunt ut Labore et dolore magna aliqua。ore et dolore magna a乌尼姆劳动与美元</a>
+                  >诗帝格（SHIDIGE）沙发 布艺沙发组合大户型科技布U型贵妃实木框架现代简约客厅家具 标准版</a>
                 </h4>
               </div>
               <div class="blog-footer">
@@ -136,7 +136,7 @@ export default {
   height: 582px;
   position: relative;
   padding-top: 50px;
-  .color-bottom{
+  .color-bottom {
     width: 100%;
     height: 150px;
     position: absolute;
@@ -185,7 +185,6 @@ export default {
         height: 480px;
         padding: 0 15px;
         &:hover .blog-thumb img {
-          transition: 0.3s linear;
           transform: scale(1.05);
         }
         .blog-thumb {
@@ -193,6 +192,7 @@ export default {
           height: 236px;
           overflow: hidden;
           img {
+            transition: 0.3s linear;
             width: 100%;
             height: 100%;
           }
@@ -220,6 +220,7 @@ export default {
               margin-bottom: 20px;
               padding-bottom: 20px;
               border-bottom: 2px solid #e0e0e0;
+              font-weight: 400;
               a {
                 color: #262626;
                 text-decoration: none;

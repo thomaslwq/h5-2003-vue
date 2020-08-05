@@ -11,7 +11,7 @@
             </a>
           </div>
           <ul>
-            <li>地址：德克萨斯州休斯敦Wines Lane 4772号，邮政编码77032</li>
+            <li>地址：深圳市宝安区宝安大道5010号西部硅谷B座A区6层A605/B座C区1层108，邮政编码518101</li>
             <li>电话：+ 832-347-5843</li>
             <li>Email: contact@Glee.com</li>
           </ul>
@@ -66,7 +66,8 @@
           </p>
           <form action="#">
             <div class="input-wrap">
-              <span class="iconfont icon-caidan news"></span><input type="text" placeholder="Email" />
+              <span class="iconfont icon-message news"></span>
+              <input type="text" placeholder="Email" />
               <button>订阅</button>
             </div>
           </form>
@@ -102,11 +103,11 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import LitterSwiper from "../components/LitterSwiper.vue"
+import LitterSwiper from "../components/LitterSwiper.vue";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
-    LitterSwiper
+    LitterSwiper,
   },
   data() {
     //这里存放数据
@@ -118,10 +119,12 @@ export default {
   watch: {},
   //方法集合
   methods: {
-    toTop: function () {
+    toTop: function (e) {
       clearInterval(timer);
+      var num = 20;
       var timer = setInterval(() => {
-        document.documentElement.scrollTop -= 30;
+        num += 5;
+        document.documentElement.scrollTop -= num;
         if (document.documentElement.scrollTop == 0) {
           clearInterval(timer);
         }
@@ -131,7 +134,16 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
+  mounted() {
+    window.onscroll = function () {
+      var toTop = document.querySelector(".toTop");
+      if (document.documentElement.scrollTop > 1000) {
+        toTop.style.display = "block";
+      } else {
+        toTop.style.display = "none";
+      }
+    };
+  },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
@@ -143,7 +155,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .footer-area {
-    // 回到顶部按钮
+  // 回到顶部按钮
   .toTop {
     position: fixed;
     bottom: 30px;
@@ -246,8 +258,8 @@ export default {
       form {
         .input-wrap {
           display: flex;
-          .news{
-             background: rgba(252, 215, 182, 0.5);
+          .news {
+            background: rgba(252, 215, 182, 0.5);
             width: 50px;
             height: 60px;
             padding-left: 10px;
