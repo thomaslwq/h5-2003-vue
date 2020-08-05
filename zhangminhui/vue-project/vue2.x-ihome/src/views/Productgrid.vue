@@ -43,14 +43,14 @@
                 <!-- main商品部分开始位置 -->
                 <el-container style="display:block">
                     <div class="pro-content">
-                        <div class="pro-item" v-for="(product,index) in currentList" :key="product.id">
+                        <div class="pro-item" v-for="(product,index) in currentList" :key="product.id" @click="seeDetails(product.id)">
                             <dl>
                                 <dt>
                                     <img :src="require('../assets/img/product/'+product.img)" :alt="product.name">
                                     <div class="pro-action">
                                         <a class="act-btn"><i class="iconfont icon-fangdajing"></i></a>
                                         <a class="act-btn"><i class="iconfont icon-gouwuche"></i></a>
-                                        <a class="act-btn"><i class="iconfont icon-shoucang"></i></a>
+                                        <a class="act-btn"><i class="iconfont icon-aixin"></i></a>
                                     </div>
                                 </dt>
                                 <dd>
@@ -65,7 +65,8 @@
                     background
                     layout="prev, pager, next"
                     :total="Math.ceil(goodsList.length/15)*10"
-                    v-on:current-change="currentPage">
+                    v-on:current-change="currentPage"
+                    hide-on-single-page>
                     </el-pagination>
                     <!-- 分页器 -->
                 </el-container>
@@ -304,6 +305,15 @@ watch: {},
 methods: {
     currentPage:function(page){
         this.currentpage = page;
+    },
+    seeDetails:function(id){
+        this.$router.push({
+            name:'Cart',
+            params:{
+                name:'about',
+                code:111
+            }
+        })
     }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
