@@ -13,6 +13,7 @@ const productModel = {
   specificationID: "",
   seriesID: "",
   sortID: "",
+  createTime:""
 };
 
 module.exports = {

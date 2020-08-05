@@ -43,6 +43,7 @@
                 <el-table-column prop="sortID" label="分类"></el-table-column>
                 <el-table-column prop="isNewProduct" label="是否新品"></el-table-column>
                 <el-table-column prop="isDiscount" label="是否打折"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
