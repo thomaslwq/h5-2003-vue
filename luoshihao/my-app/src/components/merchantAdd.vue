@@ -1,8 +1,10 @@
 <template>
   <div id="addform">
     <div class="addform-nav">
-      <router-link to="/">代理商管理</router-link>&gt;
-      <router-link to>添加代理商</router-link>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/' }">代理商管理</el-breadcrumb-item>
+        <el-breadcrumb-item>添加代理商</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="addform-content">
       <el-form
@@ -99,43 +101,43 @@ export default {
       },
       options: [
         {
-          value: "guangdong",
+          value: "广东省",
           label: "广东省",
           children: [
             {
-              value: "shenzhen",
+              value: "深圳市",
               label: "深圳市",
               children: [
                 {
-                  value: "luohu",
+                  value: "罗湖区",
                   label: "罗湖区",
                 },
                 {
-                  value: "longgang",
+                  value: "龙岗区",
                   label: "龙岗区",
                 },
                 {
-                  value: "longhua",
+                  value: "龙华区",
                   label: "龙华区",
                 },
                 {
-                  value: "futian",
+                  value: "福田区",
                   label: "福田区",
                 },
                 {
-                  value: "baoan",
+                  value: "宝安区",
                   label: "宝安区",
                 },
                 {
-                  value: "nanshan",
+                  value: "南山区",
                   label: "南山区",
                 },
                 {
-                  value: "yantian",
+                  value: "盐田区",
                   label: "盐田区",
                 },
                 {
-                  value: "pinshan",
+                  value: "坪山区",
                   label: "坪山区",
                 },
               ],
@@ -274,7 +276,8 @@ export default {
         this.$refs.form.validate((boolean,object)=>{
           if(boolean){
             if(this.form.radio === '1'){
-             console.log('可以传送数据,跳转页面le')
+             localStorage.setItem('newdata',JSON.stringify(this.form));
+             this.$router.push('merchant')
              }else{
               this.$message.error({message:'请同意协议!!!',center:true});
               return false;

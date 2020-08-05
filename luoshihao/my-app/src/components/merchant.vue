@@ -1,14 +1,16 @@
 <template>
   <div id="list">
     <div class="list-nav">
-      <router-link to="/">代理商管理</router-link>&gt;
-      <router-link to>代理商列表</router-link>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/' }">代理商管理</el-breadcrumb-item>
+        <el-breadcrumb-item>添加代理商</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="list-search">
       <section class="search-input">
         <el-input v-model="input" placeholder="请输入代理商名称" style="width:100%;height:100%;"></el-input>
       </section>
-      <section class="search-btn">检索</section>
+      <section class="search-btn" @click="checkoutInput">检索</section>
     </div>
     <el-table :data="tableData" border>
       <el-table-column fixed prop="agent" label="代理商名称" width="100"></el-table-column>
@@ -27,7 +29,13 @@
             type="text"
             size="middle"
           >查看</el-button>
-          <el-button class="editor" type="text" size="middle" @click="dialogFormVisible = true" @click.capture="handleClickEdit(scope.row)">编辑</el-button>
+          <el-button
+            class="editor"
+            type="text"
+            size="middle"
+            @click="dialogFormVisible = true"
+            @click.capture="handleClickEdit(scope.row)"
+          >编辑</el-button>
           <!-- 编辑对话框的开始 -->
 
           <el-dialog :visible.sync="dialogFormVisible">
@@ -56,11 +64,10 @@
               <el-form-item label="邮箱" :label-width="formLabelWidth">
                 <el-input v-model="rowObj.mail" autocomplete="off"></el-input>
               </el-form-item>
-
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+              <el-button type="primary" @click="changeTableData">确 定</el-button>
             </div>
           </el-dialog>
           <!-- 编辑对话框的结束 -->
@@ -73,7 +80,30 @@
 <script>
 export default {
   methods: {
-    handleClickEdit(row){this.rowObj = row;console.log(row)},
+    checkoutInput() {
+      console.log(this.input);
+      if (this.input) {
+        const filterdata = this.tableData.filter((item) => {
+          return item.agent.indexOf(this.input) != -1;
+        });
+        this.tableDataTrans = this.tableData;
+        this.tableData = filterdata;
+      }else{
+        this.tableData = this.tableDataTrans;
+      }
+    },
+    changeTableData() {
+      this.dialogFormVisible = false;
+    },
+    async getTableData() {
+      const tabledres = await this.$axios.get(
+        "http://easy-mock.ncgame.cc/mock/5f29fb29b7d01c445ce4a0d5/myapp/merchant"
+      );
+      this.tableData = tabledres.data;
+    },
+    handleClickEdit(row) {
+      this.rowObj = row;
+    },
     handleClick(row) {
       this.rowObj = row;
       const h = this.$createElement;
@@ -157,14 +187,14 @@ export default {
       });
     },
   },
-  mounted(){
-    this.$axios.get('http://easy-mock.ncgame.cc/mock/5f29fb29b7d01c445ce4a0d5/myapp/merchant')
-    .then(function(res){
-      console.log(res);
-    })
-    .catch(function(err){
-      console.log(err)
-    })
+  mounted() {
+    this.getTableData();
+    var newdata = localStorage.getItem('newdata');
+    this.tableData.splice(0,0,JSON.parse(newdata))
+    console.log(this.tableData)
+  },
+  created(){
+
   },
 
   data() {
@@ -173,30 +203,8 @@ export default {
       rowObj: {},
       dialogFormVisible: false,
       formLabelWidth: "90px",
-      tableData: [
-        {
-          id:'1',
-          agent: "天天向上",
-          code: "DLS201802281450280741",
-          region: "无锡市",
-          leader: "马克思",
-          login: "马克思",
-          contact: 18600001111,
-          fax: "028-6666666",
-          mail: "123456789@qq.com",
-        },
-        {
-          id:2,
-          agent: "天天向上",
-          code: "DLS201802281450280741",
-          region: "无锡市",
-          leader: "马克思",
-          login: "马克思",
-          contact: 18600001111,
-          fax: "028-6666666",
-          mail: "123456789@qq.com",
-        },
-      ]
+      tableData: [],
+      tableDataTrans:[]
     };
   },
 };
@@ -211,13 +219,6 @@ export default {
   height: 50px;
   border-bottom: 1px solid #909399;
   padding-left: 10px;
-  margin-top: 20px;
-  a {
-    text-decoration: none;
-    color: #333;
-    font-size: 18px;
-    margin-right: 8px;
-  }
 }
 .list-search {
   display: flex;
