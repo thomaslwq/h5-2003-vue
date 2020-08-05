@@ -57,7 +57,9 @@
       label="操作"
       width="120">
       <template slot-scope="scope">
-        <el-button class="check" @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+        <el-button class="check" @click.capture="handleClick(scope.row)" type="text" size="small">
+          查看
+        </el-button>
         <el-button class="editor" type="text" size="small">编辑</el-button>
       </template>
     </el-table-column>
@@ -67,9 +69,37 @@
 
 <script>
  export default {
+   data(){
+     return{
+       rowObj:{}
+     }
+   },
     methods: {
       handleClick(row) {
-        console.log(row);
+        this.rowObj = row;
+        const h = this.$createElement;
+        this.$msgbox({
+          message: h('div', { style:'height:400px;' }, [
+            h('div', { style: 'color: teal;font-size:20px;font-weight:600;margin:20px 0 0 30px;' }, `代理商名称: ${this.rowObj.agent}`),
+            h('div', { style: 'color: teal;font-size:20px;font-weight:600;margin:20px 0 0 30px;' }, `代理商编码: ${this.rowObj.code}`),
+            h('div', { style: 'color: teal;font-size:20px;font-weight:600;margin:20px 0 0 30px;' }, `所属区域: ${this.rowObj.region}`),
+            h('div', { style: 'color: teal;font-size:20px;font-weight:600;margin:20px 0 0 30px;' }, `负责人: ${this.rowObj.leader}`),
+            h('div', { style: 'color: teal;font-size:20px;font-weight:600;margin:20px 0 0 30px;' }, `登录名: ${this.rowObj.login}`),
+            h('div', { style: 'color: teal;font-size:20px;font-weight:600;margin:20px 0 0 30px;' }, `联系方式: ${this.rowObj.contact}`),
+            h('div', { style: 'color: teal;font-size:20px;font-weight:600;margin:20px 0 0 30px;' }, `传真: ${this.rowObj.fax}`),
+            h('div', { style: 'color: teal;font-size:20px;font-weight:600;margin:20px 0 0 30px;' }, `邮箱: ${this.rowObj.mail}`)
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              done();
+            } else {
+              done();
+            }
+          }
+        });
       }
     },
 
