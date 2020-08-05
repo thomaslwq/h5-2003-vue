@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Icon,Message,Container,Aside,Main,Notification } from 'element-ui';
+import { Icon,Message,Container,Aside,Main,Notification,Pagination } from 'element-ui';
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -15,6 +15,7 @@ Vue.use(Icon);
 Vue.use(Container);
 Vue.use(Aside);
 Vue.use(Main);
+Vue.use(Pagination);
 Vue.config.productionTip = false;
 //引入elment ui 的提示效果
 Vue.prototype.$message = Message;

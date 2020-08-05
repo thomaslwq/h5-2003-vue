@@ -4,7 +4,7 @@
   <Header></Header>
   <Bigswiper></Bigswiper>
   <Qianggou></Qianggou>
-  <Swiper></Swiper>
+  
   <Newdesign></Newdesign>
   <Video></Video>
   <Footer></Footer>
@@ -18,7 +18,6 @@ import Header from "../components/Header.vue";
 import Bigswiper from "../components/Swiper.vue";
 import Qianggou from "../components/Qianggou.vue";
 import Newdesign from "../components/NewDesign.vue"
-import Swiper from "../components/Swiper.vue";
 import Video from "../components/Video.vue";
 import Footer from "../components/Footer.vue";
 import Login from "../components/Login"
