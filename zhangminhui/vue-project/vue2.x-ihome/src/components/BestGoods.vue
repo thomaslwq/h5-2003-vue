@@ -110,7 +110,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 .best-goods {
   background: #f8f8f8;
   padding-bottom: 80px;
-
+  padding-top: 100px;
   .best-goods-content {
     width: 1140px;
     margin: 0 auto;
@@ -138,6 +138,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 
         &:hover {
           color: #191919;
+          cursor: pointer;
         }
       }
 
