@@ -19,8 +19,8 @@
         </section>
         <section>
           <i class="el-icon-s-goods"></i>
-          <em>待收货</em>
-          <span>35</span>
+          <em>已收货</em>
+          <span>{{done}}</span>
         </section>
 <!--        <section>-->
 <!--          <i class="el-icon-s-order"></i>-->
@@ -95,13 +95,16 @@ export default {
                 }
             }).then(res=>{
                 console.log(res)
-                this.listArr = res.data.data
-                this.count = res.data.count
+                this.done = 0;
+                this.incomplete = 0;
+                this.listArr = res.data.data;
+                this.count = res.data.count;
                 this.listArr.map(item=>{
                     return item.Status === 1 ? item.Status = '完成' : item.Status = '进行中'
                 })
                 //时间戳转日期
                this.listArr.forEach(item=>{
+                   item.Status === '完成' ? this.done++ : this.incomplete++
                    item.JoiningTime = new Date(parseInt(item.JoiningTime)).toLocaleString().replace(/:\d{1,2}$/,' ');
 
                })
@@ -114,16 +117,14 @@ export default {
         },
         //点击上一页渲染数据
         previous(){
-          this.pageNum--
+          this.pageNum--;
             this.getData()
         },
         //点击下一页渲染数据
         nextPage(){
-            this.pageNum++
+            this.pageNum++;
             this.getData()
         },
-
-
     },
 
     //页面初始加载一次
@@ -137,7 +138,6 @@ export default {
           count:0,//总条数
           incomplete:0,//未完成的订单条数
           done:0,//已收货订单条数
-          del:0
       }
     },
 
@@ -176,7 +176,6 @@ export default {
       section {
         height: 50px;
         width: 200px;
-        border-right: 1px solid #ccc;
         display: flex;
         align-items: center;
         i {
