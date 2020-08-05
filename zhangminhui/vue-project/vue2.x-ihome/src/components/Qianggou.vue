@@ -26,12 +26,12 @@
           <div class="content">
             <h4>
               <font style="vertical-align: inherit;">
-                <font style="vertical-align: inherit;">Mirum Notare Tellus</font>
+                <font style="vertical-align: inherit;">欧柏图</font>
               </font>
             </h4>
             <p>
               <font style="vertical-align: inherit;">
-                <font style="vertical-align: inherit;">LED玉米灯泡灯5W 7W 10W 12W 15W E26 E27LEDCornLight</font>
+                <font style="vertical-align: inherit;">欧柏图 LED触摸调光感应台灯卧室床头灯智能 创意个性简约现代北欧ins家用阅读小台灯极简设计装饰灯 </font>
               </font>
             </p>
             <a href="#" class="read-more">
@@ -49,12 +49,12 @@
           <div class="content">
             <h4>
               <font style="vertical-align: inherit;">
-                <font style="vertical-align: inherit;">Mirum Notare Tellus</font>
+                <font style="vertical-align: inherit;">曦特莱轻奢品牌台灯</font>
               </font>
             </h4>
             <p>
               <font style="vertical-align: inherit;">
-                <font style="vertical-align: inherit;">LED玉米灯泡灯5W 7W 10W 12W 15W E26 E27LEDCornLight</font>
+                <font style="vertical-align: inherit;">曦特莱轻奢品牌台灯卧室床头灯欧式创意家用浪漫温馨客厅装饰摆件陶瓷</font>
               </font>
             </p>
             <a href="#" class="read-more">
@@ -115,10 +115,10 @@ export default {
       var time2 = new Date();
       var res = timeDiff(time1, time2);
       var str = [res.day, res.hours, res.minutes, res.seconds];
-      dayTime.innerHTML = str[0]+"天"
-      timeArr[0].innerHTML = str[1]
-      timeArr[1].innerHTML = str[2]
-      timeArr[2].innerHTML = str[3]
+      dayTime.innerHTML = str[0] + "天";
+      timeArr[0].innerHTML = str[1];
+      timeArr[1].innerHTML = str[2];
+      timeArr[2].innerHTML = str[3];
       return str;
     }, 1000);
   },
@@ -144,11 +144,11 @@ export default {
     background: #fdefe3;
     h3 {
       font-size: 30px;
-          color: #243f4d;
+      color: #243f4d;
       margin: 30px 0;
       text-shadow: 5px 5px 5px #ccc;
     }
-    img{
+    img {
       margin: 0 auto;
     }
     p {
@@ -158,7 +158,7 @@ export default {
         color: #fff;
         font-size: 18px;
       }
-      .zhe{
+      .zhe {
         color: red;
         font-weight: bold;
       }
@@ -167,7 +167,7 @@ export default {
         display: inline-block;
         width: 44px;
         height: 44px;
-        background-color: rgb(47,52,48);
+        background-color: rgb(47, 52, 48);
         line-height: 24px;
         text-align: center;
         padding: 10px;
@@ -177,7 +177,7 @@ export default {
 
     h5 {
       font-size: 22px;
-      color: orange;
+      color: rgb(163,187,200);
       margin: 20px 0;
       font-weight: bold;
     }
@@ -235,12 +235,12 @@ export default {
           text-transform: capitalize;
           border-radius: 5px;
           text-decoration: none;
+          transition: all 0.6s;
           text-align: center;
           &:hover {
             background-color: rgb(36, 63, 77);
             color: #fff;
             font-weight: bold;
-            transition: all 0.6s;
           }
         }
       }

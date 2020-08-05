@@ -11,7 +11,7 @@
             </a>
           </div>
           <ul>
-            <li>地址：德克萨斯州休斯敦Wines Lane 4772号，邮政编码77032</li>
+            <li>地址：深圳市宝安区宝安大道5010号西部硅谷B座A区6层A605/B座C区1层108，邮政编码518101</li>
             <li>电话：+ 832-347-5843</li>
             <li>Email: contact@Glee.com</li>
           </ul>
@@ -66,7 +66,7 @@
           </p>
           <form action="#">
             <div class="input-wrap">
-              <span class="iconfont icon-caidan news"></span><input type="text" placeholder="Email" />
+              <span class="iconfont icon-message news"></span><input type="text" placeholder="Email" />
               <button>订阅</button>
             </div>
           </form>
