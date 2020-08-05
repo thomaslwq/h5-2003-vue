@@ -9,24 +9,24 @@
       <section class="list">
         <section>
           <i class="el-icon-s-finance"></i>
-          <em>待付款</em>
-          <span>20</span>
+          <em>订单总数</em>
+          <span>{{count}}</span>
         </section>
         <section>
           <i class="el-icon-s-shop"></i>
-          <em>待发货</em>
-          <span>18</span>
+          <em>待收货</em>
+          <span>{{incomplete}}</span>
         </section>
         <section>
           <i class="el-icon-s-goods"></i>
           <em>待收货</em>
           <span>35</span>
         </section>
-        <section>
-          <i class="el-icon-s-order"></i>
-          <em>待反馈</em>
-          <span>38</span>
-        </section>
+<!--        <section>-->
+<!--          <i class="el-icon-s-order"></i>-->
+<!--          <em>已删除</em>-->
+<!--          <span>{{del}}</span>-->
+<!--        </section>-->
       </section>
     </section>
     <section class="bottom">
@@ -69,6 +69,7 @@
 <script>
 export default {
     methods: {
+        //删除订单
       handleClick(row) {
         // console.log(row);
         this.axios({
@@ -80,6 +81,7 @@ export default {
         })
           .then(()=>{
               this.getData();
+              this.del++
           })
       },
         //获取数据
@@ -92,7 +94,7 @@ export default {
                     _limit:5
                 }
             }).then(res=>{
-                // console.log(res)
+                console.log(res)
                 this.listArr = res.data.data
                 this.count = res.data.count
                 this.listArr.map(item=>{
@@ -101,6 +103,7 @@ export default {
                 //时间戳转日期
                this.listArr.forEach(item=>{
                    item.JoiningTime = new Date(parseInt(item.JoiningTime)).toLocaleString().replace(/:\d{1,2}$/,' ');
+
                })
             })
         },
@@ -121,39 +124,6 @@ export default {
         },
 
 
-        open() {
-            const h = this.$createElement;
-            this.$msgbox({
-                title: '消息',
-                message: h('p', null, [
-                    h('span', null, '内容可以是 '),
-                    h('i', { style: 'color: teal' }, 'VNode')
-                ]),
-                showCancelButton: true,
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                beforeClose: (action, instance, done) => {
-                    if (action === 'confirm') {
-                        instance.confirmButtonLoading = true;
-                        instance.confirmButtonText = '执行中...';
-                        setTimeout(() => {
-                            done();
-                            setTimeout(() => {
-                                instance.confirmButtonLoading = false;
-                            }, 300);
-                        }, 3000);
-                    } else {
-                        done();
-                    }
-                }
-            }).then(action => {
-                this.$message({
-                    type: 'info',
-                    message: 'action: ' + action
-                });
-            });
-        }
-
     },
 
     //页面初始加载一次
@@ -164,7 +134,10 @@ export default {
       return {
           listArr:[],
           pageNum:1,
-          count:0
+          count:0,//总条数
+          incomplete:0,//未完成的订单条数
+          done:0,//已收货订单条数
+          del:0
       }
     },
 
