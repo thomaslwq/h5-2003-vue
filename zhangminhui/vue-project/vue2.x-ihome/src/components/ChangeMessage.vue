@@ -1,10 +1,11 @@
 <template>
   <div class="box">
-    <Header></Header>
+    <!-- <Header></Header> -->
     <div class="title">
       <h2>修改信息</h2>
       <div class="from">
-          <span>家</span>/<span>修改信息</span>
+        <span @click="goHome">家</span>/
+        <span>修改信息</span>
       </div>
     </div>
     <div class="change">
@@ -19,30 +20,30 @@
       </label>
       <label class="change-label">
         <span>邮箱</span>
-        <input type="text" class="change-input" v-model="email"  @blur="changeEmail"/>
+        <input type="text" class="change-input" v-model="email" @blur="changeEmail" />
       </label>
       <label class="change-label">
         <span>地址</span>
-        <input type="text" class="change-input" v-model="address" @blur="changeAddress"/>
+        <input type="text" class="change-input" v-model="address" @blur="changeAddress" />
       </label>
       <label>
         <input type="radio" name="sex" v-model="sex" value="0" class="change-radio" />男
         <input type="radio" name="sex" v-model="sex" value="1" class="change-radio" />女
       </label>
-      <button>确认修改</button>
+      <button @click="subChange">确认修改</button>
     </div>
     <Footer></Footer>
   </div>
 </template>
 
 <script>
-import Header from "./Header";
-import Footer from "./Footer"
+// import Header from "./Header";
+import Footer from "./Footer";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
-    Header,
-    Footer
+    // Header,
+    Footer,
   },
   data() {
     //这里存放数据
@@ -51,8 +52,13 @@ export default {
       telephone: "",
       email: "",
       address: "",
-      sex: "男",
-      err: [{ userN: false }],
+      sex: "0",
+      chenge: [
+        { userN: false },
+        { userP: false },
+        { userE: false },
+        { userA: false },
+      ],
     };
   },
   //监听属性 类似于data概念
@@ -61,45 +67,94 @@ export default {
   watch: {},
   //方法集合
   methods: {
+    goHome() {
+      this.$router.push("/");
+    },
     changeName(e) {
       var reg1 = /^\w{6,14}|[\u4e00-\u9fa5]{6,14}$/;
       console.log(reg1.test(this.username));
       if (!reg1.test(this.username)) {
-        this.err.userN = true;
-        this.$message.error('名称必须由6-14位中文字符、数字、下划线组成');
+        this.$message.error("名称必须由6-14位中文字符、数字、下划线组成");
         e.target.style.borderColor = "red";
+        this.chenge.userN = false;
       } else {
-        this.err.userN = false;
+        this.chenge.userN = true;
         e.target.style.borderColor = "#ccc";
       }
     },
     changePhone(e) {
       var reg2 = /^\d{11}$/;
       if (!reg2.test(this.telephone)) {
-        this.$message.error('电话必须由11位数字组成')
+        this.$message.error("电话必须由11位数字组成");
+        this.chenge.userP = false;
         e.target.style.borderColor = "red";
       } else {
         e.target.style.borderColor = "#ccc";
+        this.chenge.userP = true;
       }
     },
-    changeEmail(e){
-      var reg3=/^\w+@\w+\.(com)$|(cn)$/;
+    changeEmail(e) {
+      var reg3 = /^\w+@\w+\.(com)$|(cn)$/;
       if (!reg3.test(this.email)) {
-        this.$message.error('邮箱格式错误')
+        this.$message.error("邮箱格式错误");
         e.target.style.borderColor = "red";
+        this.chenge.userE = false;
       } else {
         e.target.style.borderColor = "#ccc";
+        this.chenge.userE = true;
       }
     },
-    changeAddress(e){
-      var reg4=/^[\u4e00-\u9fa5]{6,14}$$/;
+    changeAddress(e) {
+      var reg4 = /^[\u4e00-\u9fa5]{6,14}$$/;
       if (!reg4.test(this.address)) {
-        this.$message.error('地址必须由6-14位中文组成')
+        this.$message.error("地址必须由6-14位中文组成");
         e.target.style.borderColor = "red";
+        this.chenge.userA = false;
       } else {
         e.target.style.borderColor = "#ccc";
+        this.chenge.userA = true;
       }
-    }
+    },
+    subChange() {
+      if (
+        this.chenge.userN &&
+        this.chenge.userP &&
+        this.chenge.userE &&
+        this.chenge.userA
+      ) {
+        var userID = localStorage.getItem("userID");
+        if (userID) {
+          this.$axios
+            .post(
+              "api/user/updateUser",
+              this.$qs.stringify({
+                userID: userID,
+                username: this.username,
+                telephone: this.telephone,
+                email: this.email,
+                addresses: this.address,
+                sex: this.sex,
+              })
+            )
+            .then((res) => {
+              if (res.code == 200) {
+                this.$message({
+                  message: "修改成功，即将为您跳转到主页",
+                  duration:1000,
+                  type: "success",
+                });
+                setTimeout(() => {
+                  this.$router.push("/");
+                }, 1000);
+              }
+            });
+        } else {
+          this.$message.error("修改失败");
+        }
+      } else {
+        this.$message.error("请填写完整");
+      }
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
@@ -131,24 +186,24 @@ export default {
       text-align: center;
       line-height: 60px;
     }
-    .from{
-        width: 100px;
-        margin: 0 auto;
-        span{
-            display: inline-block;
+    .from {
+      width: 100px;
+      margin: 0 auto;
+      span {
+        display: inline-block;
+      }
+      :nth-child(1) {
+        margin-right: 2px;
+        cursor: pointer;
+        &:hover {
+          color: rgb(252, 215, 182);
+          transition: 0.5s;
         }
-        :nth-child(1){
-            margin-right: 5px;
-            cursor: pointer;
-            &:hover{
-                color: rgb(252,215,182);
-                transition: .5s;
-            }
-        }
-        :nth-child(2){
-            margin-left: 5px;
-            color:rgb(252,215,182);
-        }
+      }
+      :nth-child(2) {
+        margin-left: 2px;
+        color: rgb(252, 215, 182);
+      }
     }
   }
   .change {
