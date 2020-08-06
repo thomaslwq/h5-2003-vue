@@ -254,7 +254,24 @@ export default {
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+    var userID = window.localStorage.getItem("userID");
+    console.log(userID);
+    this.$axios
+        .post(
+          "api/product/getAllCartByUserID",
+          this.$qs.stringify({
+          userID:userID
+          })
+        )
+        .then((res) => {
+          console.log(res);
+          if (res.code == 200) {
+          }
+        })
+        .catch((err) => err);
+    
+  },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
       console.log(this.$route.params)

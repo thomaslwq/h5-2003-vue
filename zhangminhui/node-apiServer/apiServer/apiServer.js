@@ -1064,7 +1064,7 @@ app.post("/api/admin/deleteSort", function (req, res, body) {
   });
 });
 /**
- * 分类管理-删除全部分类
+ * 分类管理-删除分类
  * @param {String} sortIDs
  */
 app.post("/api/admin/deleteAllSorts", function (req, res, body) {

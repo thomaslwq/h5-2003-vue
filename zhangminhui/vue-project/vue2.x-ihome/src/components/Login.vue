@@ -30,9 +30,9 @@
         </div>
       </div>
       <div class="login-middle-register">
-        <span>还没注册? 没关系！</span>
+        <span @click="toRegister">还没注册? 没关系！</span>
         <div class="middle-register">
-          <a href>创建一个账号</a>
+          <a href @click="toRegister">创建一个账号</a>
         </div>
       </div>
     </div>
@@ -137,6 +137,9 @@ export default {
         });
       }
     },
+    toRegister(){
+        this.$router.push("/Register")
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},

@@ -66,11 +66,11 @@
         </div>
         <div class="nav-icon">
           <span class="iconfont icon-fangdajing" @click="searchShow"></span>
-          <span class="nav-icon-shoucang">
-            <i class="iconfont icon-aixin" @click="GotoWish"></i>
+          <span class="nav-icon-shoucang"  @click="GotoWish">
+            <i class="iconfont icon-aixin"></i>
             <span class="icon-shoucang-tip">0</span>
           </span>
-          <span class="nav-icon-gouwuche">
+          <span class="nav-icon-gouwuche"  @click="GotoCart">
             <i class="iconfont icon-gouwuche"></i>
             <span class="icon-gouwuche-tip">0</span>
           </span>
@@ -180,9 +180,6 @@ export default {
     GotoWish() {
       this.$router.push("/Wish");
     },
-    Login(){
-      this.$router.push("/Login")
-    },
     goProductGrid:function(id){
       if(this.$route.name==="Productgrid"){
         this.$emit('post-id',id)
@@ -194,6 +191,9 @@ export default {
               }
           })
       }
+    },
+     GotoCart() {
+      this.$router.push("/Cart");
     },
     quit() {
       localStorage.removeItem("userID");

@@ -42,7 +42,7 @@
         </div>
         <button type="submit" class="submit-btn" @click.stop="confirm">注册</button>
         <div class="create-info">
-          <span>已经注册? 直接登录</span>
+          <span @click="toLogin">已经注册? 直接登录</span>
         </div>
       </div>
     </div>
@@ -105,13 +105,14 @@ export default {
           })
         )
         .then((res) => {
-          if (res.status == 200) {
+          if (res.code == 200) {
             // 注册成功
             this.$message({
               message: "注册成功,即将为您跳转登陆页面",
+              type:"success"
             });
             console.log("注册成功");
-            this.$router.push({ name: "Login" }); // 跳转回登录页
+            this.$router.push("/Login" ); // 跳转回登录页  
           }
         })
         .catch((err) => err);
@@ -160,6 +161,9 @@ export default {
         return false;
       }
     },
+    toLogin(){
+      this.$router.push("/Login")
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
