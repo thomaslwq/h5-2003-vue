@@ -15,11 +15,50 @@
         </div>
         <div class="menu">
           <ul>
-            <li class="menu-item" v-for="(item,index) in navmenu" :key="index">
-              {{item.text}}
-              <div class="menu-item-box" v-show="item.tag">
+            <li class="menu-item">
+              主页
+            </li>
+            <li class="menu-item" @mouseenter="currentMenu='series'" @mouseleave="currentMenu=''">
+              家居用品
+              <div class="menu-item-box" v-show="currentMenu==='series'">
                 <ul class="menu-item-ul">
-                  <li v-for="(newItem,ind) in item.childrenMenu" :key="ind">{{newItem}}</li>
+                  <li v-for="(newItem,index) in seriesMenu" :key="newItem.seriesID+index"
+                  @click="goProductGrid(newItem.seriesID)"
+                  >{{newItem.seriesName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item" @mouseenter="currentMenu='sort'" @mouseleave="currentMenu=''">
+              品牌
+              <div class="menu-item-box" v-show="currentMenu==='sort'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem,index) in sortMenu" :key="newItem.sortID+index"
+                  @click="goProductGrid(newItem.sortID)"
+                  >{{newItem.sortName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item">
+              装饰品
+              <div class="menu-item-box" v-show="currentMenu==='ornament'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem) in seriesMenu" :key="newItem.seriesID">{{newItem.seriesName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item">
+              家纺
+              <div class="menu-item-box" v-show="currentMenu==='textiles'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem) in seriesMenu" :key="newItem.seriesID">{{newItem.seriesName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item">
+              儿童
+              <div class="menu-item-box" v-show="currentMenu==='children'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem) in seriesMenu" :key="newItem.seriesID">{{newItem.seriesName}}</li>
                 </ul>
               </div>
             </li>
@@ -27,11 +66,11 @@
         </div>
         <div class="nav-icon">
           <span class="iconfont icon-fangdajing" @click="searchShow"></span>
-          <span class="nav-icon-shoucang">
-            <i class="iconfont icon-aixin" @click="GotoWish"></i>
+          <span class="nav-icon-shoucang"  @click="GotoWish">
+            <i class="iconfont icon-aixin"></i>
             <span class="icon-shoucang-tip">0</span>
           </span>
-          <span class="nav-icon-gouwuche">
+          <span class="nav-icon-gouwuche"  @click="GotoCart">
             <i class="iconfont icon-gouwuche"></i>
             <span class="icon-gouwuche-tip">0</span>
           </span>
@@ -48,7 +87,7 @@
           <div v-else>
             <div class="userMessage">
               <div class="userImg">
-                <img src="../assets/img/touxiang.png" alt />
+                <img :src="require('../assets/img/touxiang.png')" alt />
               </div>
               <span>{{user.username}}</span>
             </div>
@@ -82,46 +121,12 @@ export default {
   components: {},
   data() {
     return {
+      currentMenu:'',
       isLogin: false,
       hidden: false,
       searchHiddle: false,
-      navmenu: [
-        {
-          id: 1,
-          tag: false,
-          text: "主页",
-        },
-        {
-          id: 2,
-          tag: true,
-          text: "家居用品",
-          childrenMenu: ["保暖防护", "收纳用品", "浴室洗晒", "居家布艺"],
-        },
-        {
-          id: 3,
-          tag: true,
-          text: "品牌",
-          childrenMenu: ["顾家家居", "喜临门", "中派", "舍己屋"],
-        },
-        {
-          id: 4,
-          tag: true,
-          text: "装饰品",
-          childrenMenu: ["装饰画", "照片墙", "十字绣"],
-        },
-        {
-          id: 5,
-          tag: true,
-          text: "家纺",
-          childrenMenu: ["清凉夏被", "抱枕靠垫"],
-        },
-        {
-          id: 6,
-          tag: true,
-          text: "儿童",
-          childrenMenu: ["儿童纺织", "儿童饰品", "儿童灯具"],
-        },
-      ],
+      seriesMenu:[],
+      sortMenu:[],
       user: {
         username: "杨洋",
         email: "1239201872@qq.com",
@@ -129,6 +134,7 @@ export default {
         addresses: "广东省深圳市宝安区西部硅谷",
       },
       chengeMess: { name: false, email: false, phone: false, address: false },
+      touxiang:""
     };
   },
   //监听属性 类似于data概念
@@ -147,13 +153,16 @@ export default {
         this.hidden = false;
       }
     },
+    go(router){
+      this.$router.push(router)
+    },
     move() {
       this.$refs.userBox.style.display = "block";
       this.$refs.userBox.style.background = "rgba(0,0,0,.5)";
-      this.$refs.users.className = "openUser user"
+      this.$refs.users.className = "openUser user";
     },
     close() {
-      this.$refs.users.className = "closeUser user"
+      this.$refs.users.className = "closeUser user";
       this.$refs.userBox.style.background = "rgba(0,0,0,0)";
       setTimeout(() => {
         this.$refs.userBox.style.display = "none";
@@ -171,32 +180,64 @@ export default {
     GotoWish() {
       this.$router.push("/Wish");
     },
-    quit() {},
-    Login(){
-      this.$router.push("/Login")
-    }
+    goProductGrid:function(id){
+      if(this.$route.name==="Productgrid"){
+        this.$emit('post-id',id)
+      }else{
+        this.$router.push({
+              name:'Productgrid',
+              params:{
+                  id:id
+              }
+          })
+      }
+    },
+     GotoCart() {
+      this.$router.push("/Cart");
+    },
+    quit() {
+      localStorage.removeItem("userID");
+      this.isLogin = false
+    },
+    Login() {
+      this.$router.push("/Login");
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
-  //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
-    var userID = localStorage.getItem("userID")
-    window.addEventListener("scroll", this.handleScroll);
-    if(userID){
-        this.isLogin = true
-        console.log(userID)
-    }
-    this.$axios.post("api/user/getUserInfoByID",this.$qs.stringify({
-      userID:userID
-    })).then((res)=>{
-      if(res.code==200){
-        this.user = res.results[0]
-      } 
+  created() {
+    this.$axios.get('api/admin/getAllSeries').then(res=>{
+      this.seriesMenu = res.results
+    });
+    this.$axios.get('api/admin/getAllSort').then(res=>{
+      this.sortMenu = res.results
     })
   },
+  //生命周期 - 挂载完成（可以访问DOM元素）
+  mounted() {
+    var userID = localStorage.getItem("userID");
+    window.addEventListener("scroll", this.handleScroll);
+    if (userID) {
+      this.isLogin = true;
+      // console.log(userID);
+      this.$axios
+        .post(
+          "api/user/getUserInfoByID",
+          this.$qs.stringify({
+            userID: userID,
+          })
+        )
+        .then((res) => {
+          if (res.code == 200) {
+            this.user = res.results[0];
+            // console.log(res.results[0])
+          }
+        });
+    }else{
+      this.isLogin = false;
+    }
+  },
   beforeCreate() {}, //生命周期 - 创建之前
-  beforeMount() {
-  }, //生命周期 - 挂载之前
+  beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
   updated() {}, //生命周期 - 更新之后
   beforeDestroy() {}, //生命周期 - 销毁之前
@@ -493,24 +534,32 @@ export default {
         }
       }
     }
-    .openUser{
-      animation: gogo .5s linear;
-    };
-    .closeUser{
-      animation:  to .5s linear;
+    .openUser {
+      animation: gogo 0.5s linear;
+    }
+    .closeUser {
+      animation: to 0.5s linear;
     }
     @keyframes gogo {
-      from{right: -300px;}
-      to{right: 0;}
+      from {
+        right: -300px;
+      }
+      to {
+        right: 0;
+      }
     }
     @keyframes to {
-      from{right: 0;}
-      to{right: -300px;}
+      from {
+        right: 0;
+      }
+      to {
+        right: -300px;
+      }
     }
     .userBox {
       display: none;
       position: fixed;
-      top:0;
+      top: 0;
       left: 0;
       bottom: 0;
       right: 0;
@@ -559,9 +608,11 @@ export default {
           span {
             display: inline-block;
             width: 100px;
-            height: 30px;
+            height: 50px;
             text-align: center;
-            line-height: 30px;
+            line-height: 60px;
+            font-size: 18px;
+            font-weight: bolder;
           }
           .users-inp {
             width: 200px;
