@@ -1,17 +1,22 @@
 <template>
   <div id="list">
+    <!-- 面包屑开始 -->
     <div class="list-nav">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">代理商管理</el-breadcrumb-item>
         <el-breadcrumb-item>添加代理商</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
+    <!-- 面包屑结束 -->
+    <!-- 搜索框开始 -->
     <div class="list-search">
       <section class="search-input">
         <el-input v-model="input" placeholder="请输入代理商名称" style="width:100%;height:100%;"></el-input>
       </section>
       <section class="search-btn" @click="checkoutInput">检索</section>
     </div>
+    <!-- 搜索框结束 -->
+    <!-- table的开始 -->
     <el-table :data="tableData" border>
       <el-table-column fixed prop="agent" label="代理商名称" width="100"></el-table-column>
       <el-table-column prop="code" label="代理商编码" width="200"></el-table-column>
@@ -36,44 +41,45 @@
             @click="dialogFormVisible = true"
             @click.capture="handleClickEdit(scope.row)"
           >编辑</el-button>
-          <!-- 编辑对话框的开始 -->
-
-          <el-dialog :visible.sync="dialogFormVisible">
-            <el-form :model="rowObj">
-              <el-form-item label="代理商名称" :label-width="formLabelWidth">
-                <el-input v-model="rowObj.agent" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="代理商编码" :label-width="formLabelWidth">
-                <el-input v-model="rowObj.code" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="所属区域" :label-width="formLabelWidth">
-                <el-input v-model="rowObj.region" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="负责人" :label-width="formLabelWidth">
-                <el-input v-model="rowObj.leader" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="登录名" :label-width="formLabelWidth">
-                <el-input v-model="rowObj.login" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="联系方式" :label-width="formLabelWidth">
-                <el-input v-model="rowObj.contact" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="传真" :label-width="formLabelWidth">
-                <el-input v-model="rowObj.fax" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="邮箱" :label-width="formLabelWidth">
-                <el-input v-model="rowObj.mail" autocomplete="off"></el-input>
-              </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="changeTableData">确 定</el-button>
-            </div>
-          </el-dialog>
-          <!-- 编辑对话框的结束 -->
+          <!-- table的结束 -->
         </template>
       </el-table-column>
     </el-table>
+    <!-- 编辑对话框的开始 -->
+    <!-- !!!!!!!!!!!!!!!!!!!!!  不能放在el-table里面  !!!!!!!!!!!!!!!!!!!!! 吐出一口陈年老血 -->
+    <el-dialog :visible.sync="dialogFormVisible">
+      <el-form :model="rowObj">
+        <el-form-item label="代理商名称" :label-width="formLabelWidth">
+          <el-input v-model="rowObj.agent" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="代理商编码" :label-width="formLabelWidth">
+          <el-input v-model="rowObj.code" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="所属区域" :label-width="formLabelWidth">
+          <el-input v-model="rowObj.region" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="负责人" :label-width="formLabelWidth">
+          <el-input v-model="rowObj.leader" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="登录名" :label-width="formLabelWidth">
+          <el-input v-model="rowObj.login" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="联系方式" :label-width="formLabelWidth">
+          <el-input v-model="rowObj.contact" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="传真" :label-width="formLabelWidth">
+          <el-input v-model="rowObj.fax" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" :label-width="formLabelWidth">
+          <el-input v-model="rowObj.mail" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 编辑对话框的结束 -->
   </div>
 </template>
 
@@ -82,14 +88,35 @@ export default {
     data() {
       return {
         input: "",
+        tableData: [],
+        tableDataTrans:[],
         rowObj: {},
         dialogFormVisible: false,
-        formLabelWidth: "90px",
-        tableData: [],
-        tableDataTrans:[]
+        formLabelWidth: "90px"
       };
     },
   methods: {
+
+    // 获取渲染页面的数据
+    async getTableData() {
+      const tabledres = await this.$axios.get(
+        "http://easy-mock.ncgame.cc/mock/5f29fb29b7d01c445ce4a0d5/myapp/merchant"
+      );
+      this.tableData = tabledres.data;
+      var newdata = localStorage.getItem('newdata');
+      // console.log(newdata)
+      if(newdata){
+        var newdataArr = JSON.parse(newdata);
+        newdataArr = newdataArr.map(function(item,index,array){
+           item.region = item.region.join('')
+           return item
+        })
+        this.tableData=[...this.tableData,...newdataArr]
+        console.log(this.tableData)
+      }
+
+    },
+    // 点击搜索框逻辑
     checkoutInput() {
       console.log(this.input);
       if (this.input) {
@@ -102,29 +129,16 @@ export default {
         this.tableData = this.tableDataTrans;
       }
     },
-    changeTableData() {
-      this.dialogFormVisible = false;
-    },
-    async getTableData() {
-      const tabledres = await this.$axios.get(
-        "http://easy-mock.ncgame.cc/mock/5f29fb29b7d01c445ce4a0d5/myapp/merchant"
-      );
-      this.tableData = tabledres.data;
-      var newdata = localStorage.getItem('newdata');
-      // console.log(newdata)
-      if(newdata){
-        var newdataArr = JSON.parse(newdata);
-        this.tableData=[...newdataArr,...this.tableData]
-        // console.log(this.tableData)
-      }
-
-    },
+    // 点击编辑的时候存数据
     handleClickEdit(row) {
+      // 把当前行的数据存到this.rowObj上
       this.rowObj = row;
     },
+    // 弹出框逻辑
     handleClick(row) {
       this.rowObj = row;
       const h = this.$createElement;
+      // 生成查看弹出款
       this.$msgbox({
         message: h("div", { style: "height:400px;" }, [
           h(
@@ -203,17 +217,13 @@ export default {
           }
         },
       });
-    },
+    }
   },
   mounted() {
     this.getTableData();
+  }
+}
 
-  },
-  created(){
-
-  },
-
-};
 </script>
 
 <style lang="less">
