@@ -18,6 +18,9 @@
         <el-form-item label="代理商名称" prop="agent">
           <el-input v-model="form.agent" style="width:300px" placeholder="例:宝洁公司出品(只允许输入中文)"></el-input>
         </el-form-item>
+        <el-form-item label="代理商代码" prop="code">
+          <el-input v-model="form.code" style="width:300px" placeholder="例:DLS201802281450280741"></el-input>
+        </el-form-item>
         <el-form-item label="地区" prop="region">
           <el-cascader style="width:300px" v-model="form.region" placeholder="试试搜索：指南" :options="options" filterable></el-cascader>
         </el-form-item>
@@ -87,6 +90,7 @@ export default {
     return {
       form: {
         agent: "",
+        code:'',
         region: "",
         leader: "",
         login: "",
@@ -276,8 +280,22 @@ export default {
         this.$refs.form.validate((boolean,object)=>{
           if(boolean){
             if(this.form.radio === '1'){
-             localStorage.setItem('newdata',JSON.stringify(this.form));
-             this.$router.push('merchant')
+              // 获取本地里newdata的数据 字符串
+              var str = localStorage.getItem('newdata');
+              // 把字符串转成数组
+              var localobj = JSON.parse(str)
+              // 没有localstorage数据时
+              // 建立空数组存放value
+              var localvalue = [];
+              if(!str){
+                localvalue = [this.form]
+              }else{
+                localobj.push(this.form)
+                localvalue = localobj;
+
+              }
+             localStorage.setItem('newdata',JSON.stringify(localvalue));
+             this.$router.push('merchant');
              }else{
               this.$message.error({message:'请同意协议!!!',center:true});
               return false;
