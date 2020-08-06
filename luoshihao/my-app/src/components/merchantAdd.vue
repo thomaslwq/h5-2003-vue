@@ -22,7 +22,7 @@
           <el-input v-model="form.code" style="width:300px" placeholder="例:DLS201802281450280741"></el-input>
         </el-form-item>
         <el-form-item label="地区" prop="region">
-          <el-cascader style="width:300px" v-model="form.region" placeholder="试试搜索：指南" :options="options" filterable></el-cascader>
+          <el-cascader style="width:300px" v-model="form.region" placeholder="试试搜索：深圳" :options="options" filterable></el-cascader>
         </el-form-item>
         <el-form-item label="负责人" prop="leader">
           <el-input v-model="form.leader" style="width:300px" placeholder="例:乔布斯(只允许输入中文)"></el-input>
@@ -48,8 +48,8 @@
         <el-form-item label="邮箱" prop="mail">
           <el-input v-model="form.mail" style="width:400px"></el-input>
         </el-form-item>
-        <el-form-item label="备注">
-          <el-input type="textarea" v-model="form.remarks" style="width:600px;"></el-input>
+        <el-form-item label="备注" class="remarks">
+          <el-input type="textarea" v-model="form.remarks" style="width:500px;"></el-input>
         </el-form-item>
         <el-form-item label="是否开通">
           <el-radio v-model="form.radio" label="1">启用</el-radio>
@@ -311,22 +311,22 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less" scoped=''>
 .addform-nav {
   height: 50px;
   border-bottom: 1px solid #909399;
   padding-left: 10px;
-  margin-top: 20px;
   display:flex;
   align-items:center;
-  a {
-    text-decoration: none;
-    color: #333;
-    font-size: 18px;
-    margin-right: 8px;
-  }
 }
 .addform-content {
   margin-top: 10px;
+}
+// 深度选择器
+// 在Sass和Scsss /deep/ ::v-deep
+// 其他可以使用 >>>
+.el-textarea /deep/ .el-textarea__inner{
+  min-height:200px !important;
+  resize: none;
 }
 </style>

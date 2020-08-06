@@ -105,18 +105,19 @@ export default {
            return item
         })
         this.tableData=[...this.tableData,...newdataArr]
-        console.log(this.tableData)
+        // console.log(this.tableData)
+        this.tableDataTrans = this.tableData;
       }
 
     },
     // 点击搜索框逻辑
     checkoutInput() {
-      console.log(this.input);
+      console.log(this.tableDataTrans);
       if (this.input) {
-        const filterdata = this.tableData.filter((item) => {
+        const filterdata = this.tableDataTrans.filter((item) => {
           return item.agent.indexOf(this.input) != -1;
         });
-        this.tableDataTrans = this.tableData;
+
         this.tableData = filterdata;
       }else{
         this.tableData = this.tableDataTrans;
