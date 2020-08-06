@@ -143,51 +143,51 @@ export default {
               ],
             },
             {
-              value: "guangzhou",
+              value: "广州",
               label: "广州",
               children: [
                 {
-                  value: "yuexiu",
+                  value: "越秀区",
                   label: "越秀区",
                 },
                 {
-                  value: "haizhu",
+                  value: "海珠区",
                   label: "海珠区",
                 },
                 {
-                  value: "liwan",
+                  value: "荔湾区",
                   label: "荔湾区",
                 },
                 {
-                  value: "tianhe",
+                  value: "天河区",
                   label: "天河区",
                 },
                 {
-                  value: "baiyun",
+                  value: "白云区",
                   label: "白云区",
                 },
                 {
-                  value: "huangpu",
+                  value: "黄埔区",
                   label: "黄埔区",
                 },
                 {
-                  value: "huadu",
+                  value: "花都区",
                   label: "花都区",
                 },
                 {
-                  value: "dpanyu",
+                  value: "番禺区",
                   label: "番禺区",
                 },
                 {
-                  value: "nansha",
+                  value: "南沙区",
                   label: "南沙区",
                 },
                 {
-                  value: "conghua",
+                  value: "从化区",
                   label: "从化区",
                 },
                 {
-                  value: "zengcheng",
+                  value: "增城区",
                   label: "增城区",
                 },
               ],
@@ -299,6 +299,8 @@ export default {
   border-bottom: 1px solid #909399;
   padding-left: 10px;
   margin-top: 20px;
+  display:flex;
+  align-items:center;
   a {
     text-decoration: none;
     color: #333;

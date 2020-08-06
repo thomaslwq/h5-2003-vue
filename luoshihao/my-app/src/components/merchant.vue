@@ -189,12 +189,11 @@ export default {
   },
   mounted() {
     this.getTableData();
+  },
+  created(){
     var newdata = localStorage.getItem('newdata');
     this.tableData.splice(0,0,JSON.parse(newdata))
     console.log(this.tableData)
-  },
-  created(){
-
   },
 
   data() {
@@ -219,6 +218,8 @@ export default {
   height: 50px;
   border-bottom: 1px solid #909399;
   padding-left: 10px;
+  display:flex;
+  align-items:center;
 }
 .list-search {
   display: flex;
