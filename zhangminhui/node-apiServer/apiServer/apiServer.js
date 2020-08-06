@@ -18,12 +18,21 @@ const {
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
 var multer = require('multer')
-const upload = multer({
-  dest: '../../uploads'
-});
 
 const app = express();
 
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+
+var upload = multer({ storage: storage })
+app.use(upload.single('file'));
 //设置跨域
 app.use(cors());
 //设置body-parser
@@ -43,7 +52,6 @@ app.use(
     },
   })
 );
-app.use(upload.single('file'));
 //路由拦截
 
 //建立数据库连接
@@ -388,7 +396,7 @@ app.post('/api/admin/addProduct', function (req, res, next) {
  */
 app.post("/api/admin/updateProduct", function (req, res, next) {
   var body = req.body;
-console.log(body);
+  console.log(body);
   Object.keys(productModel).forEach((keys) => {
     userModel[keys] = body[keys];
   });
@@ -503,9 +511,22 @@ app.post("/api/admin/deleteAllProducts", function (req, res, next) {
  */
 app.post('/api/admin/uploadProductPicture', function (req, res, next) {
   console.log(req.body);
-console.log(  req.file);
-  var file=req.file;
-  
+  console.log(req.file);
+  var body=req.body;
+  var file = req.file;
+  if(body.productID!="undefined"){
+    filepath="uploads/"+file.filename
+    var sql="update product set imgurl='/"+filepath+"' where productID="+body.productID;
+    console.log(sql);
+    myCon.query(sql,function(error,results,fields){
+    if(error){
+    res.send({code:400,content:'connect failed'+error});
+    }else{
+    res.send({code:200,content:'upload success',results});
+    }
+    })
+  }
+
 });
 //#endregion
 
@@ -601,7 +622,8 @@ app.post('/api/product/getNewDesignProductBySeries', function (req, res, next) {
  */
 app.post('/api/product/getProductInfoByID', function (req, res, next) {
   var body = req.body;
-  var sql = "select * from product where productID=" + body.productID;
+  var sql = "select product.*,color.colorName,color.colorValue,material.materialName,material.materialInstructions,series.seriesName,series.bandName,series.style,sort.sortName,sort.fitnum,sort.shape,specification.specificationValue from product,color,material,series,sort,specification where product.colorID=color.colorID and product.materialID=material.materialID and product.seriesID=series.seriesID and product.sortID=sort.sortID  and product.specificationID=specification.specificationID and product.productID="+body.productID; 
+  console.log(sql);
   myCon.query(sql, function (error, results, fields) {
     if (error) {
       res.send({
@@ -624,8 +646,30 @@ app.post('/api/product/getProductInfoByID', function (req, res, next) {
  */
 app.post('/api/product/getProductInfoBySeriesID', function (req, res, next) {
   var body = req.body;
-  var sql = "select product.*,series.seriesName,series.bandName,series.style,color.colorName,color.colorValue,material.materialName,material.maintelInstructions,specification.specificationValue,sort.sortName,sort.shape  from product,series,color,material,specification,sort where product.colorID=color.colorID and product.seriesID=series.seriesID and product.materialID=material.materialID and product.specificationID=specification.specificationID and product.sortID=sort.sortID and product.seriesID=" + body.seriesID;
+  var sql = "select product.*,series.seriesName,series.bandName,series.style,color.colorName,color.colorValue,material.materialName,material.materialInstructions,specification.specificationValue,sort.sortName,sort.shape  from product,series,color,material,specification,sort where product.colorID=color.colorID and product.seriesID=series.seriesID and product.materialID=material.materialID and product.specificationID=specification.specificationID and product.sortID=sort.sortID and product.seriesID=" + body.seriesID;
   console.log(sql);
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: 'connect failed' + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: 'find success',
+        results
+      });
+    }
+  });
+});
+/**
+ * 商品-按品牌展示商品信息
+ * @param {String} sortID
+ */
+app.post('/api/product/getProductInfoBySortID', function (req, res) {
+  var body = req.body;
+  var sql = "select product.*,series.seriesName,series.bandName,series.style,color.colorName,color.colorValue,material.materialName,material.materialInstructions,specification.specificationValue,sort.sortName,sort.shape  from product,series,color,material,specification,sort where product.colorID=color.colorID and product.seriesID=series.seriesID and product.materialID=material.materialID and product.specificationID=specification.specificationID and product.sortID=sort.sortID and product.sortID=" + body.sortID;
   myCon.query(sql, function (error, results, fields) {
     if (error) {
       res.send({
@@ -789,30 +833,45 @@ app.post('/api/product/deleteCart', function (req, res) {
  * 商品-批量删除购物车
  * @param {String} cartIDs
  */
-app.post('/api/product/deleteAllCart',function(req,res){
-  var body=req.body;
-  var sql="delete from cart where cartID in ("+body.cartIDs+")";
-  myCon.query(sql,function(error,results,fields){
-  if(error){
-  res.send({code:400,content:'connect failed'+error});
-  }else{
-  res.send({code:200,content:'delete all cart success',results});
-  }
+app.post('/api/product/deleteAllCart', function (req, res) {
+  var body = req.body;
+  var sql = "delete from cart where cartID in (" + body.cartIDs + ")";
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: 'connect failed' + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: 'delete all cart success',
+        results
+      });
+    }
   });
 });
 /**
  * 商品-查看购物车
  * @param {String} userID
  */
-app.post('/api/product/getAllCartByUserID',function(req,res){
-  var body=req.body;
-  var sql="select product.*,users.userID,cart.count from product,users,cart where cart.productID=product.productID and cart.userID=users.userID and userID="+body.userID;
-  myCon.query(sql,function(error,results,fields){
-  if(error){
-  res.send({code:400,content:'connect failed'+error});
-  }else{
-  res.send({code:200,content:'find success',results});
-  }
+app.post('/api/product/getAllCartByUserID', function (req, res) {
+  var body = req.body;
+  var sql = "select product.*,users.userID,cart.count from product,users,cart where cart.productID=product.productID and cart.userID=users.userID and users.userID=" + body.userID;
+  console.log(sql);
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: 'connect failed' + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: 'find success',
+        results
+      });
+    }
   });
 });
 //#endregion
@@ -1230,7 +1289,7 @@ app.post("/api/admin/deleteAllSpecifications", function (req, res, next) {
  * 规格管理-查看规格
  */
 app.get("/api/admin/getAllSpecification", function (req, res, next) {
-  var sql = "select * from specification order by specificationName desc";
+  var sql = "select * from specification";
   myCon.query(sql, function (error, results, fields) {
     if (error) {
       res.send({
