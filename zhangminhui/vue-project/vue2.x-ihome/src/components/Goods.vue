@@ -14,7 +14,7 @@
         </div>
     </section>
     <section class="item-name"><span><a href="">{{item.productName}}</a></span></section>
-    <section class="item-price"><span>{{item.price}}</span></section>
+    <section class="item-price"><span>￥{{item.price}}</span></section>
 </div>
 </template>
 
