@@ -156,17 +156,18 @@
                 <el-form-item label="上传图片">
                     <el-upload
                         class="upload-demo"
-                        action="http://localhost:10500/api/admin/uploadProductPicture"
+                        action="http://175.24.122.212:10500/api/admin/uploadProductPicture"
                         :on-preview="handlePreview"
                         :on-remove="handleRemove"
                         :before-remove="beforeRemove"
                         multiple
-                        :limit="4"
+                        :limit="1"
                         :on-exceed="handleExceed"
                         :auto-upload="false"
                         ref="upload"
                         :before-upload="beforeUpload"
                         :data="uploadData"
+                        :file-list="fileList"
                         list-type="picture-card"
                     >
                         <el-button size="small" type="primary">点击上传</el-button>
@@ -213,7 +214,8 @@ export default {
             sorts: [],
 
             //上传
-            uploadData: {}
+            uploadData: {},
+            fileList:[]
         };
     },
     //监听属性 类似于data概念
@@ -356,22 +358,28 @@ export default {
         },
         //上传
         handleRemove(file, fileList) {
-            console.log(file, fileList);
         },
         handlePreview(file) {
-            console.log(file);
         },
         beforeRemove(file) {
-            console.log(file);
         },
         handleExceed(file) {
-            console.log(file);
         },
         beforeUpload(file) {
             console.log(file);
         },
-        upload: function () {
-           this.$refs.upload.submit();
+        upload(file){
+            
+            let form = this.$refs['form'].$el;
+            let formData = new FormData(form);
+                formData.append('productID', this.form.productID);
+                this.$axios
+                .post('api/admin/uploadProductPicture', formData)
+                .then((res) => {})
+                .catch((err) => {});
+            
+            //    this.$refs.upload.submit();
+         
         }
     },
     //生命周期 - 创建完成（可以访问当前this实例）
