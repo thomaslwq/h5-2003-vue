@@ -1,11 +1,5 @@
 <template>
   <div id="addform">
-    <div class="addform-nav">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">代理商管理</el-breadcrumb-item>
-        <el-breadcrumb-item>添加代理商</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
     <div class="addform-content">
       <el-form
         ref="form"
@@ -22,7 +16,7 @@
           <el-input v-model="form.code" style="width:300px" placeholder="例:DLS201802281450280741"></el-input>
         </el-form-item>
         <el-form-item label="地区" prop="region">
-          <el-cascader style="width:300px" v-model="form.region" placeholder="试试搜索：指南" :options="options" filterable></el-cascader>
+          <el-cascader style="width:300px" v-model="form.region" placeholder="试试搜索：深圳" :options="options" filterable></el-cascader>
         </el-form-item>
         <el-form-item label="负责人" prop="leader">
           <el-input v-model="form.leader" style="width:300px" placeholder="例:乔布斯(只允许输入中文)"></el-input>
@@ -48,8 +42,8 @@
         <el-form-item label="邮箱" prop="mail">
           <el-input v-model="form.mail" style="width:400px"></el-input>
         </el-form-item>
-        <el-form-item label="备注">
-          <el-input type="textarea" v-model="form.remarks" style="width:600px;"></el-input>
+        <el-form-item label="备注" class="remarks">
+          <el-input type="textarea" v-model="form.remarks" style="width:500px;"></el-input>
         </el-form-item>
         <el-form-item label="是否开通">
           <el-radio v-model="form.radio" label="1">启用</el-radio>
@@ -105,93 +99,93 @@ export default {
       },
       options: [
         {
-          value: "广东省",
+          value: "guangdong",
           label: "广东省",
           children: [
             {
-              value: "深圳市",
+              value: "shenzhen",
               label: "深圳市",
               children: [
                 {
-                  value: "罗湖区",
+                  value: "luohu",
                   label: "罗湖区",
                 },
                 {
-                  value: "龙岗区",
+                  value: "longgang",
                   label: "龙岗区",
                 },
                 {
-                  value: "龙华区",
+                  value: "longhua",
                   label: "龙华区",
                 },
                 {
-                  value: "福田区",
+                  value: "futian",
                   label: "福田区",
                 },
                 {
-                  value: "宝安区",
+                  value: "baoan",
                   label: "宝安区",
                 },
                 {
-                  value: "南山区",
+                  value: "nanshan",
                   label: "南山区",
                 },
                 {
-                  value: "盐田区",
+                  value: "yantian",
                   label: "盐田区",
                 },
                 {
-                  value: "坪山区",
+                  value: "pingshan",
                   label: "坪山区",
                 },
               ],
             },
             {
-              value: "广州",
+              value: "guangzhou",
               label: "广州",
               children: [
                 {
-                  value: "越秀区",
+                  value: "yuexiu",
                   label: "越秀区",
                 },
                 {
-                  value: "海珠区",
+                  value: "haizhu",
                   label: "海珠区",
                 },
                 {
-                  value: "荔湾区",
+                  value: "liwan",
                   label: "荔湾区",
                 },
                 {
-                  value: "天河区",
+                  value: "tianhe",
                   label: "天河区",
                 },
                 {
-                  value: "白云区",
+                  value: "baiyun",
                   label: "白云区",
                 },
                 {
-                  value: "黄埔区",
+                  value: "huangpu",
                   label: "黄埔区",
                 },
                 {
-                  value: "花都区",
+                  value: "huadu",
                   label: "花都区",
                 },
                 {
-                  value: "番禺区",
+                  value: "panyu",
                   label: "番禺区",
                 },
                 {
-                  value: "南沙区",
+                  value: "nansha",
                   label: "南沙区",
                 },
                 {
-                  value: "从化区",
+                  value: "conghua",
                   label: "从化区",
                 },
                 {
-                  value: "增城区",
+                  value: "zengcheng",
                   label: "增城区",
                 },
               ],
@@ -275,8 +269,8 @@ export default {
     };
   },
   methods: {
+    // 点击提交的逻辑
     onSubmit() {
-
         this.$refs.form.validate((boolean,object)=>{
           if(boolean){
             if(this.form.radio === '1'){
@@ -292,7 +286,6 @@ export default {
               }else{
                 localobj.push(this.form)
                 localvalue = localobj;
-
               }
              localStorage.setItem('newdata',JSON.stringify(localvalue));
              this.$router.push('merchant');
@@ -304,6 +297,7 @@ export default {
         })
 
     },
+    // 点击清空的逻辑
     allClear(){
       this.$refs.form.resetFields()
     }
@@ -311,22 +305,22 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less" scoped=''>
 .addform-nav {
   height: 50px;
   border-bottom: 1px solid #909399;
   padding-left: 10px;
-  margin-top: 20px;
   display:flex;
   align-items:center;
-  a {
-    text-decoration: none;
-    color: #333;
-    font-size: 18px;
-    margin-right: 8px;
-  }
 }
 .addform-content {
   margin-top: 10px;
+}
+// 深度选择器
+// 在Sass和Scsss /deep/ ::v-deep
+// 其他可以使用 >>>
+.el-textarea /deep/ .el-textarea__inner{
+  min-height:200px !important;
+  resize: none;
 }
 </style>
