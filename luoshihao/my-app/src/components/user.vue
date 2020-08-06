@@ -2,7 +2,7 @@
 <template>
   <div>
     <el-container class="box">
-      <el-header>用户权限</el-header>
+      <!-- <el-header>用户权限</el-header> -->
       <el-main>
         <div>
           <el-table
@@ -153,12 +153,6 @@ export default {
 .box {
   position: relative;
 }
-.el-header {
-  background-color: #b3c0d1;
-  color: #333;
-  text-align: left;
-  line-height: 60px;
-}
 
 .el-aside {
   background-color: #d3dce6;
@@ -169,6 +163,7 @@ export default {
 .el-main {
   background-color: #fff;
   color: #333;
+  margin-top: 10px;
 }
 
 body > .el-container {

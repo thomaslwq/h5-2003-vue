@@ -2,7 +2,7 @@
   <div>
     <el-container class="box">
       <!-- 头部 -->
-      <el-header>统计报表</el-header>
+      <!-- <el-header>统计报表</el-header> -->
       <!-- 内容 -->
       <section class="Sta_main">
         <el-row>
@@ -162,16 +162,6 @@ export default {
   position: relative;
 }
 // 布局css
-.el-header {
-  position: fixed;
-  top: 8vh;
-  background-color: #fff;
-  color: #333;
-  text-align: left;
-  line-height: 60px;
-  z-index: 5;
-  width: 100%;
-}
 .Sta_main {
   margin-top: 60px;
   width: 100%;

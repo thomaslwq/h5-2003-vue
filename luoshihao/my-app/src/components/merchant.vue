@@ -1,13 +1,6 @@
 <template>
   <div id="list">
-    <!-- 面包屑开始 -->
-    <div class="list-nav">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">代理商管理</el-breadcrumb-item>
-        <el-breadcrumb-item>添加代理商</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
-    <!-- 面包屑结束 -->
+    
     <!-- 搜索框开始 -->
     <div class="list-search">
       <section class="search-input">
@@ -227,16 +220,9 @@ export default {
 
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .el-main {
   text-align: left;
-}
-.list-nav {
-  height: 50px;
-  border-bottom: 1px solid #909399;
-  padding-left: 10px;
-  display:flex;
-  align-items:center;
 }
 .list-search {
   display: flex;
