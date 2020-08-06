@@ -7,7 +7,7 @@
         <div class="details-top-content">
             <h2>产品详情</h2>
             <section class="details-top-link">
-                <a href="">主页</a><em>/</em><a href="">产品详情</a>
+                <a href="/">主页</a><em>/</em><a href="">产品详情</a>
             </section>
         </div>
     </div>
@@ -20,7 +20,7 @@
                 <!-- 左边的三张展示图片 -->
                 <div class="content-top-left">
                     <div class="top-left-imgbox" 
-                        @click="changeImg(item.name,item.price,item.type)" 
+                        @click="changeImg(item.name,item.price,item.type,item.productID,item.price)" 
                         v-for="item in imgList" 
                         :key="item.id">
                         <img :src="require('../assets/img/product/' + item.name)">
@@ -30,7 +30,9 @@
                 <!-- 中间的大图区域 -->
                 <div class="content-top-center">
                     <div class="top-center-imgbox">
-                        <img :src="require('../assets/img/product/' + nowImg.name)" alt="">
+                      <transition name="fade">
+                        <img :src="require('../assets/img/product/' + nowImg.name)" alt="" v-if="nowImg.place=='show'">
+                      </transition>  
                     </div>
                 </div>
 
@@ -49,7 +51,7 @@
                         </ul>
                     </section>
                     <section class="top-right-price">
-                        {{nowImg.price}}
+                        ${{nowImg.price}}.00
                     </section>
                     <section class="top-right-describe">
                         <p>奉献者，塞德·杜伊斯莫德临时禁运和劳动者联合会。Ut enim ad minim veniam，quis nostrud exercitation ullamco labouris nisi ut aliquip ex ea commodo</p>
@@ -59,7 +61,7 @@
                             <button @click="subProduct()">-</button><span>{{nowImg.num}}</span><button @click="addProduct()">+</button>
                         </div>
                         <div class="select-right">
-                            <a href="">添加到购物车</a>
+                            <em @click="addToCart()">添加到购物车</em>
                         </div>
                     </section>
                     <section class="top-right-type">
@@ -74,28 +76,34 @@
                 <div class="comment-box">
                     <!-- 顶部选择栏 -->
                     <div class="comment-box-btn">
-                        <div v-for="item in commentList" 
-                        :key="item.id" 
-                        :class="['btn-item',{'active':item.type==btnType}]"
-                        @click="changeBtn(item.type)"
-                        >
-                        {{item.msg}}
-                        </div>
+                          <div v-for="item in commentList" 
+                            :key="item.id" 
+                            :class="['btn-item',{'active':item.type==btnType}]"
+                            @click="changeBtn(item.type)"
+                          >
+                            {{item.msg}}
+                          </div>
                     </div>
                     <!-- 底部信息切换 -->
                     <div class="comment-check">
-                        <p v-show="btnType=='des'" :class="['check-item',{'active':btnType=='des'},{'noActive':btnType!='des'}]">
+                      <transition name="fade">
+                        <p v-show="btnType=='des'" :key='1' :class="['check-item',{'active':btnType=='des'},{'noActive':btnType!='des'}]">
                             如果你希望成功，以恒心为良友，以经验为参谋，以小心为兄弟，以希望为哨兵。<br>
                             航海远行的人，比先定个目的地，中途的指针，总是指着这个方向走，恐怕永无达到的日子。
                         </p>
-                        <p v-show="btnType=='msg'" :class="['check-item',{'active':btnType=='msg'},{'noActive':btnType!='msg'}]">
+                      </transition>
+                      <transition name="fade">
+                        <p v-show="btnType=='msg'" :key='2' :class="['check-item',{'active':btnType=='msg'},{'noActive':btnType!='msg'}]">
                             生活的乐趣取决于生活都本身，而不是取决于工作或地点。<br>
                             梦想无论怎样模糊，总潜伏在我们心底，使我们的心境永远得不到宁静，直到这些梦想成为事实。
                         </p>
-                        <p v-show="btnType=='comment'" :class="['check-item',{'active':btnType=='comment'},{'noActive':btnType!='comment'}]">
+                       </transition>
+                       <transition name="fade">
+                        <p v-show="btnType=='comment'" :key='3' :class="['check-item',{'active':btnType=='comment'},{'noActive':btnType!='comment'}]">
                             积极的人在每一次忧患中都看到一个机会，而消极的人则在每个机会都看到某种忧患。<br>
                             岁月可以赢去我们的生命，却赢不去我们一路留下的欢声笑语，我们的祝福，无尽的爱意。
                         </p>
+                        </transition>
                     </div>
                 </div>
             </section>
@@ -189,15 +197,16 @@ return {
             id:"3",msg:"评论",type:"comment"
         }
     ],
-    nowImg:{name:"product-62.jpg",price:"$29.00",type:"椅子",num:"1"},
+    nowImg:{name:"product-62.jpg",price:"29",type:"椅子",num:"1",place:"show",productID:""},
     imgList:[
         {
-            id:"1",name:"product-62.jpg",price:"$29.00",type:"椅子"
-        }, {
-            id:"2",name:"product-60.jpg",price:"$39.00",type:"凳子"
+            id:"1",name:"product-62.jpg",price:"29",type:"椅子",productID:""
+        }, 
+        {
+            id:"2",name:"product-60.jpg",price:"39",type:"凳子",productID:""
         },
          {
-            id:"3",name:"product-61.jpg",price:"$59.00",type:"摇椅"
+            id:"3",name:"product-61.jpg",price:"59",type:"摇椅",productID:""
         }
     ]
 };
@@ -212,6 +221,33 @@ computed: {
 watch: {},
 //方法集合
 methods: {
+    addToCart(){
+      this.$axios.post("api/product/addToCart",
+          this.$qs.stringify({
+            userID:this.userID || 10014841596696785000,
+            productID:this.nowImg.productID || 10021071596632162000,
+            count:this.nowImg.num
+      })).then(res=>{
+        console.log(res)
+        if(res.code == 200){
+          // this.$message({
+          //   message:"添加购物车成功，赶紧去看看吧!",
+          //   type: "success",
+          // });
+          this.$notify({
+            title: '添加成功',
+            message: '快去购物车看看自己的宝贝吧!',
+            type: 'success',
+            offset: 100
+          });
+        }
+
+
+        
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
     addProduct(){
       this.nowImg.num ++;
     },
@@ -221,11 +257,18 @@ methods: {
       }
       this.nowImg.num --;
     },
-    changeImg(name,price,type){
+    changeImg(name,price,type,productID){
         this.nowImg.name = name;
         this.nowImg.price = price;
         this.nowImg.type = type;
         this.nowImg.num = 1;
+        this.nowImg.place = "";
+        this.nowImg.productID = productID;
+        clearInterval(this.nowImg.timer)
+        this.nowImg.timer = setInterval(()=>{
+          this.nowImg.place = "show";
+          clearInterval(this.nowImg.timer)
+        },0)    
     },
     changeBtn(type){
         this.btnType = type;
@@ -239,16 +282,37 @@ methods: {
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
+  //先接受主页传过来的商品ID
+  //根据商品ID请求数据，然后渲染到页面上
+  // this.userID = this.$route.params.userID;
+  this.productID = this.$route.params.productID;
+  // 请求数据
+   this.$axios.post("api/product/getProductInfoByID",
+    this.$qs.stringify({
+      productID:this.productID || 10021071596632162000,
+  })).then(res=>{
+    if(res.code == 200){
+      this.imgList.pop();
+      var res = res.results[0];
+      this.imgList.unshift({id:res.productCode,name:"product-61.jpg",price:res.price,type:res.productName})
+      // 替换当前页面的数据
+      this.nowImg = {name:"product-61.jpg",price:res.price,type:res.productName,num:"1",place:"show",productID:res.productID}
+    }
+
+  }).catch(err=>{
+    console.log(err)
+  })
 
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
     var that = this;
-    this.swiper.slideTo(0, 0, false)
+    this.swiper.slideTo(0, 0, false);
+    this.swiper.slidesPerGroupSkip = 0;
     //自动播放
     clearInterval(this.$el.timer)
      this.$el.timer = setInterval(function(){
-        that.swiper.slideNext(500);
+        that.swiper.slideNext(200);
      },2000)
 },
 beforeCreate() {}, //生命周期 - 创建之前
@@ -262,6 +326,12 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 </script>
 <style  lang="less" scoped>
 .product-details {
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
   //顶部链接样式
   .product-details-top {
     background: #EDF1F4;
@@ -338,7 +408,9 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
             width: 440px;
             height: 596px;
             border: 2px solid #f2f2f2;
-
+            .noActive{
+              display:"none";
+            }
             img {
               width: 100%;
               height: 100%;
@@ -443,7 +515,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
               &:hover {
                 background: #FCD7B6;
               }
-              a{
+              em{
                 display: block;
               }
             }
@@ -503,20 +575,14 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
           //底部信息切换
           .comment-check {
             padding-top: 26px;
-            
-            .check-item.active{
-                opacity:1;
-            }
-
             .check-item.noActive{
-                opacity:0;
+              display: none;
             }
+            
             p {
-                opacity: 0;
                 font-size: 16px;
                 color: #243f4d;
                 line-height: 32px;
-                transition: .5s;
             }
           }
         }
