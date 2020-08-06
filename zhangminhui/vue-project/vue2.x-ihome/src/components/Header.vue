@@ -15,11 +15,50 @@
         </div>
         <div class="menu">
           <ul>
-            <li class="menu-item" v-for="(item,index) in navmenu" :key="index">
-              {{item.text}}
-              <div class="menu-item-box" v-show="item.tag">
+            <li class="menu-item">
+              主页
+            </li>
+            <li class="menu-item" @mouseenter="currentMenu='series'" @mouseleave="currentMenu=''">
+              家居用品
+              <div class="menu-item-box" v-show="currentMenu==='series'">
                 <ul class="menu-item-ul">
-                  <li v-for="(newItem,ind) in item.childrenMenu" :key="ind">{{newItem}}</li>
+                  <li v-for="(newItem,index) in seriesMenu" :key="newItem.seriesID+index"
+                  @click="goProductGrid(newItem.seriesID)"
+                  >{{newItem.seriesName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item" @mouseenter="currentMenu='sort'" @mouseleave="currentMenu=''">
+              品牌
+              <div class="menu-item-box" v-show="currentMenu==='sort'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem,index) in sortMenu" :key="newItem.sortID+index"
+                  @click="goProductGrid(newItem.sortID)"
+                  >{{newItem.sortName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item">
+              装饰品
+              <div class="menu-item-box" v-show="currentMenu==='ornament'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem) in seriesMenu" :key="newItem.seriesID">{{newItem.seriesName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item">
+              家纺
+              <div class="menu-item-box" v-show="currentMenu==='textiles'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem) in seriesMenu" :key="newItem.seriesID">{{newItem.seriesName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item">
+              儿童
+              <div class="menu-item-box" v-show="currentMenu==='children'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem) in seriesMenu" :key="newItem.seriesID">{{newItem.seriesName}}</li>
                 </ul>
               </div>
             </li>
@@ -82,46 +121,12 @@ export default {
   components: {},
   data() {
     return {
+      currentMenu:'',
       isLogin: false,
       hidden: false,
       searchHiddle: false,
-      navmenu: [
-        {
-          id: 1,
-          tag: false,
-          text: "主页",
-        },
-        {
-          id: 2,
-          tag: true,
-          text: "家居用品",
-          childrenMenu: ["保暖防护", "收纳用品", "浴室洗晒", "居家布艺"],
-        },
-        {
-          id: 3,
-          tag: true,
-          text: "品牌",
-          childrenMenu: ["顾家家居", "喜临门", "中派", "舍己屋"],
-        },
-        {
-          id: 4,
-          tag: true,
-          text: "装饰品",
-          childrenMenu: ["装饰画", "照片墙", "十字绣"],
-        },
-        {
-          id: 5,
-          tag: true,
-          text: "家纺",
-          childrenMenu: ["清凉夏被", "抱枕靠垫"],
-        },
-        {
-          id: 6,
-          tag: true,
-          text: "儿童",
-          childrenMenu: ["儿童纺织", "儿童饰品", "儿童灯具"],
-        },
-      ],
+      seriesMenu:[],
+      sortMenu:[],
       user: {
         username: "杨洋",
         email: "1239201872@qq.com",
@@ -174,10 +179,29 @@ export default {
     quit() {},
     Login(){
       this.$router.push("/Login")
+    },
+    goProductGrid:function(id){
+      if(this.$route.name==="Productgrid"){
+        this.$emit('post-id',id)
+      }else{
+        this.$router.push({
+              name:'Productgrid',
+              params:{
+                  id:id
+              }
+          })
+      }
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+    this.$axios.get('api/admin/getAllSeries').then(res=>{
+      this.seriesMenu = res.results
+    });
+    this.$axios.get('api/admin/getAllSort').then(res=>{
+      this.sortMenu = res.results
+    })
+  },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     var userID = localStorage.getItem("userID")
