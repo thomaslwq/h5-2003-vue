@@ -2,7 +2,7 @@
 <template>
   <div id="main_body">
     <!-- 固定定位的头部 -->
-
+    <div id="main_body_title">后台主页</div>
     <!-- 内容 -->
     <div id="main_body_con">
       <!-- 上面的3组DIV -->
@@ -299,6 +299,17 @@ div#main_body {
     margin-right: 10px;
   }
   position: relative;
+  div#main_body_title {
+    position: fixed;
+    top: 8vh;
+    width: 100%;
+    text-align: left;
+    height: 60px;
+    background-color: #fff;
+    z-index: 5;
+    line-height: 60px;
+  }
+
   div#main_body_con {
     position: relative;
     top: 60px;
