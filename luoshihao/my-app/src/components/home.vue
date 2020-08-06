@@ -69,7 +69,7 @@
             </el-menu-item>
             <el-menu-item index="/home/intellectual">
               <i class="el-icon-notebook-1"></i>
-              <span>知识产权</span>
+              <span>提交进度</span>
             </el-menu-item>
           </el-menu>
           <!-- 导航栏 结束-->
