@@ -138,7 +138,13 @@ export default {
           type: "success",
           icon: "el-icon-upload2 ",
         },
-        {
+         {
+          content: "威哥完成主页数据请求与渲染",
+          timestamp: "2020-08-6 20:46",
+          size: "large",
+          type: "success",
+          icon: "el-icon-upload2 ",
+        },{
           content: "啊翔合并分支冲突",
           timestamp: "2020-08-6 20:46",
           size: "large",
