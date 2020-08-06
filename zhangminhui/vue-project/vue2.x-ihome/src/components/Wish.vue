@@ -21,29 +21,35 @@
         <table>
           <tr class="wishList-title">
             <th>产品展示</th>
-            <th></th>
+            <th>商品名</th>
             <th>价格</th>
             <th>库存</th>
-            <th></th>
-            <th></th>
+            <th>添加购物车</th>
+            <th>删除</th>
           </tr>
           <tr v-for="(item,index) in wishList" :key="index">
             <td>
-              <img :src="item.src" />
+              <div class="wishListImg">
+                <img :src="'http://175.24.122.212:8989/apiServer'+item.imgurl" />
+              </div>
             </td>
-            <td>{{item.name}}</td>
+            <td>{{item.productName}}</td>
             <td>{{item.price}}</td>
-            <td>{{item.repertory}}</td>
+            <td>{{item.productCode}}</td>
             <td>
-              <button class="CanBuy" v-if="item.buy">添加到购物车</button>
-              <button class="NOBuy" v-else>{{item.repertory}}</button>
+              <button
+                class="CanBuy"
+                v-if="item.productCode>0"
+                @click="addCart(item.productID)"
+              >添加到购物车</button>
+              <button class="NOBuy" v-else>卖光了</button>
             </td>
-            <td @click="closeList(index)" style="cursor: pointer">x</td>
+            <td @click="closeList(item.wishID,index)" style="cursor: pointer">x</td>
           </tr>
         </table>
         <div class="wishList-btm">
-          <span>更新购物车</span>
-          <span>继续购物</span>
+          <span @click="$router.push('/cart')">购物车</span>
+          <span @click="$router.push('productgrid')">继续购物</span>
         </div>
       </div>
     </div>
@@ -66,32 +72,7 @@ export default {
     //这里存放数据
     return {
       isLogin: false,
-      wishList: [
-        {
-          id: 1,
-          src: require("../assets/img/product/product-56.jpg"),
-          name: "木椅",
-          price: "$240.00",
-          repertory: "有库存",
-          buy: true,
-        },
-        {
-          id: 2,
-          src: require("../assets/img/product/product-57.jpg"),
-          name: "吊灯",
-          price: "$240.00",
-          repertory: "缺货",
-          buy: false,
-        },
-        {
-          id: 3,
-          src: require("../assets/img/product/product-58.jpg"),
-          name: "复古表",
-          price: "$240.00",
-          repertory: "卖光了",
-          buy: false,
-        },
-      ],
+      wishList: [],
       Nowish: false,
     };
   },
@@ -109,14 +90,70 @@ export default {
   },
   //方法集合
   methods: {
-    closeList(index) {
+    closeList(wishID, index) {
       this.wishList.splice(index, 1);
+      this.$axios
+        .post(
+          "api/product/deleteWish",
+          this.$qs.stringify({
+            wishID: wishID,
+          })
+        )
+        .then((res) => {
+          if (res.code == 200) {
+            console.log(res);
+          }
+        });
     },
     goHome() {
-      this.$router.push("/");
+      this.$router.push("/productgrid");
     },
     goLogin() {
       this.$router.push("/Login");
+    },
+    addCart(productID) {
+      var userID = localStorage.getItem("userID");
+      this.$axios
+        .post(
+          "api/product/getAllCartByUserID",
+          this.$qs.stringify({
+            userID: userID,
+          })
+        )
+        .then((res) => {
+          console.log(res);
+          if (res.code == 200) {
+            res.results.forEach((item,index) => {
+              if (item.productID == productID) {
+                this.$message({
+                  message: "购物车已经有这件商品了哦",
+                  duration: 1000,
+                  type: "error",
+                });
+              } else {
+                this.$axios
+                  .post(
+                    "api/product/addToCart",
+                    this.$qs.stringify({
+                      userID: userID,
+                      productID: productID,
+                      count: 1,
+                    })
+                  )
+                  .then((res) => {
+                    console.log(res);
+                    if (res.code == 200) {
+                      this.$message({
+                        message: "添加成功",
+                        duration: 1000,
+                        type: "success",
+                      });
+                    }
+                  });
+              }
+            });
+          }
+        });
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -129,9 +166,22 @@ export default {
     } else {
       this.Nowish = false;
     }
-     if (userID) {
+    if (userID) {
       this.isLogin = true;
-     }
+    }
+    this.$axios
+      .post(
+        "api/product/getWishList",
+        this.$qs.stringify({
+          userID: userID,
+        })
+      )
+      .then((res) => {
+        if (res.code == 200) {
+          this.wishList = res.results;
+          console.log(res);
+        }
+      });
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
@@ -194,7 +244,7 @@ export default {
     }
   }
   .Nowish {
-    width: 1000px;
+    width: 1200px;
     margin: 60px auto;
     height: 200px;
     line-height: 200px;
@@ -217,8 +267,30 @@ export default {
         flex-direction: row;
         border-top: 1px solid rgb(235, 235, 235);
         border-bottom: 1px solid rgb(235, 235, 235);
-        img {
-          margin: 10px;
+      }
+      th {
+        flex: 1;
+        height: 56px;
+        line-height: 56px;
+        font-size: 24px;
+        color: #436372;
+      }
+      td {
+        flex: 1;
+        text-align: center;
+        height: 90px;
+        line-height: 90px;
+        font-size: 15px;
+        font-weight: bold;
+        color: #171717;
+        .wishListImg {
+          width: 70px;
+          height: 70px;
+          margin: 10px auto;
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
         .CanBuy {
           padding: 10px 20px;
@@ -243,21 +315,6 @@ export default {
           font-size: 16px;
           font-weight: 700;
           cursor: pointer;
-        }
-        th {
-          flex: 1;
-          height: 56px;
-          line-height: 56px;
-          font-size: 24px;
-          color: #436372;
-        }
-        td {
-          flex: 1;
-          text-align: center;
-          height: 90px;
-          line-height: 90px;
-          font-size: 18px;
-          color: #171717;
         }
       }
       .wishList-title {

@@ -15,7 +15,7 @@
         </div>
         <div class="menu">
           <ul>
-            <li class="menu-item">
+            <li class="menu-item" @click="go">
               主页
             </li>
             <li class="menu-item" @mouseenter="currentMenu='series'" @mouseleave="currentMenu=''">
@@ -68,7 +68,7 @@
           <span class="iconfont icon-fangdajing" @click="searchShow"></span>
           <span class="nav-icon-shoucang"  @click="GotoWish">
             <i class="iconfont icon-aixin"></i>
-            <span class="icon-shoucang-tip">0</span>
+            <span class="icon-shoucang-tip">{{wishNember}}</span>
           </span>
           <span class="nav-icon-gouwuche"  @click="GotoCart">
             <i class="iconfont icon-gouwuche"></i>
@@ -121,18 +121,14 @@ export default {
   components: {},
   data() {
     return {
+      wishNember:0,
       currentMenu:'',
       isLogin: false,
       hidden: false,
       searchHiddle: false,
       seriesMenu:[],
       sortMenu:[],
-      user: {
-        username: "杨洋",
-        email: "1239201872@qq.com",
-        telephone: 13156879024,
-        addresses: "广东省深圳市宝安区西部硅谷",
-      },
+      user: {},
       chengeMess: { name: false, email: false, phone: false, address: false },
       touxiang:""
     };
@@ -153,8 +149,8 @@ export default {
         this.hidden = false;
       }
     },
-    go(router){
-      this.$router.push(router)
+    go(){
+      this.$router.push("/")
     },
     move() {
       this.$refs.userBox.style.display = "block";
@@ -198,6 +194,7 @@ export default {
     quit() {
       localStorage.removeItem("userID");
       this.isLogin = false
+      this.$router.push("/")
     },
     Login() {
       this.$router.push("/Login");
@@ -232,6 +229,20 @@ export default {
             // console.log(res.results[0])
           }
         });
+      //   this.$axios
+      // .post(
+      //   "api/product/getWishList",
+      //   this.$qs.stringify({
+      //     userID: userID,
+      //   })
+      // )
+      // .then((res) => {
+      //   if (res.code == 200) {
+      //     this.wishNember = res.results.length
+      //   }else{
+      //     this.wishNember = 0
+      //   }
+      // });
     }else{
       this.isLogin = false;
     }
