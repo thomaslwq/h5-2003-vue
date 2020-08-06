@@ -4,7 +4,8 @@
       <!-- header!!!!!!!!! -->
       <el-header style="height:8vh">
         <!-- log!!!!!!!! -->
-        <router-link tag="span" to="/login">登录</router-link>
+        <div class="header-bar">admin</div>
+        <div class="header-title">{{title}}</div>
         <div class="header-log">
           <HeaderLog></HeaderLog>
         </div>
@@ -20,9 +21,9 @@
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b"
+            text-color="#333"
+            background-color="#f1f8fa"
+            active-text-color="#333"
             :router="true"
           >
             <el-menu-item index="/home">
@@ -67,14 +68,18 @@
             </el-menu-item>
             <el-menu-item index="/home/intellectual">
               <i class="el-icon-notebook-1"></i>
-              <span>知识产权</span>
+              <span>提交进度</span>
             </el-menu-item>
           </el-menu>
           <!-- 导航栏 结束-->
         </el-aside>
         <el-main style="padding:0;">
+           <!-- <div class="main-title">{{title}}</div> -->
+          
           <router-view></router-view>
           <!-- 这里是内容展示 -->
+          
+          <div class="main-foot">Copyright©2011-2020 电脑疯狂闪屏死机重启</div>
         </el-main>
       </el-container>
     </el-container>
@@ -82,12 +87,18 @@
 </template>
 
 <script>
-import HeaderLog from './HeaderLog'
+import HeaderLog from "./HeaderLog";
 export default {
   //import引入的组件需要注入到对象中才能使用
-components: {
-  HeaderLog,
-},
+  components: {
+    HeaderLog,
+  },
+  data(){
+    return {
+      title:''
+    }
+  },
+  
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -95,28 +106,73 @@ components: {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
+    titleData (){
+      let titleData = window.location.href.slice(window.location.href.indexOf('#')+2)
+      switch(titleData){
+        case 'home':return this.title='后台主页'
+        case 'home/merchant':return this.title='代理商管理'
+        case 'home/merchantAdd':return this.title='添加代理商'
+        case 'home/shopAdd':return this.title='商品添加'
+        case 'home/shop':return this.title='商品列表'
+        case 'home/statistics':return this.title='统计报表'
+        case 'home/user':return this.title='用户权限'
+        case 'home/intellectual':return this.title='知识产权'
+      }
+      }
   },
+  mounted() {
+    this.titleData()
+  },
+  updated() {
+    this.titleData()
+  }
 };
+
 </script>
 
 <style lang="less">
 body {
   padding: 0;
   margin: 0;
+  .el-menu-item-group__title{
+  // width: 201px;
+  padding: 0;
+  box-sizing: content-box;
+  width: 200px;
+  border-right: none;
+}
 }
 //  布局css
+.el-menu-item,.el-submenu__title{
+  width: 200px;
+}
+
 .el-header {
   background-color: #24292e;
   color:rgb(90, 141, 192);
   text-align: center;
   line-height: 60px;
-
-  .header-log {
-    float: right;
-    // width: 200px;
+  padding: 0 !important;
+  .header-bar {
+    width: 200px;
     height: 100%;
-    margin-right: 50px;
+    justify-content: center;
+    color: red;
+    background-image: -webkit-linear-gradient(bottom, #ff537e, #02a898);
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    font-size: 28px;
+    box-shadow: 2px 0 4px rgba(0, 150, 136, 0.1);
+    width: 200px;
+    float: left;
+    user-select: none;
   }
+}
+.header-log {
+  float: right;
+  // width: 200px;
+  height: 100%;
 }
 .el-header {
   font-size: 34px;
@@ -127,15 +183,31 @@ body {
   }
 }
 .el-aside {
-  background-color: rgb(84, 92, 100);
+  background: #f1f8fa;
   color: #333;
   text-align: center;
   line-height: 200px;
+  box-shadow: 2px 0 4px rgba(0, 150, 136, 0.1);
 }
-
+.header-title{
+  float: left;
+  font-size: 20px;
+  color: rgb(51, 51, 51);
+  text-indent:20px
+}
 .el-main {
   background-color: #e9eef3;
   color: #333;
+  position: relative;
+
+  .main-foot {
+            width: 100%;
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+            background-color: #fff;
+            font-size: 12px;            
+  }
 }
 
 body > .el-container {

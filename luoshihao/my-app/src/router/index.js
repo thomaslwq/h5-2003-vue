@@ -23,45 +23,45 @@ const router = new VueRouter({
       name: "Home",
       component: Home,
       children: [{
-        path:'/',
-      component:home
+        path: '/',
+        component: home
       }
         ,
-        {
-          path: "merchant",
-          name: "Merchant",
-          component: Merchant
-        },
-        {
-          path: "merchantAdd",
-          name: "MerchantAdd",
-          component: MerchantAdd
-        },
-        {
-          path: "shopAdd",
-          name: "ShopAdd",
-          component: ShopAdd
-        },
-        {
-          path: "shop",
-          name: "Shop",
-          component: Shop
-        },
-        {
-          path: "statistics",
-          name: "Statistics",
-          component: Statistics
-        },
-        {
-          path: "user",
-          name: "User",
-          component: User
-        },
-        {
-          path: "intellectual",
-          name: "Intellectual",
-          component: Intellectual
-        }
+      {
+        path: "merchant",
+        name: "Merchant",
+        component: Merchant
+      },
+      {
+        path: "merchantAdd",
+        name: "MerchantAdd",
+        component: MerchantAdd
+      },
+      {
+        path: "shopAdd",
+        name: "ShopAdd",
+        component: ShopAdd
+      },
+      {
+        path: "shop",
+        name: "Shop",
+        component: Shop
+      },
+      {
+        path: "statistics",
+        name: "Statistics",
+        component: Statistics
+      },
+      {
+        path: "user",
+        name: "User",
+        component: User
+      },
+      {
+        path: "intellectual",
+        name: "Intellectual",
+        component: Intellectual
+      }
       ]
     },
     {
@@ -77,15 +77,21 @@ const router = new VueRouter({
 });
 //  全局守卫
 // router.beforeEach((to, from, next) => {
-//   console.log(to);
-//   if (to.path === from.path) {
-//     next(false)
+//   let token = sessionStorage.getItem('token');
+//   if (token) {
+//     next()
 //   } else {
-//     next();
+//     if (to.path === '/login') {
+//       next();
+//     } else {
+//       // 如果去的是其他页,跳转到登录页
+//       // 跳转到登录页
+//       return next({ "path": "/login" })
+//     }
 //   }
 // });
 const originalPush = VueRouter.prototype.push;
-VueRouter.prototype.push = function push(location){
-  return originalPush.call(this,location).catch(err=>{})
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => { })
 }
 export default router;

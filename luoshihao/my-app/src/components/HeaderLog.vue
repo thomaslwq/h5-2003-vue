@@ -1,8 +1,6 @@
 !<!--  -->
 <template>
   <div class="app">
-    <h2 class="app-span">啊翔</h2>
-
     <div class="app-pic">
       <span class="el-dropdown-link" @click.stop="showImg">
         <el-avatar
@@ -17,10 +15,11 @@
         </div>
         <div class="app-item-t">
           <i class="el-icon-error"></i>
-          <span>退出</span>
+          <span @click="signOut">退出</span>
         </div>
       </div>
     </div>
+     <div class="app-span">啊翔</div>
   </div>
 </template>
 
@@ -35,6 +34,7 @@ export default {
     //这里存放数据
     return {
       isBar: false,
+      value: true,
     };
   },
   //监听属性 类似于data概念
@@ -46,6 +46,10 @@ export default {
     showImg() {
       this.isBar = !this.isBar;
     },
+    signOut(){
+      sessionStorage.removeItem('token');
+      this.$router.push("/login");
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
@@ -75,43 +79,55 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+#check:checked ~ * {
+  filter: invert(color);
+}
 .app {
   height: 100%;
   width: 100%;
-  margin-right: 100px;
+  margin-right: 20px;
   display: flex;
   position: relative;
   .app-span {
-    font-family: "Comic Sans MS";
-    text-align: center;
-    line-height: 110%;
-    color: white;
-    font-size: 20px;
+    height: 100%;
+    justify-content: center;
+    color: red;
+    background-image: -webkit-linear-gradient(bottom, #e4958b, #1dddc7);
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    font-size: 28px;
+    box-shadow: 2px 0 4px rgba(0, 150, 136, 0.1);
+    width: 100px;
+    float: left;
+    user-select: none;
+    
   }
-
   .el-dropdown-link {
     margin-left: 20px;
     text-align: center;
     .app-img {
-      width: 45px;
-      height: 45px;
+      width: 50px;
+      height: 70%;
       vertical-align: middle;
       cursor: pointer;
     }
   }
   .app-menu {
+    z-index: 10;
     position: absolute;
     background: #fff;
     color: rgba(0, 0, 0, 0.87);
     display: flex;
     top: 65px;
-    right: 65px;
+    width: 100px;
+    right: 15px;
     padding: 10px;
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.4);
     flex-direction: column;
     border-radius: 10px;
     user-select: none;
-
+left: -10%;
     i {
       float: left;
       line-height: 30px;
