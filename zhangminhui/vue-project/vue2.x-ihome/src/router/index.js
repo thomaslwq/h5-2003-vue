@@ -40,7 +40,7 @@ const routes = [
     component: Login
   },
   {
-    path:"/cart",
+    path:"/Cart",
     name:"Cart",
     component:Cart
   },
