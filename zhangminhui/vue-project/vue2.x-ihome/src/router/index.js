@@ -11,7 +11,6 @@ import Cart from "../views/Cart.vue";
 Vue.use(VueRouter)
 import Changemessage from "../components/ChangeMessage.vue"
 import Wish from "../components/Wish.vue"
-
 const routes = [
   {
     path: "/",
