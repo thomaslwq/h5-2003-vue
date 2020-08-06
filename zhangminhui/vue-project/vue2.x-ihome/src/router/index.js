@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from "../views/Home.vue";
 import Productgrid from "../views/Productgrid.vue";
+import ProductDetails from "../views/ProductDetails";
+
+import Login from "../components/Login.vue"
 import Cart from "../views/Cart.vue";
 
 Vue.use(VueRouter)
@@ -20,6 +23,11 @@ const routes = [
     component: Productgrid
   },
   {
+    path:"/productDetails",
+    name:"ProductDetails",
+    component:ProductDetails
+  },
+  {
     path: "/ChangeMessage",
     component: Changemessage
   },
@@ -32,9 +40,14 @@ const routes = [
     component: Login
   },
   {
-    path: "/cart",
-    name: "Cart",
-    component: Cart
+    path:"/cart",
+    name:"Cart",
+    component:Cart
+  },
+  {
+    path:"/login",
+    name:"Login",
+    component:Login
   }
 ]
 

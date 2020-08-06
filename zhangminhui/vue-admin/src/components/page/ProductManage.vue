@@ -34,7 +34,7 @@
                 <el-table-column prop="salesNum" label="销量"></el-table-column>
                 <el-table-column prop="discountNum" label="折扣信息"></el-table-column>
                 <el-table-column prop="price" label="单价"></el-table-column>
-                <el-table-column prop="discountPirce" label="折后价"></el-table-column>
+                <el-table-column prop="discountPrice" label="折后价"></el-table-column>
                 <el-table-column prop="content" label="简介"></el-table-column>
                 <el-table-column prop="colorID" label="颜色"></el-table-column>
                 <el-table-column prop="materialID" label="材质"></el-table-column>
@@ -43,6 +43,7 @@
                 <el-table-column prop="sortID" label="分类"></el-table-column>
                 <el-table-column prop="isNewProduct" label="是否新品"></el-table-column>
                 <el-table-column prop="isDiscount" label="是否打折"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -85,7 +86,7 @@
                     <el-input v-model="form.price"></el-input>
                 </el-form-item>
                 <el-form-item label="折后价">
-                    <el-input v-model="form.discountPirce"></el-input>
+                    <el-input v-model="form.discountPrice"></el-input>
                 </el-form-item>
                 <el-form-item label="简介">
                     <el-input v-model="form.content"></el-input>
@@ -131,7 +132,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="分类">
-                   <el-select v-model="form.sortID" placeholder="请选择">
+                    <el-select v-model="form.sortID" placeholder="请选择">
                         <el-option
                             v-for="(sort, index) in sorts"
                             :key="sort.sortID"
@@ -142,18 +143,39 @@
                 </el-form-item>
                 <el-form-item label="是否新品">
                     <el-radio-group v-model="form.isNewProduct">
-                            <el-radio label="是"></el-radio>
-                            <el-radio label="否"></el-radio>
-                        </el-radio-group>
+                        <el-radio label="是"></el-radio>
+                        <el-radio label="否"></el-radio>
+                    </el-radio-group>
                 </el-form-item>
                 <el-form-item label="是否打折">
                     <el-radio-group v-model="form.isDiscount">
-                            <el-radio label="是"></el-radio>
-                            <el-radio label="否"></el-radio>
-                        </el-radio-group>
+                        <el-radio label="是"></el-radio>
+                        <el-radio label="否"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="上传图片">
+                    <el-upload
+                        class="upload-demo"
+                        action="http://localhost:10500/api/admin/uploadProductPicture"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        :before-remove="beforeRemove"
+                        multiple
+                        :limit="4"
+                        :on-exceed="handleExceed"
+                        :auto-upload="false"
+                        ref="upload"
+                        :before-upload="beforeUpload"
+                        :data="uploadData"
+                        list-type="picture-card"
+                    >
+                        <el-button size="small" type="primary">点击上传</el-button>
+                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
+                <el-button type="success" @click="upload">上传</el-button>
                 <el-button @click="editVisible = false">取 消</el-button>
                 <el-button type="primary" @click="addUserInfo">确 定</el-button>
             </span>
@@ -188,7 +210,10 @@ export default {
             materials: [],
             specifications: [],
             series: [],
-            sorts:[]
+            sorts: [],
+
+            //上传
+            uploadData: {}
         };
     },
     //监听属性 类似于data概念
@@ -223,13 +248,13 @@ export default {
             this.$axios
                 .all(requestArr)
                 .then(
-                    this.$axios.spread((resClolr, resSort, resMaterial, resSpecification, resSeries,resSotr) => {
+                    this.$axios.spread((resClolr, resSort, resMaterial, resSpecification, resSeries, resSotr) => {
                         this.colors = resClolr.results;
                         this.sorts = resSort.results;
                         this.materials = resMaterial.results;
                         this.specifications = resSpecification.results;
                         this.series = resSeries.results;
-                        this.sorts=resSort.results;
+                        this.sorts = resSort.results;
                     })
                 )
                 .catch((err) => {});
@@ -250,7 +275,7 @@ export default {
                     .post('api/admin/addProduct', this.$qs.stringify(this.form))
                     .then((res) => {
                         console.log(res);
-                        if (res.code==200) {
+                        if (res.code == 200) {
                             this.$message('添加成功');
                             this.getData();
                         }
@@ -328,6 +353,25 @@ export default {
                     })
                     .catch(() => {});
             }
+        },
+        //上传
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePreview(file) {
+            console.log(file);
+        },
+        beforeRemove(file) {
+            console.log(file);
+        },
+        handleExceed(file) {
+            console.log(file);
+        },
+        beforeUpload(file) {
+            console.log(file);
+        },
+        upload: function () {
+           this.$refs.upload.submit();
         }
     },
     //生命周期 - 创建完成（可以访问当前this实例）
