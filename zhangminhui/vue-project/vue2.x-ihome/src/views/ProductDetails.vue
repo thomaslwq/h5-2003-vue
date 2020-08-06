@@ -282,6 +282,7 @@ methods: {
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
+<<<<<<< HEAD
   //先接受主页传过来的商品ID
   //根据商品ID请求数据，然后渲染到页面上
   // this.userID = this.$route.params.userID;
@@ -303,6 +304,9 @@ created() {
     console.log(err)
   })
 
+=======
+  console.log(this.$route.params)
+>>>>>>> 62c50443b04f9301940522f93272a7af2ed6a9a4
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {

@@ -1,7 +1,7 @@
 <!--  -->
 <template>
 <div id='productgrid'>
-    <Header></Header>
+    <Header @post-id="goodsListChange"></Header>
     <div class="pg-title">
         <div class="container tit-container">
             <h3>商品分类</h3>
@@ -19,9 +19,9 @@
                     <div class="pro-widget">
                         <h4>品类</h4>
                         <ul>
-                            <li v-for="(gategory,index) in gategories" :key="gategory.id">
-                                <a href="">
-                                    <span>{{gategory.name}}</span>
+                            <li v-for="(gategory) in gategories" :key="gategory.seriesID" @click="goodsListChange(gategory.seriesID)">
+                                <a>
+                                    <span>{{gategory.seriesName}}</span>
                                     <i class="el-icon-arrow-right"></i>
                                 </a>
                             </li>
@@ -30,9 +30,9 @@
                     <div class="pro-widget">
                         <h4>品牌</h4>
                         <ul>
-                            <li v-for="(gategory,index) in gategories" :key="gategory.id">
-                                <a href="">
-                                    <span>{{gategory.name}}</span>
+                            <li v-for="(sort) in sortMenu" :key="sort.sortID">
+                                <a>
+                                    <span>{{sort.sortName}}</span>
                                     <i class="el-icon-arrow-right"></i>
                                 </a>
                             </li>
@@ -43,18 +43,18 @@
                 <!-- main商品部分开始位置 -->
                 <el-container style="display:block">
                     <div class="pro-content">
-                        <div class="pro-item" v-for="(product,index) in currentList" :key="product.id" @click="seeDetails(product.id)">
+                        <div class="pro-item" v-for="(product,index) in currentList" :key="product.productCode" @click="seeDetails(product.productID)">
                             <dl>
                                 <dt>
-                                    <img :src="require('../assets/img/product/'+product.img)" :alt="product.name">
+                                    <img :src="require('../assets/img/product/product-'+35+'.jpg')" :alt="product.productName">
                                     <div class="pro-action">
                                         <a class="act-btn"><i class="iconfont icon-fangdajing"></i></a>
-                                        <a class="act-btn"><i class="iconfont icon-gouwuche"></i></a>
-                                        <a class="act-btn"><i class="iconfont icon-aixin"></i></a>
+                                        <a class="act-btn" @click.stop="addToCart(product.productID)"><i class="iconfont icon-gouwuche"></i></a>
+                                        <a class="act-btn" @click.stop="addToWishList(product.productID)"><i class="iconfont icon-aixin"></i></a>
                                     </div>
                                 </dt>
                                 <dd>
-                                    <h4>{{product.name}}</h4>
+                                    <h4>{{product.productName}}</h4>
                                     <p>￥{{product.price}}</p>
                                 </dd>
                             </dl>
@@ -66,7 +66,7 @@
                     layout="prev, pager, next"
                     :total="Math.ceil(goodsList.length/15)*10"
                     v-on:current-change="currentPage"
-                    hide-on-single-page>
+                    >
                     </el-pagination>
                     <!-- 分页器 -->
                 </el-container>
@@ -94,210 +94,22 @@ components: {
 data() {
 //这里存放数据
 return {
-    gategories:[
-        {
-            id:"001",
-            name:"桌子"
-        },
-        {
-            id:"002",
-            name:"椅子"
-        },
-        {
-            id:"003",
-            name:"床"
-        },
-        {
-            id:"004",
-            name:"衣柜"
-        },
-    ],
-    goodsList:[
-        {
-            id:"goods01",
-            name:"单人沙发",
-            price:300,
-            img:"product-28.jpg"
-        },
-        {
-            id:"goods02",
-            name:"单人沙发",
-            price:300,
-            img:"product-29.jpg"
-        },
-        {
-            id:"goods03",
-            name:"单人沙发",
-            price:300,
-            img:"product-30.jpg"
-        },
-        {
-            id:"goods04",
-            name:"单人沙发",
-            price:300,
-            img:"product-31.jpg"
-        },
-        {
-            id:"goods05",
-            name:"单人沙发",
-            price:300,
-            img:"product-32.jpg"
-        },
-        {
-            id:"goods06",
-            name:"单人沙发",
-            price:300,
-            img:"product-33.jpg"
-        },
-        {
-            id:"goods07",
-            name:"单人沙发",
-            price:300,
-            img:"product-34.jpg"
-        },
-        
-        {
-            id:"goods08",
-            name:"单人沙发",
-            price:300,
-            img:"product-28.jpg"
-        },
-        {
-            id:"goods09",
-            name:"单人沙发",
-            price:300,
-            img:"product-29.jpg"
-        },
-        {
-            id:"goods10",
-            name:"单人沙发",
-            price:300,
-            img:"product-30.jpg"
-        },
-        {
-            id:"goods11",
-            name:"单人沙发",
-            price:300,
-            img:"product-31.jpg"
-        },
-        {
-            id:"goods12",
-            name:"单人沙发",
-            price:300,
-            img:"product-32.jpg"
-        },
-        {
-            id:"goods13",
-            name:"单人沙发",
-            price:300,
-            img:"product-33.jpg"
-        },
-        {
-            id:"goods14",
-            name:"单人沙发",
-            price:300,
-            img:"product-34.jpg"
-        },
-        
-        {
-            id:"goods15",
-            name:"单人沙发",
-            price:300,
-            img:"product-28.jpg"
-        },
-        {
-            id:"goods16",
-            name:"单人沙发",
-            price:300,
-            img:"product-29.jpg"
-        },
-        {
-            id:"goods17",
-            name:"单人沙发",
-            price:300,
-            img:"product-30.jpg"
-        },
-        {
-            id:"goods18",
-            name:"单人沙发",
-            price:300,
-            img:"product-31.jpg"
-        },
-        {
-            id:"goods19",
-            name:"单人沙发",
-            price:300,
-            img:"product-32.jpg"
-        },
-        {
-            id:"goods20",
-            name:"单人沙发",
-            price:300,
-            img:"product-33.jpg"
-        },
-        {
-            id:"goods21",
-            name:"单人沙发",
-            price:300,
-            img:"product-34.jpg"
-        },
-        
-        {
-            id:"goods22",
-            name:"单人沙发",
-            price:300,
-            img:"product-28.jpg"
-        },
-        {
-            id:"goods23",
-            name:"单人沙发",
-            price:300,
-            img:"product-29.jpg"
-        },
-        {
-            id:"goods24",
-            name:"单人沙发",
-            price:300,
-            img:"product-30.jpg"
-        },
-        {
-            id:"goods25",
-            name:"单人沙发",
-            price:300,
-            img:"product-31.jpg"
-        },
-        {
-            id:"goods26",
-            name:"单人沙发",
-            price:300,
-            img:"product-32.jpg"
-        },
-        {
-            id:"goods27",
-            name:"单人沙发",
-            price:300,
-            img:"product-33.jpg"
-        },
-        {
-            id:"goods28",
-            name:"单人沙发",
-            price:300,
-            img:"product-34.jpg"
-        }
-    
-    ],
+    gategories:[],
+    sortMenu:[],
+    goodsList:[],
     currentpage:1,
-    perpagenum:15
-};
+    perpagenum:15,
+}
 },
 //监听属性 类似于data概念
 computed: {
     currentList:function(){
         var index = (this.currentpage-1)*this.perpagenum;
-        return this.goodsList.filter((value,idx)=>{
+        var arr= this.goodsList.filter((value,idx)=>{
             return idx>=index && idx<index+15;
         })
-    }
+        return arr;
+    },
 },
 //监控data中的数据变化
 watch: {},
@@ -308,21 +120,63 @@ methods: {
     },
     seeDetails:function(id){
         this.$router.push({
-            name:'Cart',
+            name:'ProductDetails',
             params:{
-                name:'about',
-                code:111
+                productID:id
             }
         })
+    },
+    goodsListChange:function(id){
+        var str = id.toString()
+        if(str.indexOf('1010')==0){
+            this.$axios.post('api/product/getProductInfoBySortID',this.$qs.stringify(
+                {
+                sortID:Number(id)
+                })
+            ).then(res=>{
+                this.goodsList = res.results;
+                console.log(this.goodsList)
+            })
+        }else if(str.indexOf('1003')==0){
+            this.$axios.post('api/product/getProductInfoBySeriesID',this.$qs.stringify(
+                {
+                seriesID:Number(id)
+                })
+            ).then(res=>{
+                this.goodsList = res.results;
+                console.log(this.goodsList)
+            })
+        }
+    },
+    addToCart:function(proId){
+        
+    },
+    addToWishList:function(proId){
+
     }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
-
+    var id=this.$route.params;
+    this.$axios.get('api/admin/getAllSeries').then(res=>{
+      this.gategories = res.results;
+      return res.results
+    }).then(res=>{
+        this.$axios.post('api/product/getProductInfoBySeriesID',this.$qs.stringify(
+            {
+            seriesID:res[2].seriesID
+            })
+        ).then(res=>{
+            this.goodsList = res.results;
+        })
+    });
+    this.$axios.get('api/admin/getAllSort').then(res=>{
+      this.sortMenu = res.results
+    })
+    
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
-
 },
 beforeCreate() {}, //生命周期 - 创建之前
 beforeMount() {}, //生命周期 - 挂载之前
@@ -330,7 +184,8 @@ beforeUpdate() {}, //生命周期 - 更新之前
 updated() {}, //生命周期 - 更新之后
 beforeDestroy() {}, //生命周期 - 销毁之前
 destroyed() {}, //生命周期 - 销毁完成
-activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
+activated() {
+}, //如果页面有keep-alive缓存功能，这个函数会触发
 }
 </script>
 <style lang='less' scoped>
@@ -429,10 +284,12 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
               margin-right: 20px;
               margin-bottom: 30px;
             dl {
+                width:269px;
                 dt {
                 position: relative;
                 overflow: hidden;
                     img {
+                        display: block;
                         width:100%;
                         transition: 1s;
                     }

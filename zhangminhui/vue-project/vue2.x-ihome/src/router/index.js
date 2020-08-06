@@ -5,12 +5,12 @@ import Productgrid from "../views/Productgrid.vue";
 import ProductDetails from "../views/ProductDetails";
 
 import Login from "../components/Login.vue"
+import Register from "../components/Register.vue"
 import Cart from "../views/Cart.vue";
 
 Vue.use(VueRouter)
 import Changemessage from "../components/ChangeMessage.vue"
 import Wish from "../components/Wish.vue"
-
 const routes = [
   {
     path: "/",
@@ -48,6 +48,11 @@ const routes = [
     path:"/login",
     name:"Login",
     component:Login
+  },
+  {
+    path:"/Register",
+    name:"Register",
+    component:Register
   }
 ]
 
