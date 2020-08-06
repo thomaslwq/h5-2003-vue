@@ -79,6 +79,16 @@
 
 <script>
 export default {
+    data() {
+      return {
+        input: "",
+        rowObj: {},
+        dialogFormVisible: false,
+        formLabelWidth: "90px",
+        tableData: [],
+        tableDataTrans:[]
+      };
+    },
   methods: {
     checkoutInput() {
       console.log(this.input);
@@ -100,6 +110,14 @@ export default {
         "http://easy-mock.ncgame.cc/mock/5f29fb29b7d01c445ce4a0d5/myapp/merchant"
       );
       this.tableData = tabledres.data;
+      var newdata = localStorage.getItem('newdata');
+      // console.log(newdata)
+      if(newdata){
+        var newdataArr = JSON.parse(newdata);
+        this.tableData=[...newdataArr,...this.tableData]
+        // console.log(this.tableData)
+      }
+
     },
     handleClickEdit(row) {
       this.rowObj = row;
@@ -189,24 +207,12 @@ export default {
   },
   mounted() {
     this.getTableData();
-    var newdata = localStorage.getItem('newdata');
-    this.tableData.splice(0,0,JSON.parse(newdata))
-    console.log(this.tableData)
+
   },
   created(){
 
   },
 
-  data() {
-    return {
-      input: "",
-      rowObj: {},
-      dialogFormVisible: false,
-      formLabelWidth: "90px",
-      tableData: [],
-      tableDataTrans:[]
-    };
-  },
 };
 </script>
 
@@ -219,6 +225,8 @@ export default {
   height: 50px;
   border-bottom: 1px solid #909399;
   padding-left: 10px;
+  display:flex;
+  align-items:center;
 }
 .list-search {
   display: flex;
