@@ -1,0 +1,60 @@
+{
+  "goods": [
+    {
+      "name": "奥迪",
+      "sort": "汽车",
+      "company": "宝安",
+      "price": "13",
+      "Time": "2020",
+      "id": 3
+    },
+    {
+      "name": "花生",
+      "sort": "食品",
+      "company": "深圳景田",
+      "price": "130",
+      "Time": "2020",
+      "id": 4
+    },
+    {
+      "name": "手机",
+      "sort": "通讯",
+      "company": "小米",
+      "price": "7000",
+      "Time": "2020",
+      "id": 5
+    },
+    {
+      "name": "手机",
+      "sort": "通讯",
+      "company": "华为",
+      "price": "6000",
+      "Time": "2020",
+      "id": 6
+    },
+    {
+      "name": "电脑",
+      "sort": "家电",
+      "company": "戴尔",
+      "price": "6000",
+      "Time": "2020",
+      "id": 7
+    },
+    {
+      "name": "奶茶",
+      "sort": "家电",
+      "company": "戴尔",
+      "price": "6000",
+      "Time": "2020",
+      "id": 8
+    },
+    {
+      "name": "西瓜",
+      "sort": "食品",
+      "company": "福田",
+      "price": "2",
+      "Time": "2020",
+      "id": 9
+    }
+  ]
+}
