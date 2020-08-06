@@ -106,8 +106,8 @@ body {
 }
 //  布局css
 .el-header {
-  background-color: #3c8dbc;
-  color: #333;
+  background-color: #24292e;
+  color:rgb(90, 141, 192);
   text-align: center;
   line-height: 60px;
 
