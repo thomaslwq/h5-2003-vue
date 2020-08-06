@@ -15,7 +15,7 @@
         </div>
         <div class="menu">
           <ul>
-            <li class="menu-item" v-for="(item,index) in navmenu" :key="index">
+            <li class="menu-item" v-for="(item,index) in navmenu" :key="index" @click="handleClick(index)">
               {{item.text}}
               <div class="menu-item-box" v-show="item.tag">
                 <ul class="menu-item-ul">
@@ -27,11 +27,11 @@
         </div>
         <div class="nav-icon">
           <span class="iconfont icon-fangdajing" @click="searchShow"></span>
-          <span class="nav-icon-shoucang">
-            <i class="iconfont icon-aixin" @click="GotoWish"></i>
+          <span class="nav-icon-shoucang"  @click="GotoWish">
+            <i class="iconfont icon-aixin"></i>
             <span class="icon-shoucang-tip">0</span>
           </span>
-          <span class="nav-icon-gouwuche">
+          <span class="nav-icon-gouwuche"  @click="GotoCart">
             <i class="iconfont icon-gouwuche"></i>
             <span class="icon-gouwuche-tip">0</span>
           </span>
@@ -171,9 +171,17 @@ export default {
     GotoWish() {
       this.$router.push("/Wish");
     },
+     GotoCart() {
+      this.$router.push("/Cart");
+    },
     quit() {},
     Login(){
       this.$router.push("/Login")
+    },
+    handleClick(i){
+      if(i=='0'){
+      this.$router.push("/")
+      }
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -184,7 +192,7 @@ export default {
     window.addEventListener("scroll", this.handleScroll);
     if(userID){
         this.isLogin = true
-        console.log(userID)
+        // console.log(userID)
     }
     this.$axios.post("api/user/getUserInfoByID",this.$qs.stringify({
       userID:userID
