@@ -24,6 +24,7 @@
             text-color="#fff"
             active-text-color="#ffd04b"
             :router="true"
+            
           >
             <el-menu-item index="/home">
               <i class="el-icon-s-home"></i>
@@ -73,8 +74,12 @@
           <!-- 导航栏 结束-->
         </el-aside>
         <el-main style="padding:0;">
+           <div class="main-title">{{title}}</div>
+          
           <router-view></router-view>
           <!-- 这里是内容展示 -->
+          
+          <div class="main-foot">Copyright©2011-2020 电脑疯狂闪屏死机重启</div>
         </el-main>
       </el-container>
     </el-container>
@@ -88,6 +93,12 @@ export default {
   components: {
     HeaderLog,
   },
+  data(){
+    return {
+      title:''
+    }
+  },
+  
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -95,16 +106,47 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
+    titleData (){
+      let titleData = window.location.href.slice(window.location.href.indexOf('#')+2)
+      switch(titleData){
+        case 'home':return this.title='后台主页'
+        case 'home/merchant':return this.title='代理商管理'
+        case 'home/merchantAdd':return this.title='添加代理商'
+        case 'home/shopAdd':return this.title='商品添加'
+        case 'home/shop':return this.title='商品列表'
+        case 'home/statistics':return this.title='统计报表'
+        case 'home/user':return this.title='用户权限'
+        case 'home/intellectual':return this.title='知识产权'
+      }
+      }
   },
+  mounted() {
+    this.titleData()
+  },
+  updated() {
+    this.titleData()
+  }
 };
+
 </script>
 
 <style lang="less">
 body {
   padding: 0;
   margin: 0;
+  .el-menu-item-group__title{
+  // width: 201px;
+  padding: 0;
+  box-sizing: content-box;
+  width: 200px;
+  border-right: none;
+}
 }
 //  布局css
+.el-menu-item,.el-submenu__title{
+  width: 200px;
+}
+
 .el-header {
   background-color: rgb(241, 248, 250);
   color: #333;
@@ -150,6 +192,30 @@ body {
 .el-main {
   background-color: #e9eef3;
   color: #333;
+  position: relative;
+  margin-top: 8vh;
+  
+  .main-title {
+      position: fixed;
+            top: 8vh;
+            width: 100%;
+            text-align: left;
+            height: 60px;
+            background-color: #545c64;
+            z-index:5;
+            line-height: 60px;   
+            color: #fff;
+            text-indent: 20px;
+  }
+
+  .main-foot {
+            width: 100%;
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+            background-color: #fff;
+            font-size: 12px;            
+  }
 }
 
 body > .el-container {

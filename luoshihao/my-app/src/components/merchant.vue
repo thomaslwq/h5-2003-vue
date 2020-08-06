@@ -1,11 +1,11 @@
 <template>
   <div id="list">
-    <div class="list-nav">
+    <!-- <div class="list-nav">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">代理商管理</el-breadcrumb-item>
         <el-breadcrumb-item>添加代理商</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="list-search">
       <section class="search-input">
         <el-input v-model="input" placeholder="请输入代理商名称" style="width:100%;height:100%;"></el-input>
@@ -210,7 +210,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .el-main {
   text-align: left;
 }
