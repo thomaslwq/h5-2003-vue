@@ -18,32 +18,32 @@
                     </div>
 
                     <div id="list">
-                        <div id="list_first">箭头</div>
+                        <div id="list_first"><i :class="arrow[0]"></i></div>
                         <div id="list_data"><p>今日订单数量</p>
-                            <h5>vue数据</h5></div>
-                        <div id="list_data"><p>与昨日数量比</p>
-                            <h5>vue数据</h5></div>
+                            <h5>{{todayData.todayOrder}}单</h5></div>
+                        <div id="list_data"><p>昨日订单数量</p>
+                            <h5>{{yesterdayData.yesterdayOrder}}单</h5></div>
                     </div>
                     <div id="list">
-                        <div id="list_first">箭头</div>
+                        <div id="list_first"><i :class="arrow[1]"></i></div>
                         <div id="list_data"><p>今日订单总金额</p>
-                            <h5>vue数据</h5></div>
-                        <div id="list_data"><p>与昨日金额比</p>
-                            <h5>vue数据</h5></div>
+                            <h5>{{todayData.todayPrice}}元</h5></div>
+                        <div id="list_data"><p>昨日订单总金额</p>
+                            <h5>{{yesterdayData.yesterdayPrice}}元</h5></div>
                     </div>
                     <div id="list">
-                        <div id="list_first">箭头</div>
+                        <div id="list_first"><i :class="arrow[2]"></i></div>
                         <div id="list_data"><p>今日下单商户数</p>
-                            <h5>vue数据</h5></div>
-                        <div id="list_data"><p>与昨日数量相比</p>
-                            <h5>vue数据</h5></div>
+                            <h5>{{todayData.todayMerchant}}位</h5></div>
+                        <div id="list_data"><p>昨日下单商户数</p>
+                            <h5>{{yesterdayData.yesterdayMerchant}}位</h5></div>
                     </div>
                     <div id="list">
-                        <div id="list_first">箭头</div>
-                        <div id="list_data"><p>平台拥有总商户数</p>
-                            <h5>vue数据</h5></div>
-                        <div id="list_data"><p>昨日总商户数</p>
-                            <h5>vue数据</h5></div>
+                        <div id="list_first"><i :class="arrow[3]"></i></div>
+                        <div id="list_data"><p>今日平台总商户数</p>
+                            <h5>{{todayData.todayPos}}位</h5></div>
+                        <div id="list_data"><p>昨日平台总商户数</p>
+                            <h5>{{yesterdayData.yesterdayPos}}位</h5></div>
                     </div>
                 
                 </div>
@@ -63,8 +63,11 @@
                 <span class="vertical"></span>
                     <h4>今日数据统计</h4>
                     </div>
-                    <div class="data_time_list" v-for="(item,index) in dataTime" :key="index">
-                        <p>{{item.time}}</p><div class="percentage"><div></div></div><span>{{item.quantity}}单</span>
+                    <div class="data_time_list" v-for="(item,index) in today24HoursOrder" :key="index">
+                        <p>{{item.time}}</p>
+                        <div class="percentage">
+                            <div :style="{width:progress[index]+'%'}"></div>
+                            </div><span>{{item.quantity}}单</span>
                         <!-- 循环12次 用计算属性算出 item里面的最大的数 然后用其他除以他 生成百分比条 -->
                     </div>
                 </div>
@@ -117,80 +120,140 @@ data() {
 //这里存放数据
 //今日数据统计需要的数据，其实应该放在VUEX的
 return {
-    dataTime:[{time:'00:00',quantity:300},{time:'02:00',quantity:300},{time:'04:00',quantity:300},{time:'06:00',quantity:300},{time:'08:00',quantity:300},{time:'10:00',quantity:300},{time:'12:00',quantity:300},{time:'14:00',quantity:300},{time:'16:00',quantity:300},{time:'18:00',quantity:300},{time:'20:00',quantity:300},{time:'22:00',quantity:300},]
+    todayData:{},
+    yesterdayData:{},
+    today24HoursOrder:[],
+    weekOrder:[],
+    weekPrice:[],
+    arrow:[],
+    max:0,
+    proportion:[],
+    progress:[],
+
 };
 },
 //监听属性 类似于data概念
-computed: {},
+computed: {
+    
+},
 //监控data中的数据变化
-watch: {},
+watch: {
+    
+},
 //方法集合
 methods: {
-
+   
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
-
+    
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
-    //第一张表格的echarts代码
-    let myChart = echarts.init(document.getElementById('left_echarts'));
-    let option = {
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
+    this.$axios.post('http://easy-mock.ncgame.cc/mock/5f29fb29b7d01c445ce4a0d5/myapp/EchartsData',{}
+    ).then(res=>{
+            this.todayData=res.data.data.todayData
+            this.yesterdayData=res.data.data.yesterdayData
+            this.today24HoursOrder=res.data.data.today24HoursOrder
+            // this.weekOrder=res.data.data.weekOrder
+            // this.weekPrice=res.data.data.weekPrice
+            this.arrow=res.data.data.arrow
+        
+        for(let i in res.data.data.weekOrder){
+            this.weekOrder.push(res.data.data.weekOrder[i]);
         }
-    },    
-    xAxis: {
-        type: 'category',
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-    },
-    yAxis: {
-        type: 'value',
         
-    },
-    series: [{
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
-        type: 'line'
-    }]
-    };
-    //生成第一张表格
-    myChart.setOption(option);
+        for(let i in res.data.data.weekPrice){
+            this.weekPrice.push(res.data.data.weekPrice[i]);
+        }
+        }
+    ).then(()=>{
+        
 
-    // 第二张折线图
-    var myChartRight = echarts.init(document.getElementById('right_echarts'));
-    var optionRight = {
-    tooltip: {
-        trigger: 'axis',
-    },
+        for(let i = 0;i<this.today24HoursOrder.length;i++){
+            this.proportion.push(this.today24HoursOrder[i].quantity)
+            if(this.today24HoursOrder[i].quantity>=this.max){
+                this.max=this.today24HoursOrder[i].quantity
+                
+            }
+            
+        }
+    }
+    ).then(
+        ()=>{
+            this.progress=this.proportion.map(
+                (value)=>{
+                    return Math.ceil(value/this.max*100)
+                }
+            )
+
+        }
+        
+    ).then(()=>{
     
-    xAxis: {
-        type: 'category',
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-    },
-    yAxis: {
-        axisLabel: {
-    	formatter: function (value, index) {
-		    if (value>=10000){
-		    	return value/10000 + '万'
-		    }
-		    else{
-		    	return value
-		    }
-		}
-    },    
-        type: 'value',
-        
-    },
-    series: [{
-        data: [820415, 932322, 1123901,722934, 633190,821330, 901320],
-        type: 'line'
-    }]
-    };
-    //生成第二张表格
-    myChartRight.setOption(optionRight);
+        //第一张表格的echarts代码
+        let myChart = echarts.init(document.getElementById('left_echarts'));
+        let option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+            }
+        },    
+        xAxis: {
+            type: 'category',
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        yAxis: {
+             axisLabel: {
+            formatter: function (value, index) {
+                    return value + '单'
+               
+            }
+        },    
+            type: 'value',
+            
+        },
+        series: [{
+            data: this.weekOrder,
+            type: 'line'
+        }]
+        };
+        //生成第一张表格
+        myChart.setOption(option);
 
+        // 第二张折线图
+        var myChartRight = echarts.init(document.getElementById('right_echarts'));
+        var optionRight = {
+        tooltip: {
+            trigger: 'axis',
+        },
+        
+        xAxis: {
+            type: 'category',
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        yAxis: {
+            axisLabel: {
+            formatter: function (value, index) {
+                if (value>=10000){
+                    return value/10000 + '万元'
+                }
+                else{
+                    return value
+                }
+            }
+        },    
+            type: 'value',
+            
+        },
+        series: [{
+            data: this.weekPrice,
+            type: 'line'
+        }]
+        };
+        //生成第二张表格
+        myChartRight.setOption(optionRight);
+    })
 },
 beforeCreate() {}, //生命周期 - 创建之前
 beforeMount() {}, //生命周期 - 挂载之前
@@ -269,6 +332,8 @@ div#main_body {
             #list_first{
                 flex: 1;
                 line-height: 50px;
+                color: #ff8448;
+                font-size: 20px;
             }
             #list_data{
                 flex: 3;

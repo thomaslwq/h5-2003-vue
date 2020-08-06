@@ -218,7 +218,6 @@ export default {
 
 <style lang="less">
 .el-main {
-  line-height: 0;
   text-align: left;
 }
 .list-nav {
