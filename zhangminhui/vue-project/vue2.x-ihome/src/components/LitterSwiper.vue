@@ -74,6 +74,7 @@ export default {
   mounted() {
     var that = this;
     this.swiper.slideTo(0, 0, false);
+    this.swiper.slidesPerGroupSkip = 0;
     //自动播放
     clearInterval(this.$el.timer)
     this.$el.timer = setInterval(function () {
