@@ -95,8 +95,7 @@ export default {
         {
           id: 2,
           tag: true,
-          text: "家居用品",
-          go:"",
+          text: "家私",
           childrenMenu: ["保暖防护", "收纳用品", "浴室洗晒", "居家布艺"],
         },
         {
