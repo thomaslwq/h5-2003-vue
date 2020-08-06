@@ -101,6 +101,7 @@ export default {
     width: 100px;
     float: left;
     user-select: none;
+    
   }
   .el-dropdown-link {
     margin-left: 20px;
@@ -126,7 +127,7 @@ export default {
     flex-direction: column;
     border-radius: 10px;
     user-select: none;
-
+left: -10%;
     i {
       float: left;
       line-height: 30px;
