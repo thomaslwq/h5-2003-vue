@@ -20,9 +20,9 @@
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b"
+            text-color="#333"
+            background-color="#f1f8fa"
+            active-text-color="#333"
             :router="true"
           >
             <el-menu-item index="/home">
@@ -141,10 +141,11 @@ body {
   }
 }
 .el-aside {
-  background-color: rgb(84, 92, 100);
+  background: #f1f8fa;
   color: #333;
   text-align: center;
   line-height: 200px;
+  box-shadow: 2px 0 4px rgba(0, 150, 136, 0.1);
 }
 
 .el-main {
