@@ -6,7 +6,7 @@ const productModel = {
   salesNum: 0,
   discountNum: 100,
   price: 0,
-  discountPirce: 0,
+  discountPrice: 0,
   content: "",
   colorID: "",
   materialID: "",
