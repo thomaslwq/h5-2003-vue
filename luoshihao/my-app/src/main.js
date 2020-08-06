@@ -9,6 +9,8 @@ import axios from 'axios'
 
 Vue.prototype.$axios = axios;
 Vue.use(ElementUI);
+
+Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 
 new Vue({
