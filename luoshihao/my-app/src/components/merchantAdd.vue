@@ -1,11 +1,5 @@
 <template>
   <div id="addform">
-    <!-- <div class="addform-nav">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">代理商管理</el-breadcrumb-item>
-        <el-breadcrumb-item>添加代理商</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div> -->
     <div class="addform-content">
       <el-form
         ref="form"
