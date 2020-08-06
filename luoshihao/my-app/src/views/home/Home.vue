@@ -1,8 +1,6 @@
 <!-- 页面 -->
 <template>
   <div id="main_body">
-    <!-- 固定定位的头部 -->
-    <div id="main_body_title">后台主页</div>
     <!-- 内容 -->
     <div id="main_body_con">
       <!-- 上面的3组DIV -->
@@ -124,8 +122,6 @@
         </div>
       </div>
     </div>
-    <!-- 固定定位的页脚 -->
-    <div id="main_body_foot">Copyright©2011-2020 电脑疯狂闪屏死机重启</div>
   </div>
 </template>
 
@@ -274,46 +270,37 @@ export default {
 </script>
 <style lang="less" scoped>
 div#main_body {
-  #title {
-    height: 30px;
-    margin-bottom: 20px;
-  }
-  h5,
-  h4 {
-    margin: 0;
-    display: inline-block;
-  }
-  p {
-    margin: 0;
-    font-size: 12px;
-    line-height: 30px;
-    color: #a5b6c8;
-  }
-  span.vertical {
-    vertical-align: middle;
-    display: inline-block;
-
-    width: 4px;
-    height: 20px;
-    background-color: rgb(251, 184, 11);
-    margin-right: 10px;
-  }
-  position: relative;
-  div#main_body_title {
-    position: fixed;
-    top: 8vh;
-    width: 100%;
-    text-align: left;
-    height: 60px;
-    background-color: #fff;
-    z-index: 5;
-    line-height: 60px;
-  }
+    #title{
+        height:30px;
+        margin-bottom:20px
+    }
+    h5,h4 {
+        margin: 0;
+        display: inline-block;
+    }
+    p{
+        margin: 0;
+        font-size: 12px;
+        line-height: 30px;
+        color: #a5b6c8;
+    }
+    span.vertical{
+            vertical-align: middle;
+            display: inline-block;
+            
+            width: 4px;
+            height: 20px;
+            background-color: rgb(251, 184, 11);
+            margin-right: 10px;
+    }
+    position: relative;
+    ;
+  
+  
 
   div#main_body_con {
-    position: relative;
-    top: 60px;
-
+       position: relative;
+       
     div#main_body_con_header {
       display: flex;
       height: 415px;
@@ -413,16 +400,7 @@ div#main_body {
     }
   }
 
-  div#main_body_foot {
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-    text-align: center;
-    height: 50px;
-    line-height: 50px;
-    background-color: #fff;
-    font-size: 12px;
-    text-indent: -200px;
-  }
+  
+  
 }
 </style>
