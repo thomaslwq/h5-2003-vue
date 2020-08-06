@@ -20,10 +20,12 @@
                 <!-- 左边的三张展示图片 -->
                 <div class="content-top-left">
                     <div class="top-left-imgbox" 
-                        @click="changeImg(item.name,item.price,item.type,item.productID,item.price)" 
+                        @click="changeImg(item.name,item.price,item.type,item.productID)" 
                         v-for="item in imgList" 
                         :key="item.id">
-                        <img :src="require('../assets/img/product/' + item.name)">
+                        <!-- <img :src="require('../assets/img/product/' + item.name)"> -->
+                        <img :src="'http://175.24.122.212:8989/apiServer' + item.name">
+                        
                     </div>
                 </div>
 
@@ -31,7 +33,7 @@
                 <div class="content-top-center">
                     <div class="top-center-imgbox">
                       <transition name="fade">
-                        <img :src="require('../assets/img/product/' + nowImg.name)" alt="" v-if="nowImg.place=='show'">
+                        <img :src="'http://175.24.122.212:8989/apiServer' + nowImg.name" alt="" v-if="nowImg.place=='show'">
                       </transition>  
                     </div>
                 </div>
@@ -54,7 +56,7 @@
                         ${{nowImg.price}}.00
                     </section>
                     <section class="top-right-describe">
-                        <p>奉献者，塞德·杜伊斯莫德临时禁运和劳动者联合会。Ut enim ad minim veniam，quis nostrud exercitation ullamco labouris nisi ut aliquip ex ea commodo</p>
+                        <p>{{nowImg.content}}</p>
                     </section>
                     <section class="top-right-select">
                         <div class="select-left">
@@ -197,17 +199,15 @@ return {
             id:"3",msg:"评论",type:"comment"
         }
     ],
-    nowImg:{name:"product-62.jpg",price:"29",type:"椅子",num:"1",place:"show",productID:""},
+    nowImg:{name:"",price:"",type:"",num:"",place:"",productID:"",content:""},
     imgList:[
         {
-            id:"1",name:"product-62.jpg",price:"29",type:"椅子",productID:""
+            id:"1",name:"/uploads/110692.jpg",price:"129",type:"诗尼曼衣柜",productID:10028731596630792000,content:"让你坠入温柔乡"
         }, 
         {
-            id:"2",name:"product-60.jpg",price:"39",type:"凳子",productID:""
-        },
-         {
-            id:"3",name:"product-61.jpg",price:"59",type:"摇椅",productID:""
-        }
+            id:"2",name:"/uploads/product-28.jpg",price:"1299",type:"布艺沙发",productID:10029961596630864000,content:"躺着绝对不想动"
+        }, 
+
     ]
 };
 },
@@ -221,42 +221,56 @@ computed: {
 watch: {},
 //方法集合
 methods: {
-    addToCart(){
-      this.$axios.post("api/product/addToCart",
-          this.$qs.stringify({
-            userID:this.userID || 10014841596696785000,
-            productID:this.nowImg.productID || 10021071596632162000,
-            count:this.nowImg.num
-      })).then(res=>{
-        console.log(res)
-        if(res.code == 200){
-          // this.$message({
-          //   message:"添加购物车成功，赶紧去看看吧!",
-          //   type: "success",
-          // });
-          this.$notify({
-            title: '添加成功',
-            message: '快去购物车看看自己的宝贝吧!',
-            type: 'success',
+    //添加到购物车
+    async addToCart(){
+      let res = await this.$axios.post("api/product/getProductInfoByID",
+        this.$qs.stringify({
+          productID:this.nowImg.productID
+      }))
+
+      if(res.code == 200){
+        this.$notify({
+            title: '添加失败',
+            message: '购物车里面已经有了相同的宝贝了!',
+            type: 'warning',
             offset: 100
-          });
-        }
+        });
+      }else{
+         await this.$axios.post("api/product/addToCart",
+              this.$qs.stringify({
+                userID:this.userID || 10014841596696785000,
+                productID:this.nowImg.productID || 10021071596632162000,
+                count:this.nowImg.num
+          })).then(res=>{
+            console.log(res)
+            if(res.code == 200){
+              this.$notify({
+                title: '添加成功',
+                message: '快去购物车看看自己的宝贝吧!',
+                type: 'success',
+                offset: 100
+              });
+            }     
 
+          }).catch(err=>{
+            console.log(err)
+        })
+      }
 
-        
-      }).catch(err=>{
-        console.log(err)
-      })
+     
     },
+    //增加数量
     addProduct(){
       this.nowImg.num ++;
     },
+    //减少数量
     subProduct(){
       if(this.nowImg.num-1<0){
         return false;
       }
       this.nowImg.num --;
     },
+    //根据当前选项来选择展示页面
     changeImg(name,price,type,productID){
         this.nowImg.name = name;
         this.nowImg.price = price;
@@ -282,31 +296,26 @@ methods: {
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
-<<<<<<< HEAD
   //先接受主页传过来的商品ID
   //根据商品ID请求数据，然后渲染到页面上
   // this.userID = this.$route.params.userID;
+  console.log(this.$route.params)
   this.productID = this.$route.params.productID;
   // 请求数据
    this.$axios.post("api/product/getProductInfoByID",
     this.$qs.stringify({
-      productID:this.productID || 10021071596632162000,
-  })).then(res=>{
+      productID:this.productID || 10021461596631900000
+   })).then(res=>{
     if(res.code == 200){
-      this.imgList.pop();
       var res = res.results[0];
-      this.imgList.unshift({id:res.productCode,name:"product-61.jpg",price:res.price,type:res.productName})
+      this.imgList.unshift({productID:res.productID,name:res.imgurl,price:res.price,type:res.productName,content:res.content})
       // 替换当前页面的数据
-      this.nowImg = {name:"product-61.jpg",price:res.price,type:res.productName,num:"1",place:"show",productID:res.productID}
-    }
+      this.nowImg = {name:res.imgurl,price:res.price,type:res.productName,num:"1",place:"show",productID:res.productID,content:res.content}
 
+    }
   }).catch(err=>{
     console.log(err)
   })
-
-=======
-  console.log(this.$route.params)
->>>>>>> 62c50443b04f9301940522f93272a7af2ed6a9a4
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
