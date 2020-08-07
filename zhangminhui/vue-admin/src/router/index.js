@@ -83,14 +83,6 @@ export default new Router({
                     }
 
                 },
-                {
-                    path: '/testupload',
-                    component: () => import( '../components/page/TestUpload.vue'),
-                    meta: {
-                        title: '测试上传'
-                    }
-
-                }
 
             ]
         },

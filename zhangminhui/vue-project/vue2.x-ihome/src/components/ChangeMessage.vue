@@ -12,19 +12,22 @@
       <label class="change-label">
         <span>名称</span>
         <input type="text" class="change-input" v-model="username" @blur="changeName" />
-        <!-- <span class="error" v-show="err.userN">名字必须有6-14位中文字符、数字、下划线组成</span> -->
+        <span :class="errorUserN" >名字必须有6-14位字符、数字或下划线组成</span>
       </label>
       <label class="change-label">
         <span>电话</span>
         <input type="text" class="change-input" v-model="telephone" @blur="changePhone" />
+        <span :class="errorUserP" >电话必须由11位数字组成</span>
       </label>
       <label class="change-label">
         <span>邮箱</span>
         <input type="text" class="change-input" v-model="email" @blur="changeEmail" />
+        <span :class="errorUserE" >邮箱格式错误</span>
       </label>
       <label class="change-label">
         <span>地址</span>
         <input type="text" class="change-input" v-model="address" @blur="changeAddress" />
+        <span :class="errorUserA" >地址必须由6-14位中文组成</span>
       </label>
       <label>
         <input type="radio" name="sex" v-model="sex" value="0" class="change-radio" />男
@@ -48,6 +51,10 @@ export default {
   data() {
     //这里存放数据
     return {
+      errorUserN:"correct",
+      errorUserP:"correct",
+      errorUserE:"correct",
+      errorUserA:"correct",
       username: "",
       telephone: "",
       email: "",
@@ -71,48 +78,51 @@ export default {
       this.$router.push("/");
     },
     changeName(e) {
-      var reg1 = /^\w{6,14}|[\u4e00-\u9fa5]{6,14}$/;
+      var reg1 = /^\w{6,14}$/;
       console.log(reg1.test(this.username));
       if (!reg1.test(this.username)) {
-        this.$message.error("名称必须由6-14位中文字符、数字、下划线组成");
         e.target.style.borderColor = "red";
         this.chenge.userN = false;
+        this.errorUserN = "error"
       } else {
         this.chenge.userN = true;
         e.target.style.borderColor = "#ccc";
+        this.errorUserN = "correct"
       }
     },
     changePhone(e) {
       var reg2 = /^\d{11}$/;
       if (!reg2.test(this.telephone)) {
-        this.$message.error("电话必须由11位数字组成");
-        this.chenge.userP = false;
         e.target.style.borderColor = "red";
+        this.errorUserP = "error"
       } else {
         e.target.style.borderColor = "#ccc";
         this.chenge.userP = true;
+        this.errorUserP = "correct"
       }
     },
     changeEmail(e) {
       var reg3 = /^\w+@\w+\.(com)$|(cn)$/;
       if (!reg3.test(this.email)) {
-        this.$message.error("邮箱格式错误");
         e.target.style.borderColor = "red";
         this.chenge.userE = false;
+        this.errorUserE = "error"
       } else {
         e.target.style.borderColor = "#ccc";
         this.chenge.userE = true;
+        this.errorUserE = "correct"
       }
     },
     changeAddress(e) {
       var reg4 = /^[\u4e00-\u9fa5]{6,14}$$/;
       if (!reg4.test(this.address)) {
-        this.$message.error("地址必须由6-14位中文组成");
         e.target.style.borderColor = "red";
         this.chenge.userA = false;
+        this.errorUserA = "error"
       } else {
         e.target.style.borderColor = "#ccc";
         this.chenge.userA = true;
+        this.errorUserA = "correct"
       }
     },
     subChange() {
@@ -159,7 +169,8 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
+  mounted() {
+  },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
@@ -224,6 +235,10 @@ export default {
         margin-left: 10px;
         font-size: 12px;
         color: red;
+        display: block;
+      }
+      .correct{
+        display: none;
       }
       .change-input {
         width: 400px;

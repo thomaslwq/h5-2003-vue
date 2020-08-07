@@ -20,19 +20,23 @@
       <div class="container">
         <div class="input-username">
           <label for="username">用户名*</label>
-          <input type="text" id="username" v-model="username" @blur="userBlur" />
+          <input type="text" id="username" v-model="username" @keyup="userKeyUp" />
+          <span v-show="usernameShow" class="errorColor">请输入6-15个字符，并且以英文字母开头的用户名！</span>
         </div>
         <div class="input-password">
           <label for="password">密码 *</label>
-          <input type="text" id="password" v-model="password" @blur="psdBlur" />
+          <input type="password" id="password" v-model="password" @keyup="psdKeyUp" />
+          <span v-show="passwordShow" class="errorColor">请输入长度为6-15位由英文字母和数字组成的密码！</span>
         </div>
         <div class="input-email">
           <label for="email">邮箱*</label>
-          <input type="email" id="email" v-model="email" @blur="emailBlur" />
+          <input type="email" id="email" v-model="email" @keyup="emailKeyUp" />
+          <span v-show="emailShow" class="errorColor">请输入包含@和.符号，且以.com或者.cn结尾的邮箱！</span>
         </div>
         <div class="input-phone">
           <label for="phone">手机号 *</label>
-          <input type="text" id="phone" v-model="telephone" @blur="phoneBlur" />
+          <input type="text" id="phone" v-model="telephone" @keyup="phoneKeyUp" />
+          <span v-show="telephoneShow" class="errorColor">请输入11位数字，且以1开头的手机号码！</span>
         </div>
         <div class="input-sex">
           <label for="sex">性别 *</label>
@@ -68,6 +72,10 @@ export default {
       email: "",
       telephone: "",
       radio: "0",
+      usernameShow: false,
+      passwordShow: false,
+      emailShow: false,
+      telephoneShow: false,
     };
   },
   //监听属性 类似于data概念
@@ -89,6 +97,13 @@ export default {
       if (!password || !email || !username || !phone) {
         this.$message({
           message: "账号、邮箱、手机号或密码不能为空！",
+          type:'error'
+        });
+        return false;
+      } else if (this.usernameShow || this.passwordShow || this.emailShow || this.telephoneShow) {
+         this.$message({
+          message: "账号、邮箱、手机号或密码输入不符，请再次输入！",
+          type:'error'
         });
         return false;
       }
@@ -109,61 +124,53 @@ export default {
             // 注册成功
             this.$message({
               message: "注册成功,即将为您跳转登陆页面",
-              type:"success"
+              type: "success",
             });
             console.log("注册成功");
-            this.$router.push("/Login" ); // 跳转回登录页  
+            this.$router.push("/Login"); // 跳转回登录页
           }
         })
         .catch((err) => err);
     },
-    userBlur: function () {
+    userKeyUp: function () {
       let username = this.username;
       var reg1 = /^[a-zA-Z]\w{5,14}$/;
       if (!reg1.test(username)) {
-        this.$message({
-          message: "请输入6-15个字符，并且以英文字母开头的用户名！",
-          type: "error",
-        });
-        return false;
+        this.usernameShow = true;
+      } else {
+        this.usernameShow = false;
       }
     },
-    psdBlur: function () {
+    psdKeyUp: function () {
       let password = this.password;
       var reg2 = /^[a-zA-Z0-9]{6,15}$/;
       if (!reg2.test(password)) {
-        this.$message({
-          message: "请输入长度为6-15位由英文字母和数字组成的密码！",
-          type: "error",
-        });
-        return false;
+        this.passwordShow = true;
+      } else {
+        this.passwordShow = false;
       }
     },
-    emailBlur: function () {
+    emailKeyUp: function () {
       let email = this.email;
       var reg3 = /^\w+@\w+\.(com)$|(cn)$/;
       if (!reg3.test(email)) {
-        this.$message({
-          message: "请输入包含@和.符号，且以.com或者.cn结尾的邮箱！",
-          type: "error",
-        });
-        return false;
+        this.emailShow = true;
+      } else {
+        this.emailShow = false;
       }
     },
-    phoneBlur: function () {
+    phoneKeyUp: function () {
       let telephone = this.telephone;
       var reg4 = /^1\d{10}$/;
       if (!reg4.test(telephone)) {
-        this.$message({
-          message: "请输入11位数字，且以1开头的手机号码！",
-          type: "error",
-        });
-        return false;
+        this.telephoneShow = true;
+      } else {
+        this.telephoneShow = false;
       }
     },
-    toLogin(){
-      this.$router.push("/Login")
-    }
+    toLogin() {
+      this.$router.push("/Login");
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
@@ -232,7 +239,16 @@ export default {
   .container {
     width: 540px;
     margin: 0 auto;
+    .errorColor {
+      display: inline-block;
+      width: 400px;
+      color: red;
+      position: absolute;
+      left: 550px;
+      bottom: 20px;
+    }
     .input-username {
+      position: relative;
       margin-bottom: 25px;
       label {
         font-size: 14px;
@@ -247,6 +263,7 @@ export default {
       }
     }
     .input-email {
+      position: relative;
       margin-bottom: 25px;
       label {
         font-size: 14px;
@@ -261,6 +278,7 @@ export default {
       }
     }
     .input-password {
+      position: relative;
       margin-bottom: 25px;
       label {
         font-size: 14px;
@@ -276,6 +294,7 @@ export default {
     }
 
     .input-phone {
+      position: relative;
       margin-bottom: 25px;
       label {
         font-size: 14px;
