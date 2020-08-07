@@ -22,12 +22,7 @@
           <div>操作</div>
         </div>
         <div class="protab">
-          <div
-            class="th"
-            style="display: flex;"
-            v-for="(goodsitem) in cartList"
-            :key="goodsitem.goodsid"
-          >
+          <div class="th" style="display: flex;" v-for="(goodsitem,index) in cartList" :key="index">
             <div class="pro clearfix">
               <label class="fl">
                 <input
@@ -35,25 +30,28 @@
                   :value="goodsitem"
                   v-model="checkedGoods"
                   :class="['check',{checked:checkedGoods.indexOf(goodsitem)>-1}]"
-                  @change="checkHandle(goodsitem)"
+                  @change="checkHandle(goodsitem.goodsid)"
                 />
                 <span></span>
               </label>
               <a class="fl" href="#">
                 <dl class="clearfix">
                   <dt class="fl">
-                    <img :src="require('../assets/img/product/'+goodsitem.goodsimg)" />
+                    <img
+                      :src="'http://175.24.122.212:8989/apiServer'+ goodsitem.imgurl"
+                      style="width:70px;height:70px"
+                    />
                   </dt>
                   <dd class="fl">
-                    <p>{{goodsitem.goodsname}}</p>
+                    <p>{{goodsitem.productName}}</p>
                     <p>颜色分类:</p>
-                    <p>{{goodsitem.goodscolor}}</p>
-                    <p style="margin-top:10px">库存：{{goodsitem.goodsnum}}</p>
+                    <p>{{goodsitem.colorID}}</p>
+                    <p style="margin-top:10px">库存：{{goodsitem.amount}}</p>
                   </dd>
                 </dl>
               </a>
             </div>
-            <div class="price">￥{{goodsitem.goodsprice}}</div>
+            <div class="price">￥{{goodsitem.price}}</div>
             <div class="number">
               <p class="num clearfix">
                 <img
@@ -61,7 +59,7 @@
                   src="../assets/images/sub.jpg"
                   @click="subNumHandle(goodsitem)"
                 />
-                <span class="fl neednum">{{goodsitem.neednum}}</span>
+                <span class="fl neednum">{{goodsitem.count}}</span>
                 <img
                   class="fl add numupdate"
                   src="../assets/images/add.jpg"
@@ -69,17 +67,17 @@
                 />
               </p>
             </div>
-            <div class="price sAll">￥{{goodsitem.goodsprice*goodsitem.neednum}}</div>
+            <div class="price sAll">￥{{goodsitem.price*goodsitem.count}}</div>
             <div class="price">
               <el-popconfirm
-              confirmButtonText='好的'
-              cancelButtonText='不用了'
-              icon="el-icon-info"
-              iconColor="red"
-              title="确定删除当前商品吗？"
-              @onConfirm="delHandle(goodsitem)"
+                confirmButtonText="好的"
+                cancelButtonText="不用了"
+                icon="el-icon-info"
+                iconColor="red"
+                title="确定删除当前商品吗？"
+                @onConfirm="delHandle(goodsitem)"
               >
-                <el-button slot="reference">删除</el-button>
+                <el-button slot="reference" @click="delOneShop(goodsitem.goodsid)">删除</el-button>
               </el-popconfirm>
             </div>
           </div>
@@ -90,27 +88,27 @@
         </div>
         <div class="tr clearfix">
           <label class="fl">
-            <input 
-            id="checkAll"
-            type="checkbox"
-            :class="['checkAll',{checked:checked}]" 
-            :checked="checked"
-            @change="checkAllHandle"
-            >
+            <input
+              id="checkAll"
+              type="checkbox"
+              :class="['checkAll',{checked:checked}]"
+              :checked="checked"
+              @change="checkAllHandle"
+            />
             <span></span>
           </label>
           <p class="fl">
             <label for="checkAll">全选</label>
             <el-popconfirm
-              confirmButtonText='好的'
-              cancelButtonText='不用了'
+              confirmButtonText="好的"
+              cancelButtonText="不用了"
               icon="el-icon-info"
               iconColor="red"
               title="确定删除所选商品吗？"
               @onConfirm="delCheckedHandle()"
-              >
-                <el-button slot="reference">删除</el-button>
-              </el-popconfirm>
+            >
+              <el-button slot="reference" @click="delMoreShop">删除</el-button>
+            </el-popconfirm>
           </p>
           <p class="fr">
             <span>
@@ -147,137 +145,178 @@ export default {
   data() {
     //这里存放数据
     return {
-      cartList: [
-        {
-          goodsid: "goods01",
-          goodsname: "木椅",
-          goodsnum: 10,
-          goodsprice: 300,
-          goodsimg: "product-56.jpg",
-          goodscolor: "黑色",
-          neednum:1
-        },
-        {
-          goodsid: "goods02",
-          goodsname: "木椅",
-          goodsnum: 10,
-          goodsprice: 300,
-          goodsimg: "product-56.jpg",
-          goodscolor: "黑色",
-          neednum:1
-        },
-        {
-          goodsid: "goods03",
-          goodsname: "木椅",
-          goodsnum: 10,
-          goodsprice: 300,
-          goodsimg: "product-56.jpg",
-          goodscolor: "黑色",
-          neednum:1
-        },
-      ],
+      cartList: [],
       checkedGoods: [],
     };
   },
   //监听属性 类似于data概念
   computed: {
     totalPrice() {
-        var arr = this.checkedGoods.map(v=>{
-            return v.goodsprice*v.neednum;
-        })
-        var total = 0;
-        arr.forEach(v=>{
-            total+=v;
-        })
-        return total;
+      var arr = this.checkedGoods.map((v) => {
+        return v.price * v.count;
+      });
+      var total = 0;
+      arr.forEach((v) => {
+        total += v;
+      });
+      return total;
     },
-    totalNum(){
-        var arr = this.checkedGoods.map(v=>{
-            return v.neednum;
-        })
-        var total = 0;
-        arr.forEach(v=>{
-            total+=v;
-        })
-        return total;
+    totalNum() {
+      var arr = this.checkedGoods.map((v) => {
+        return v.count;
+      });
+      var total = 0;
+      arr.forEach((v) => {
+        total += v;
+      });
+      return total;
     },
-    checked(){
-        if(this.checkedGoods.length!==this.cartList.length || this.cartList.length<=0){
-            return false;
-        }else{
-            return true;
-        }
-        
-    }
+    checked() {
+      if (
+        this.checkedGoods.length !== this.cartList.length ||
+        this.cartList.length <= 0
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    },
   },
   //监控data中的数据变化
-  watch: {
-      },
+  watch: {},
   //方法集合
   methods: {
     checkHandle: function (goodsitem) {
-           console.log(this.checkedGoods.indexOf(goodsitem))
+      console.log(this.checkedGoods.indexOf(goodsitem));
+      this.checkedGoods.push(goodsitem);
     },
-    subNumHandle:function(item){
-        if(item.neednum<=1){
-            this.$message.error("不能为零")
-            return
-        }else{
-            item.neednum--
-        }
+    subNumHandle: function (item) {
+      if (item.count <= 1) {
+        this.$message.error("不能为零");
+        return;
+      } else {
+        item.count--;
+        this.$axios
+          .post(
+            "api/product/updateCart",
+            this.$qs.stringify({
+              cartID: item.goodsid,
+              count: item.count,
+            })
+          )
+          .then((res) => {
+            if (res.code == 200) {
+              console.log(res);
+            }
+          })
+          .catch((err) => console.log(err));
+      }
     },
-    addNumHandle:function(item){
-        if(item.neednum>=item.goodsnum){          
-            this.$message.error("库存不足")
-            return
-        }else{
-            item.neednum++
-        }
+    addNumHandle: function (item) {
+      if (item.count >= item.amount) {
+        this.$message.error("库存不足");
+        return;
+      } else {
+        item.count++;
+        this.$axios
+          .post(
+            "api/product/updateCart",
+            this.$qs.stringify({
+              cartID: item.goodsid,
+              count: item.count,
+            })
+          )
+          .then((res) => {
+            if (res.code == 200) {
+              console.log(res);
+            }
+          })
+          .catch((err) => console.log(err));
+      }
     },
-    checkAllHandle:function(e){
-        if(e.target.checked == true){
-            this.checkedGoods = this.cartList;
-        }else{
-            this.checkedGoods = [];
-        }
-    },
-    delHandle:function(item){
-        this.cartList = this.cartList.filter(v=>{
-            return v!=item;
-        })
-    },
-    delCheckedHandle:function(){
-        this.cartList = this.cartList.filter(v=>{
-            return this.checkedGoods.indexOf(v)===-1;
-        })
+    checkAllHandle: function (e) {
+      if (e.target.checked == true) {
+        this.checkedGoods = this.cartList;
+      } else {
         this.checkedGoods = [];
+      }
+    },
+    delHandle: function (item) {
+      this.cartList = this.cartList.filter((v) => {
+        return v != item;
+      });
+    },
+    delCheckedHandle: function () {
+      this.cartList = this.cartList.filter((v) => {
+        return this.checkedGoods.indexOf(v) === -1;
+      });
+      this.checkedGoods = [];
+    },
+    delOneShop: function (id) {
+      this.$axios
+        .post(
+          "api/product/deleteCart",
+          this.$qs.stringify({
+            cartID: id,
+          })
+        )
+        .then((res) => {
+          if (res.code == 200) {
+            console.log(res);
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+    delMoreShop: function () {
+      this.$axios
+        .post(
+          "api/product/deleteAllCart",
+          this.$qs.stringify({
+            cartID: this.checkedGoods[0],
+          })
+        )
+        .then((res) => {
+          if (res.code == 200) {
+            console.log(res);
+          }
+        })
+        .catch((err) => console.log(err));
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    var userID = window.localStorage.getItem("userID");
-    console.log(userID);
+    var userID = localStorage.getItem("userID");
     this.$axios
-        .post(
-          "api/product/getAllCartByUserID",
-          this.$qs.stringify({
-          userID:userID
-          })
-        )
-        .then((res) => {
-          console.log(res);
-          if (res.code == 200) {
-          }
+      .post(
+        "api/product/getAllCartByUserID",
+        this.$qs.stringify({
+          userID: userID,
         })
-        .catch((err) => err);
-    
+      )
+      .then((res) => {
+        if (res.code == 200) {
+          console.log(res.results);
+          var res = res.results;
+          // console.log(this.cartList);
+          var that = this;
+          res.forEach(function (item, index, arr) {
+            that.cartList.push({
+              goodsid: item.cartID,
+              imgurl: item.imgurl,
+              productName: item.productName,
+              amount: item.amount,
+              price: item.price,
+              colorID: item.colorID,
+              count: item.count,
+            });
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
-      console.log(this.$route.params)
-      console.log(localStorage)
-  },
-                                                                                                          
+  mounted() {},
+
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
@@ -401,13 +440,13 @@ export default {
 .table .th .pro dl dt {
   margin-left: 20px;
   margin-right: 25px;
-  margin-top:10px;
+  margin-top: 10px;
   border: 1px double #ebebeb;
 }
 .table .th .pro dl dd {
   position: relative;
   color: #436372;
-  padding:0 10px 10px;
+  padding: 0 10px 10px;
   text-align: left;
 }
 .table .th .pro dl dd span.edit {
