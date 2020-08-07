@@ -156,9 +156,7 @@ export default {
     }
     if (userID) {
       this.isLogin = true;
-    }
-    this.$axios
-      .post(
+    this.$axios.post(
         "api/product/getWishList",
         this.$qs.stringify({
           userID: userID,
@@ -170,6 +168,7 @@ export default {
           console.log(res);
         }
       });
+    }
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前

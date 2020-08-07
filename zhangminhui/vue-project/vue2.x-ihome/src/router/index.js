@@ -29,14 +29,17 @@ const routes = [
   },
   {
     path: "/ChangeMessage",
+    name:"Changemessage",
     component: Changemessage
   },
   {
     path: "/Wish",
+    name:"Wish",
     component: Wish
   },
   {
     path: "/Login",
+    name:"Login",
     component: Login
   },
   {

@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="navbox" :id="navScroll">
-      <div class="nav">
+      <div class="nav" @click="go">
         <div class="logo">
           <img src="../assets/img/logo/logo.png" alt />
         </div>
@@ -87,7 +87,7 @@
           <div v-else>
             <div class="userMessage">
               <div class="userImg">
-                <img :src="require('../assets/img/touxiang.png')" alt />
+                <img :src="'http://175.24.122.212:8989/apiServer'+user.headPortrait" alt />
               </div>
               <span>{{user.username}}</span>
             </div>
@@ -151,6 +151,9 @@ export default {
       }
     },
     go(){
+      if(this.$route.name==="Home"){
+        return
+      }
       this.$router.push("/")
     },
     move() {
@@ -227,6 +230,7 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             this.user = res.results[0];
+            console.log(res.results)
           }
         });
       //   this.$axios
