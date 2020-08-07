@@ -223,12 +223,13 @@ watch: {},
 methods: {
     //添加到购物车
     async addToCart(){
-      let res = await this.$axios.post("api/product/getProductInfoByID",
+      let res = await this.$axios.post("api/product/getAllCartByUserID",
         this.$qs.stringify({
-          productID:this.nowImg.productID
+          userID:this.userID
       }))
-
-      if(res.code == 200){
+      console.log(res.results)
+      if(res.code == 200 && res.results[0].productID == this.nowImg.productID){
+        console.log(res)
         this.$notify({
             title: '添加失败',
             message: '购物车里面已经有了相同的宝贝了!',
@@ -298,8 +299,7 @@ methods: {
 created() {
   //先接受主页传过来的商品ID
   //根据商品ID请求数据，然后渲染到页面上
-  // this.userID = this.$route.params.userID;
-  console.log(this.$route.params)
+  this.userID = JSON.parse(localStorage.getItem("userID"));
   this.productID = this.$route.params.productID;
   // 请求数据
    this.$axios.post("api/product/getProductInfoByID",
@@ -332,7 +332,7 @@ beforeCreate() {}, //生命周期 - 创建之前
 beforeMount() {}, //生命周期 - 挂载之前
 beforeUpdate() {}, //生命周期 - 更新之前
 updated() {}, //生命周期 - 更新之后
-beforeDestroy() {}, //生命周期 - 销毁之前
+beforeDestroy() {this.swiper.destroy(false)}, //生命周期 - 销毁之前
 destroyed() {}, //生命周期 - 销毁完成
 activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 }
