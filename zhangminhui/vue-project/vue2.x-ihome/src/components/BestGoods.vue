@@ -13,8 +13,10 @@
         <!-- 产品展示 -->
         <div class="goods-content-container">
             <div class="goods-content-item">
-                <div :class="['big-box',{'noActive':item.type!=btnType && btnType!='all'},{'active':item.type==btnType || btnType=='all'}]" v-for="item in goodsList" :key='item.productID'>
-                    <Goods :item="item"></Goods>
+                <div
+                  :class="['big-box',{'noActive':item.type!=btnType && btnType!='all'},{'active':item.type==btnType || btnType=='all'}]"
+                  v-for="item in goodsList" :key='item.productID'>
+                  <Goods :item="item"></Goods>
                 </div>
             </div>
         </div>
