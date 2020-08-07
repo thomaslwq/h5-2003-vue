@@ -179,6 +179,9 @@ export default {
       this.searchHiddle = false;
     },
     GotoWish() {
+      if(this.$route.name == "Wish"){
+        return false;
+      }
       this.$router.push("/Wish");
     },
     goProductGrid:function(id){
@@ -195,6 +198,9 @@ export default {
       }
     },
      GotoCart() {
+       if(this.$route.name == "Cart"){
+         return false;
+       }
         this.$router.push("/Cart");
     },
     quit() {
