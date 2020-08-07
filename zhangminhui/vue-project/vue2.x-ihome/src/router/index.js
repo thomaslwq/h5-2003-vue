@@ -29,25 +29,23 @@ const routes = [
   },
   {
     path: "/ChangeMessage",
+    name:"ChangeMessage",
     component: Changemessage
   },
   {
     path: "/Wish",
+    name:"Wish",
     component: Wish
   },
   {
     path: "/Login",
+    name:"Login",
     component: Login
   },
   {
     path:"/Cart",
     name:"Cart",
     component:Cart
-  },
-  {
-    path:"/login",
-    name:"Login",
-    component:Login
   },
   {
     path:"/Register",
@@ -60,6 +58,19 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+// 开启导航守卫
+router.beforeEach((to,from,next)=>{
+  const userID = localStorage.getItem("userID");
+  if(to.name == "Login" || to.name == "Register" ||  to.name == "Home"){
+      next();
+  }else{
+      if(userID){
+        next();
+      }else{
+        next({path:"/Login"})
+      }
+  }
 })
 
 export default router
