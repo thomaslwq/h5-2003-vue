@@ -82,9 +82,13 @@
             </div>
           </div>
         </div>
-        <div class="goOn" v-show="cartList.length<=0">
+        <div class="goOn" v-show="cartList.length<=0 && isLogin">
           您的购物车空空如也~
           <a href="/productgrid">去逛逛</a>
+        </div>
+        <div class="goOn" v-show="!isLogin">
+          还没有登录哦~
+          <a href="/Login">登录</a>
         </div>
         <div class="tr clearfix">
           <label class="fl">
@@ -147,6 +151,7 @@ export default {
     return {
       cartList: [],
       checkedGoods: [],
+      isLogin:false
     };
   },
   //监听属性 类似于data概念
@@ -286,36 +291,42 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
     var userID = localStorage.getItem("userID");
-    this.$axios
-      .post(
-        "api/product/getAllCartByUserID",
-        this.$qs.stringify({
-          userID: userID,
-        })
-      )
-      .then((res) => {
-        if (res.code == 200) {
-          console.log(res.results);
-          var res = res.results;
-          // console.log(this.cartList);
-          var that = this;
-          res.forEach(function (item, index, arr) {
-            that.cartList.push({
-              goodsid: item.cartID,
-              imgurl: item.imgurl,
-              productName: item.productName,
-              amount: item.amount,
-              price: item.price,
-              colorID: item.colorID,
-              count: item.count,
+    if(userID){
+      this.isLogin=true;
+      this.$axios
+        .post(
+          "api/product/getAllCartByUserID",
+          this.$qs.stringify({
+            userID: userID,
+          })
+        )
+        .then((res) => {
+          if (res.code == 200) {
+            console.log(res.results);
+            var res = res.results;
+            // console.log(this.cartList);
+            var that = this;
+            res.forEach(function (item, index, arr) {
+              that.cartList.push({
+                goodsid: item.cartID,
+                imgurl: item.imgurl,
+                productName: item.productName,
+                amount: item.amount,
+                price: item.price,
+                colorID: item.colorID,
+                count: item.count,
+              });
             });
-          });
-        }
-      })
-      .catch((err) => console.log(err));
+          }
+        })
+        .catch((err) => console.log(err));
+    }else{
+      this.isLogin=false;
+    }
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
+  mounted() {
+  },
 
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前

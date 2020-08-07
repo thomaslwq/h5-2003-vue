@@ -8,12 +8,13 @@
         </div>
         <!-- 产品列表 -->
         <div class="goods-content-list">
-            <div :class="['list-btn',{'active-btn': btnType==item.type }]" @click="changeBtn(item.type)" v-for="item in goodsBtn" :key='item.id'>{{item.name}}</div>
+            <div :class="['list-btn',{'active-btn': btnType=='所有'}]" @click="showAll">所有</div>
+            <div v-for="item in goodsBtn" :class=" ['list-btn',{'active-btn': btnType==item.seriesName }]" :key='item.seriesID'  @click="changeBtn(item.seriesName,item.seriesID)">{{item.seriesName}}</div>
         </div>
         <!-- 产品展示 -->
         <div class="goods-content-container">
             <div class="goods-content-item">
-                <div :class="['big-box',{'noActive':item.type!=btnType && btnType!='all'},{'active':item.type==btnType || btnType=='all'}]" v-for="item in goodsList" :key='item.productID'>
+                <div class='big-box active' v-for="item in goodsList" :key='item.productID'>
                     <Goods :item="item"></Goods>
                 </div>
             </div>
@@ -34,24 +35,11 @@ components: {
 data() {
 //这里存放数据
 return {
-    btnType:"all",
-    goodsBtn:[
-        {
-            id:"1",name:"所有",type:"all"
-        },
-        {
-            id:"2",name:"家具类",type:"furniture"
-        },
-        {
-            id:"3",name:"椅子",type:"chair"
-        },
-        {
-            id:"4",name:"灯光",type:"lamplight"
-        },
-        {
-            id:"5",name:"装潢",type:"decorate"
-    }],
-    goodsList:[]
+  
+    btnType:"所有",
+    goodsBtn:[],
+    goodsList:[],
+    originList:[],
 };
 },
 //监听属性 类似于data概念
@@ -60,18 +48,33 @@ computed: {},
 watch: {},
 //方法集合
 methods: {
-    changeBtn(type){
+    changeBtn(type,id){
         this.btnType = type;
+        this.$axios.post('api/product/getTopProductBySeries',this.$qs.stringify(
+                {
+                seriesID:Number(id)
+                })
+            ).then(res=>{
+                this.goodsList = res.results;
+            })
+    },
+    showAll:function(){
+      this.goodsList=this.originList;
+      this.btnType = "所有";
     }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
-
+  this.$axios.get('api/admin/getAllSeries').then(res=>{
+      
+      this.goodsBtn = res.results;
+    });
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
   this.$axios.get("api/product/getTopProduct")
   .then(res=>{
+    this.originList=res.results;
     this.goodsList=res.results
   })
 },

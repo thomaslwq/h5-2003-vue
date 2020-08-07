@@ -113,7 +113,7 @@ beforeCreate() {
 }, //生命周期 - 创建之前
 beforeMount() {
   if(!this.item.imgurl){
-    this.item.imgurl="/uploads/null.jpg"
+    this.item.imgurl="/uploads/1029793003.jpg"
   }
 }, //生命周期 - 挂载之前
 beforeUpdate() {}, //生命周期 - 更新之前

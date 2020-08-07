@@ -35,11 +35,11 @@
             </td>
             <td>{{item.productName}}</td>
             <td>{{item.price}}</td>
-            <td>{{item.productCode}}</td>
+            <td>{{item.amount}}</td>
             <td>
               <button
                 class="CanBuy"
-                v-if="item.productCode>0"
+                v-if="item.amount>0"
                 @click="addCart(item.productID)"
               >添加到购物车</button>
               <button class="NOBuy" v-else>卖光了</button>
@@ -156,7 +156,7 @@ export default {
     }
     if (userID) {
       this.isLogin = true;
-    this.$axios.post(
+      this.$axios.post(
         "api/product/getWishList",
         this.$qs.stringify({
           userID: userID,
