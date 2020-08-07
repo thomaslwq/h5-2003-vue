@@ -101,7 +101,7 @@
             </div>
             <div class="address">
               <div>我的地址</div>
-              <span>{{user.addresses}}</span>
+              <span>{{user.addresses || ""}}</span>
             </div>
             <div class="changeMessage">
               <button class="btn1" @click="change">修改信息</button>

@@ -4,7 +4,7 @@
     <div class="design-title">
       <span v-for="(item,index) in title" :key="index" @click="changeDesign(item)">{{item}}</span>
     </div>
-    <div class="designMore">查看更多</div>
+    <div class="designMore" @click="$router.push('/Productgrid')">查看更多</div>
     <div class="design-list">
       <ul>
         <li v-for="(item,index) in product" :key="index" @click="seeDetails(item.productID)">

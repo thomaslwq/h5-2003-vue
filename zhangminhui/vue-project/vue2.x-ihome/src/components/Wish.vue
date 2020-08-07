@@ -35,11 +35,11 @@
             </td>
             <td>{{item.productName}}</td>
             <td>{{item.price}}</td>
-            <td>{{item.productCode}}</td>
+            <td>{{item.amount}}</td>
             <td>
               <button
                 class="CanBuy"
-                v-if="item.productCode>0"
+                v-if="item.amount>0"
                 @click="addCart(item.productID)"
               >添加到购物车</button>
               <button class="NOBuy" v-else>卖光了</button>
@@ -113,35 +113,42 @@ export default {
     },
     addCart(productID) {
       var userID = localStorage.getItem("userID");
-       this.$axios.post("api/product/getAllCartByUserID&ProductID",
+      this.$axios
+        .post(
+          "api/product/getAllCartByUserID&ProductID",
           this.$qs.stringify({
-            userID:userID,
-            productID:productID
-          })).then(res=>{
-            if(res.results.length==0){
-              this.$axios.post("api/product/addToCart",
-              this.$qs.stringify({
-                userID:userID,
-                productID:productID,
-                count: 1
-              })
-              ).then(res=>{
-               if(res.code==200){
-                 this.$message({
-                  message: "添加成功",
-                  duration: 1000,
-                  type: "success",
-                });
-               }
-              })
-            }else{
-              this.$message({
-                  message: "购物车已经有这件商品了哦",
-                  duration: 1000,
-                  type: "error",
-                });
-            }
+            userID: userID,
+            productID: productID,
           })
+        )
+        .then((res) => {
+          if (res.results.length == 0) {
+            this.$axios
+              .post(
+                "api/product/addToCart",
+                this.$qs.stringify({
+                  userID: userID,
+                  productID: productID,
+                  count: 1,
+                })
+              )
+              .then((res) => {
+                if (res.code == 200) {
+                  this.$message({
+                    message: "添加成功",
+                    duration: 1000,
+                    type: "success",
+                  });
+                }
+              });
+          } else {
+            this.$message({
+              message: "购物车已经有这件商品了哦",
+              duration: 1000,
+              type: "error",
+            });
+          }
+        });
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -156,20 +163,19 @@ export default {
     }
     if (userID) {
       this.isLogin = true;
+      this.$axios
+        .post(
+          "api/product/getWishList",
+          this.$qs.stringify({
+            userID: userID,
+          })
+        )
+        .then((res) => {
+          if (res.code == 200) {
+            this.wishList = res.results;
+          }
+        });
     }
-    this.$axios
-      .post(
-        "api/product/getWishList",
-        this.$qs.stringify({
-          userID: userID,
-        })
-      )
-      .then((res) => {
-        if (res.code == 200) {
-          this.wishList = res.results;
-          console.log(res);
-        }
-      });
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
