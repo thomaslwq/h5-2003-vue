@@ -43,21 +43,8 @@
                 <!-- main商品部分开始位置 -->
                 <el-container style="display:block">
                     <div class="pro-content">
-                        <div class="pro-item" v-for="(product,index) in currentList" :key="product.productCode" @click="seeDetails(product.productID)">
-                            <dl>
-                                <dt>
-                                    <img :src="require('../assets/img/product/product-'+35+'.jpg')" :alt="product.productName">
-                                    <div class="pro-action">
-                                        <a class="act-btn"><i class="iconfont icon-fangdajing"></i></a>
-                                        <a class="act-btn" @click.stop="addToCart(product.productID)"><i class="iconfont icon-gouwuche"></i></a>
-                                        <a class="act-btn" @click.stop="addToWishList(product.productID)"><i class="iconfont icon-aixin"></i></a>
-                                    </div>
-                                </dt>
-                                <dd>
-                                    <h4>{{product.productName}}</h4>
-                                    <p>￥{{product.price}}</p>
-                                </dd>
-                            </dl>
+                        <div class="pro-item" v-for="(product) in currentList" :key="product.productCode" >
+                            <Goods :item="product"></Goods>
                         </div>
                     </div>
                     <!-- 分页器 -->
@@ -82,14 +69,16 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import Header from "../components/Header.vue"
-import Footer from "../components/Footer.vue"
+import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
+import Goods from "../components/Goods.vue";
 export default {
 name:"Productgrid",
 //import引入的组件需要注入到对象中才能使用
 components: {
     Header,
-    Footer
+    Footer,
+    Goods
 },
 data() {
 //这里存放数据
@@ -118,14 +107,6 @@ methods: {
     currentPage:function(page){
         this.currentpage = page;
     },
-    seeDetails:function(id){
-        this.$router.push({
-            name:'ProductDetails',
-            params:{
-                productID:id
-            }
-        })
-    },
     goodsListChange:function(id){
         var str = id.toString()
         if(str.indexOf('1010')==0){
@@ -148,12 +129,6 @@ methods: {
             })
         }
     },
-    addToCart:function(proId){
-        
-    },
-    addToWishList:function(proId){
-
-    }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {

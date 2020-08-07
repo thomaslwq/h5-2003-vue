@@ -3,12 +3,12 @@ const userModel = {
   username: "",
   password: "",
   telephone: "",
-  sex:0,
+  sex:"",
   email: "",
   addresses: "",
   createTime: "",
   headPortrait: "",
-  authority: 0,
+  authority: "",
 };
 
 module.exports = {

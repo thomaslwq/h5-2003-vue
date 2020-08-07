@@ -5,16 +5,16 @@
 -->
 <template>
 <div class='goods-show'>
-    <section class="item-imgbox">
-        <img :src="require('../assets/img/product/'+item.img)" alt="">
+    <section class="item-imgbox" @click="seeDetails(item.productID)">
+        <img :src="'http://175.24.122.212:8989/apiServer'+item.imgurl" alt="">
         <div class="hidden_link">
-            <a href="#"><i class="iconfont icon-fangdajing"></i></a>
-            <a href="#"><i class="iconfont icon-aixin"></i></a>
-            <a href="#"><i class="iconfont icon-gouwuche"></i></a>
+            <a><i class="iconfont icon-fangdajing"></i></a>
+            <a><i class="iconfont icon-aixin" @click.stop="addToWishList(item.productID)"></i></a>
+            <a><i class="iconfont icon-gouwuche" @click.stop="addToCart(item.productID)"></i></a>
         </div>
     </section>
-    <section class="item-name"><span><a href="">{{item.name}}</a></span></section>
-    <section class="item-price"><span>{{item.price}}</span></section>
+    <section class="item-name"><span><a href="">{{item.productName}}</a></span></section>
+    <section class="item-price"><span>￥{{item.price}}</span></section>
 </div>
 </template>
 
@@ -38,7 +38,67 @@ computed: {},
 watch: {},
 //方法集合
 methods: {
-
+  seeDetails:function(id){
+        this.$router.push({
+            name:'ProductDetails',
+            params:{
+                productID:id
+            }
+        })
+    },
+    addToWishList:function(proId){
+      var userId = localStorage.getItem("userID")
+        if(userId){
+          this.$axios.post('api/product/getWishListByUserID&PorductID',
+          this.$qs.stringify({
+            userID:userId,
+            productID:proId
+          })).then(res=>{
+            if(res.results.length == 0){
+              this.$axios.post("api/product/addToWishList",
+              this.$qs.stringify({
+                userID:localStorage.getItem("userID"),
+                productID:proId
+              })).then(res=>{
+                console.log(res)
+              })
+            }else{
+              this.$message({
+                  message: "心愿单中已经有这件商品了哦",
+                  duration: 1000,
+                  type: "error",
+                });
+            }
+          })
+        }
+    },
+    addToCart:function(proId){
+      var userId = localStorage.getItem("userID")
+      if(userId){
+          this.$axios.post("api/product/getAllCartByUserID&ProductID",
+          this.$qs.stringify({
+            userID:userId,
+            productID:proId
+          })).then(res=>{
+            if(res.results.length==0){
+              this.$axios.post("api/product/addToCart",
+              this.$qs.stringify({
+                userID:userId,
+                productID:proId,
+                count: 1
+              })).then(res=>{
+                console.log(res)
+              })
+            }else{
+              this.$message({
+                  message: "购物车已经有这件商品了哦",
+                  duration: 1000,
+                  type: "error",
+                });
+            }
+          })
+        }
+    }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
@@ -48,8 +108,13 @@ created() {
 mounted() {
 
 },
-beforeCreate() {}, //生命周期 - 创建之前
-beforeMount() {}, //生命周期 - 挂载之前
+beforeCreate() {
+}, //生命周期 - 创建之前
+beforeMount() {
+  if(!this.item.imgurl){
+    this.item.imgurl="/uploads/null.jpg"
+  }
+}, //生命周期 - 挂载之前
 beforeUpdate() {}, //生命周期 - 更新之前
 updated() {}, //生命周期 - 更新之后
 beforeDestroy() {}, //生命周期 - 销毁之前
@@ -114,7 +179,8 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
     }
 
     img {
-      width: 100%;
+      width: 269px;
+      height: 280px;
       display: block;
       margin: 0 auto;
       transition: all .5s;
