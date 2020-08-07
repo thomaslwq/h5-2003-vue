@@ -163,18 +163,18 @@ export default {
     }
     if (userID) {
       this.isLogin = true;
-      this.$axios
-        .post(
-          "api/product/getWishList",
-          this.$qs.stringify({
-            userID: userID,
-          })
-        )
-        .then((res) => {
-          if (res.code == 200) {
-            this.wishList = res.results;
-          }
-        });
+      this.$axios.post(
+        "api/product/getWishList",
+        this.$qs.stringify({
+          userID: userID,
+        })
+      )
+      .then((res) => {
+        if (res.code == 200) {
+          this.wishList = res.results;
+          console.log(res);
+        }
+      });
     }
   },
   beforeCreate() {}, //生命周期 - 创建之前

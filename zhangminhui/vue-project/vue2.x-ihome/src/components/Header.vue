@@ -10,7 +10,7 @@
     </div>
     <div class="navbox" :id="navScroll">
       <div class="nav">
-        <div class="logo">
+        <div class="logo" @click="go">
           <img src="../assets/img/logo/logo.png" alt />
         </div>
         <div class="menu">
@@ -87,7 +87,7 @@
           <div v-else>
             <div class="userMessage">
               <div class="userImg">
-                <img :src="require('../assets/img/touxiang.png')" alt />
+                <img :src="'http://175.24.122.212:8989/apiServer'+user.headPortrait" alt />
               </div>
               <span>{{user.username}}</span>
             </div>
@@ -151,7 +151,11 @@ export default {
       }
     },
     go(){
-      this.$router.push("/")
+      if(this.$route.name==="Home"){
+        return
+      }else{
+        this.$router.push("/")
+      }
     },
     move() {
       this.$refs.userBox.style.display = "block";
@@ -178,6 +182,7 @@ export default {
       this.$router.push("/Wish");
     },
     goProductGrid:function(id){
+      console.log(this.$route.name)
       if(this.$route.name==="Productgrid"){
         this.$emit('post-id',id)
       }else{
@@ -190,7 +195,7 @@ export default {
       }
     },
      GotoCart() {
-      this.$router.push("/Cart");
+        this.$router.push("/Cart");
     },
     quit() {
       localStorage.removeItem("userID");
@@ -228,6 +233,7 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             this.user = res.results[0];
+            console.log(res.results)
           }
         });
       //   this.$axios

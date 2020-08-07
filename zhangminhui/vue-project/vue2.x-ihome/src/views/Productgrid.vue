@@ -116,7 +116,6 @@ methods: {
                 })
             ).then(res=>{
                 this.goodsList = res.results;
-                console.log(this.goodsList)
             })
         }else if(str.indexOf('1003')==0){
             this.$axios.post('api/product/getProductInfoBySeriesID',this.$qs.stringify(
@@ -125,7 +124,7 @@ methods: {
                 })
             ).then(res=>{
                 this.goodsList = res.results;
-                console.log(this.goodsList)
+
             })
         }
     },

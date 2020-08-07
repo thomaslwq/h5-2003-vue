@@ -21,11 +21,11 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-
 export default {
 //import引入的组件需要注入到对象中才能使用
 props:['item'],
-components: {},
+components: {
+},
 data() {
 //这里存放数据
 return {
@@ -95,6 +95,7 @@ methods: {
                   duration: 1000,
                   type: "error",
                 });
+                console.log(this.$message)
             }
           })
         }
@@ -110,7 +111,7 @@ beforeCreate() {
 }, //生命周期 - 创建之前
 beforeMount() {
   if(!this.item.imgurl){
-    this.item.imgurl="/uploads/null.jpg"
+    this.item.imgurl="/uploads/1029793003.jpg"
   }
 }, //生命周期 - 挂载之前
 beforeUpdate() {}, //生命周期 - 更新之前
