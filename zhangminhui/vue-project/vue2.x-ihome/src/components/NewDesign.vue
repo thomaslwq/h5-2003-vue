@@ -7,11 +7,11 @@
     <div class="designMore">查看更多</div>
     <div class="design-list">
       <ul>
-        <li v-for="(item,index) in product" :key="index">
-          <span class="design-list-title">{{item.title}}</span>
+        <li v-for="(item,index) in product" :key="index" @click="seeDetails(item.productID)">
+          <span class="design-list-title">{{item.productName}}</span>
           <span class="design-list-tip">{{item.tip}}</span>
           <div class="img-box">
-            <img :src="item.src" alt />
+            <img :src="'http://175.24.122.212:8989/apiServer'+ item.imgurl" alt />
           </div>
         </li>
       </ul>
@@ -28,50 +28,7 @@ export default {
     //这里存放数据
     return {
       title: ["所有", "家具", "椅子", "灯光", "装潢"],
-      product: [
-        {
-          id: 1,
-          title: "Beat扁平吊坠黑色",
-          tip: "经典",
-          type: "家具,",
-          src: require("../assets/img/product/product-36.png"),
-        },
-        {
-          id: 2,
-          title: "Lampe Sur Pieds Bamboo",
-          tip: "经典",
-          type: "椅子,灯光",
-          src: require("../assets/img/product/product-37.png"),
-        },
-        {
-          id: 3,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "灯光,",
-          src: require("../assets/img/product/product-38.png"),
-        },
-        {
-          id: 4,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "家具,装潢",
-          src: require("../assets/img/product/product-39.png"),
-        },
-        {
-          id: 5,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "椅子,装潢",
-          src: require("../assets/img/product/product-40.png"),
-        },
-        {
-          id: 6,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "灯光,",
-          src: require("../assets/img/product/product-41.png"),
-        },
-      ],
+      product: [],
       newProduct: [
         {
           id: 1,
@@ -116,7 +73,7 @@ export default {
           src: require("../assets/img/product/product-41.png"),
         },
       ],
-    };
+    }; 
   },
   //监听属性 类似于data概念
   computed: {},
@@ -146,7 +103,29 @@ export default {
         this.product = [...this.newProduct];
       }
     },
+    seeDetails:function(id){
+        this.$router.push({
+            name:'ProductDetails',
+            params:{
+                productID:id
+            }
+        })
+    }
   },
+  mounted(){
+    this.$axios.get("api/product/getNewDesignProduct")
+    .then(res=>{
+      var arr=res.results.map(v=>{
+        if(v.imgurl){
+          return v
+        }else{
+          v.imgurl="/uploads/null.jpg"
+          return v
+        }
+      })
+      this.product = arr.splice(0,6);
+    })
+  }
 };
 </script>
 <style lang="less" >

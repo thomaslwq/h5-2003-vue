@@ -13,7 +13,7 @@
         <!-- 产品展示 -->
         <div class="goods-content-container">
             <div class="goods-content-item">
-                <div :class="['big-box',{'noActive':item.type!=btnType && btnType!='all'},{'active':item.type==btnType || btnType=='all'}]" v-for="item in goodsList" :key='item.id'>
+                <div :class="['big-box',{'noActive':item.type!=btnType && btnType!='all'},{'active':item.type==btnType || btnType=='all'}]" v-for="item in goodsList" :key='item.productID'>
                     <Goods :item="item"></Goods>
                 </div>
             </div>
@@ -51,32 +51,7 @@ return {
         {
             id:"5",name:"装潢",type:"decorate"
     }],
-    goodsList:[
-        {
-            id:"1",name:"木质收音机",price:"$29.00",img:"product-28.jpg",type:"furniture"
-        },
-        {
-            id:"2",name:"木质收音机",price:"$29.00",img:"product-29.jpg",type:"chair"
-        },
-        {
-            id:"3",name:"木质收音机",price:"$29.00",img:"product-30.jpg",type:"decorate"
-        },
-        {
-            id:"4",name:"木质收音机",price:"$29.00",img:"product-31.jpg",type:"lamplight"
-        },
-        {
-            id:"5",name:"木质收音机",price:"$29.00",img:"product-32.jpg",type:"decorate"
-        },
-        {
-            id:"6",name:"木质收音机",price:"$29.00",img:"product-33.jpg",type:"chair"
-        },
-        {
-            id:"7",name:"木质收音机",price:"$29.00",img:"product-34.jpg",type:"lamplight"
-        },
-        {
-            id:"8",name:"木质收音机",price:"$29.00",img:"product-35.jpg",type:"furniture"
-        }
-    ]
+    goodsList:[]
 };
 },
 //监听属性 类似于data概念
@@ -95,7 +70,10 @@ created() {
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
-
+  this.$axios.get("api/product/getTopProduct")
+  .then(res=>{
+    this.goodsList=res.results
+  })
 },
 beforeCreate() {}, //生命周期 - 创建之前
 beforeMount() {}, //生命周期 - 挂载之前
