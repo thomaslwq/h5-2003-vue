@@ -189,7 +189,7 @@ app.post("/api/user/login", function (req, res, next) {
       } else {
         res.send({
           code: 401,
-          content: "user does exist",
+          content: "user does not exist",
           results
         });
       }
@@ -898,7 +898,7 @@ app.post('/api/product/getAllCartByUserID', function (req, res) {
   });
 });
 /**
- * 商品-获取购物车
+ * 商品-查看购物车
  * @param {String} userID
  * @param {String} productID
  */
