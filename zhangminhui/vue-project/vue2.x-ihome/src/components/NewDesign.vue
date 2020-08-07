@@ -5,7 +5,7 @@
       <span @click="showAll">所有</span>
       <span v-for="(item,index) in title" :key="index" @click="changeDesign(item)">{{item.seriesName}}</span>
     </div>
-    <div class="designMore">查看更多</div>
+    <div class="designMore" @click="$router.push('/Productgrid')">查看更多</div>
     <div class="design-list">
       <ul>
         <li v-for="(item,index) in product" :key="index" @click="seeDetails(item.productID)">
@@ -70,7 +70,7 @@ export default {
   created() {
   this.$axios.get('api/admin/getAllSeries').then(res=>{
       
-      this.title = res.results;
+      this.title = res.results.splice(0,4);
     });
 },
   mounted(){

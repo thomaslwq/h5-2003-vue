@@ -151,157 +151,220 @@ components: {
     Goods,
     Article,
     Footer
-},
-data() {
-//这里存放数据
-return {
-    swiperOptions: {
-        loop:true,
-        slidesPerView : 4,
-        grabCursor : true,
+  },
+  data() {
+    //这里存放数据
+    return {
+      swiperOptions: {
+        loop: true,
+        slidesPerView: 4,
+        grabCursor: true,
         slidesPerGroupSkip: 0,
-    },
-    swiperList:[
-        {
-            id:"1",productName:"木质收音机",price:"$29.00",img:"product-28.jpg",type:"furniture"
+      },
+      swiperList: [{
+          id: "1",
+          productName: "木质收音机",
+          price: "$29.00",
+          img: "product-28.jpg",
+          type: "furniture"
         },
         {
-            id:"2",productName:"木质收音机",price:"$29.00",img:"product-29.jpg",type:"chair"
+          id: "2",
+          productName: "木质收音机",
+          price: "$29.00",
+          img: "product-29.jpg",
+          type: "chair"
         },
         {
-            id:"3",productName:"木质收音机",price:"$29.00",img:"product-30.jpg",type:"decorate"
+          id: "3",
+          productName: "木质收音机",
+          price: "$29.00",
+          img: "product-30.jpg",
+          type: "decorate"
         },
         {
-            id:"4",productName:"木质收音机",price:"$29.00",img:"product-31.jpg",type:"lamplight"
+          id: "4",
+          productName: "木质收音机",
+          price: "$29.00",
+          img: "product-31.jpg",
+          type: "lamplight"
         },
         {
-            id:"5",productName:"木质收音机",price:"$29.00",img:"product-32.jpg",type:"decorate"
+          id: "5",
+          productName: "木质收音机",
+          price: "$29.00",
+          img: "product-32.jpg",
+          type: "decorate"
         },
         {
-            id:"6",productName:"木质收音机",price:"$29.00",img:"product-33.jpg",type:"chair"
+          id: "6",
+          productName: "木质收音机",
+          price: "$29.00",
+          img: "product-33.jpg",
+          type: "chair"
         },
         {
-            id:"7",productName:"木质收音机",price:"$29.00",img:"product-34.jpg",type:"lamplight"
+          id: "7",
+          productName: "木质收音机",
+          price: "$29.00",
+          img: "product-34.jpg",
+          type: "lamplight"
         },
         {
-            id:"8",productName:"木质收音机",price:"$29.00",img:"product-35.jpg",type:"furniture"
+          id: "8",
+          productName: "木质收音机",
+          price: "$29.00",
+          img: "product-35.jpg",
+          type: "furniture"
         }
-    ],
-    btnType:"des",
-    commentList:[
-        {
-            id:"1",msg:"描述",type:"des"
+      ],
+      btnType: "des",
+      commentList: [{
+          id: "1",
+          msg: "描述",
+          type: "des"
         },
         {
-            id:"2",msg:"附加信息",type:"msg"
+          id: "2",
+          msg: "附加信息",
+          type: "msg"
         },
         {
-            id:"3",msg:"评论",type:"comment"
+          id: "3",
+          msg: "评论",
+          type: "comment"
         }
-    ],
-    nowImg:{name:"",price:"",type:"",num:"",place:"",productID:"",content:""},
-    imgList:[
+      ],
+      nowImg: {
+        name: "",
+        price: "",
+        type: "",
+        num: "",
+        place: "",
+        productID: "",
+        content: ""
+      },
+      imgList: [{
+          id: "1",
+          name: "/uploads/110692.jpg",
+          price: "129",
+          type: "诗尼曼衣柜",
+          productID: 10028731596630792000,
+          content: "让你坠入温柔乡"
+        },
         {
-            id:"1",name:"/uploads/110692.jpg",price:"129",type:"诗尼曼衣柜",productID:10028731596630792000,content:"让你坠入温柔乡"
-        }, 
-        {
-            id:"2",name:"/uploads/product-28.jpg",price:"1299",type:"布艺沙发",productID:10029961596630864000,content:"躺着绝对不想动"
-        }, 
+          id: "2",
+          name: "/uploads/product-28.jpg",
+          price: "1299",
+          type: "布艺沙发",
+          productID: 10029961596630864000,
+          content: "躺着绝对不想动"
+        },
 
-    ]
-};
-},
-//监听属性 类似于data概念
-computed: {
-     swiper() {
-        return this.$refs.mySwiper.$swiper
+      ]
+    };
+  },
+  //监听属性 类似于data概念
+  computed: {
+    swiper() {
+      return this.$refs.mySwiper.$swiper
     }
-},
-//监控data中的数据变化
-watch: {},
-//方法集合
-methods: {
+  },
+  //监控data中的数据变化
+  watch: {},
+  //方法集合
+  methods: {
     //添加到购物车
-    async addToCart(){
-      let res = await this.$axios.post("api/product/getAllCartByUserID",
-        this.$qs.stringify({
-          userID:this.userID
-      }))
-      console.log(res.results)
-      if(res.code == 200 && res.results[0].productID == this.nowImg.productID){
-        console.log(res)
-        this.$notify({
-            title: '添加失败',
-            message: '购物车里面已经有了相同的宝贝了!',
-            type: 'warning',
-            offset: 100
-        });
-      }else{
-         await this.$axios.post("api/product/addToCart",
+    addToCart() {
+        this.$axios.post("api/product/getAllCartByUserID",
+          this.$qs.stringify({
+            userID: this.userID
+          })).then(res => {
+          let hasProduct = res.results;
+          var nowProductID;
+          console.log(this.nowImg.productID)
+          for(let i=0;i<hasProduct.length;i++){
+            if(hasProduct[i].productID == this.nowImg.productID){
+                nowProductID = hasProduct[i].productID;
+            }
+          }
+          if (res.code == 200 && nowProductID == this.imgList[0].productID ) {
+            this.$notify({
+              title: '添加失败',
+              message: '购物车里面已经有了相同的宝贝了!',
+              type: 'warning',
+              offset: 100
+            });
+          } else {
+             console.log(1)
+            this.$axios.post("api/product/addToCart",
               this.$qs.stringify({
-                userID:this.userID || 10014841596696785000,
-                productID:this.nowImg.productID || 10021071596632162000,
-                count:this.nowImg.num
-          })).then(res=>{
-            console.log(res)
-            if(res.code == 200){
-              this.$notify({
-                title: '添加成功',
-                message: '快去购物车看看自己的宝贝吧!',
-                type: 'success',
-                offset: 100
-              });
-               this.$router.push({
-                    name:'Cart',
-                    params:{
-                        productID:this.nowImg.productID
-                    }
-              })
-            }   
-            //跳转页面
+                userID: this.userID || 10014841596696785000,
+                productID: this.nowImg.productID || 10021071596632162000,
+                count: this.nowImg.num
+              })).then(res => {
+              if (res.code == 200) {
+                this.$notify({
+                  title: '添加成功',
+                  message: '快去购物车看看自己的宝贝吧!',
+                  type: 'success',
+                  offset: 100
+                });
+                //跳转页面
+                this.$router.push({
+                  name: 'Cart',
+                  params: {
+                    productID: this.nowImg.productID
+                  }
+                })
+              }
+            }).catch(err => {
+              console.log(err)
+            })
+          }
 
-          }).catch(err=>{
-            console.log(err)
+
+
+        }).catch(err => {
+          console.log(err)
         })
-      }
 
-     
     },
     //增加数量
-    addProduct(){
-      this.nowImg.num ++;
+    addProduct() {
+      this.nowImg.num++;
     },
     //减少数量
-    subProduct(){
-      if(this.nowImg.num-1<0){
+    subProduct() {
+      if (this.nowImg.num - 1 < 0) {
         return false;
       }
-      this.nowImg.num --;
+      this.nowImg.num--;
     },
     //根据当前选项来选择展示页面
-    changeImg(name,price,type,productID){
-        this.nowImg.name = name;
-        this.nowImg.price = price;
-        this.nowImg.type = type;
-        this.nowImg.num = 1;
-        this.nowImg.place = "";
-        this.nowImg.productID = productID;
+    changeImg(name, price, type, productID) {
+      this.nowImg.name = name;
+      this.nowImg.price = price;
+      this.nowImg.type = type;
+      this.nowImg.num = 1;
+      this.nowImg.place = "";
+      this.nowImg.productID = productID;
+      clearInterval(this.nowImg.timer)
+      this.nowImg.timer = setInterval(() => {
+        this.nowImg.place = "show";
         clearInterval(this.nowImg.timer)
-        this.nowImg.timer = setInterval(()=>{
-          this.nowImg.place = "show";
-          clearInterval(this.nowImg.timer)
-        },0)    
+      }, 0)
     },
-    changeBtn(type){
-        this.btnType = type;
+    changeBtn(type) {
+      this.btnType = type;
     },
-    prevOne(){
-        this.swiper.slideNext(500);
+    prevOne() {
+      this.swiper.slideNext(500);
     },
-    nextOne(){
-        this.swiper.slidePrev(500);
+    nextOne() {
+      this.swiper.slidePrev(500);
     }
-},
+  },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
   //先接受主页传过来的商品ID
@@ -311,13 +374,13 @@ created() {
   // 请求数据
    this.$axios.post("api/product/getProductInfoByID",
     this.$qs.stringify({
-      productID:this.productID || 10021461596631900000
+      productID:this.productID || "",
    })).then(res=>{
     if(res.code == 200){
       var res = res.results[0];
-      this.imgList.unshift({productID:res.productID,name:res.imgurl,price:res.price,type:res.productName,content:res.content})
+      this.imgList.unshift({productID:res.productID,name:(res.imgurl == null?"/uploads/null.jpg":res.imgurl),price:res.price,type:res.productName,content:res.content})
       // 替换当前页面的数据
-      this.nowImg = {name:res.imgurl,price:res.price,type:res.productName,num:"1",place:"show",productID:res.productID,content:res.content}
+      this.nowImg = {name:(res.imgurl == null?"/uploads/null.jpg":res.imgurl),price:res.price,type:res.productName,num:"1",place:"show",productID:res.productID,content:res.content}
 
     }
   }).catch(err=>{

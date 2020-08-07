@@ -113,35 +113,42 @@ export default {
     },
     addCart(productID) {
       var userID = localStorage.getItem("userID");
-       this.$axios.post("api/product/getAllCartByUserID&ProductID",
+      this.$axios
+        .post(
+          "api/product/getAllCartByUserID&ProductID",
           this.$qs.stringify({
-            userID:userID,
-            productID:productID
-          })).then(res=>{
-            if(res.results.length==0){
-              this.$axios.post("api/product/addToCart",
-              this.$qs.stringify({
-                userID:userID,
-                productID:productID,
-                count: 1
-              })
-              ).then(res=>{
-               if(res.code==200){
-                 this.$message({
-                  message: "添加成功",
-                  duration: 1000,
-                  type: "success",
-                });
-               }
-              })
-            }else{
-              this.$message({
-                  message: "购物车已经有这件商品了哦",
-                  duration: 1000,
-                  type: "error",
-                });
-            }
+            userID: userID,
+            productID: productID,
           })
+        )
+        .then((res) => {
+          if (res.results.length == 0) {
+            this.$axios
+              .post(
+                "api/product/addToCart",
+                this.$qs.stringify({
+                  userID: userID,
+                  productID: productID,
+                  count: 1,
+                })
+              )
+              .then((res) => {
+                if (res.code == 200) {
+                  this.$message({
+                    message: "添加成功",
+                    duration: 1000,
+                    type: "success",
+                  });
+                }
+              });
+          } else {
+            this.$message({
+              message: "购物车已经有这件商品了哦",
+              duration: 1000,
+              type: "error",
+            });
+          }
+        });
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）

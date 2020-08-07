@@ -67,7 +67,7 @@ methods: {
 created() {
   this.$axios.get('api/admin/getAllSeries').then(res=>{
       
-      this.goodsBtn = res.results;
+      this.goodsBtn = res.results.splice(0,4);
     });
 },
 //生命周期 - 挂载完成（可以访问DOM元素）

@@ -151,29 +151,22 @@ export default {
     return {
       cartList: [],
       checkedGoods: [],
-      isLogin:false
+      isLogin:false,
+      arr: [],
     };
   },
   //监听属性 类似于data概念
   computed: {
     totalPrice() {
-      var arr = this.checkedGoods.map((v) => {
-        return v.price * v.count;
-      });
       var total = 0;
-      arr.forEach((v) => {
-        total += v;
+      this.cartList.forEach((v) => {
+        var pricelist = v.price * v.count;
+        total += pricelist;
       });
       return total;
     },
     totalNum() {
-      var arr = this.checkedGoods.map((v) => {
-        return v.count;
-      });
-      var total = 0;
-      arr.forEach((v) => {
-        total += v;
-      });
+      var total = this.cartList.length;
       return total;
     },
     checked() {
@@ -192,7 +185,7 @@ export default {
   //方法集合
   methods: {
     checkHandle: function (goodsitem) {
-      console.log(this.checkedGoods.indexOf(goodsitem));
+      // console.log(this.checkedGoods.indexOf(goodsitem));
       this.checkedGoods.push(goodsitem);
     },
     subNumHandle: function (item) {
