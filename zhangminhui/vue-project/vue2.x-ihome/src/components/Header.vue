@@ -212,8 +212,9 @@ export default {
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
+    
     var userID = localStorage.getItem("userID");
-    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("scroll",this.handleScroll);
     if (userID) {
       this.isLogin = true;
       // console.log(userID);

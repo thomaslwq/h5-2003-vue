@@ -30,6 +30,10 @@ Vue.prototype.$qs=qs;
 //引入swiper
 // Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
 
+
+
+
+
 new Vue({
   router,
   store,

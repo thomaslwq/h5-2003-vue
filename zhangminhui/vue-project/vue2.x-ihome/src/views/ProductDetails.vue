@@ -163,28 +163,28 @@ return {
     },
     swiperList:[
         {
-            id:"1",name:"木质收音机",price:"$29.00",img:"product-28.jpg",type:"furniture"
+            id:"1",productName:"木质收音机",price:"$29.00",img:"product-28.jpg",type:"furniture"
         },
         {
-            id:"2",name:"木质收音机",price:"$29.00",img:"product-29.jpg",type:"chair"
+            id:"2",productName:"木质收音机",price:"$29.00",img:"product-29.jpg",type:"chair"
         },
         {
-            id:"3",name:"木质收音机",price:"$29.00",img:"product-30.jpg",type:"decorate"
+            id:"3",productName:"木质收音机",price:"$29.00",img:"product-30.jpg",type:"decorate"
         },
         {
-            id:"4",name:"木质收音机",price:"$29.00",img:"product-31.jpg",type:"lamplight"
+            id:"4",productName:"木质收音机",price:"$29.00",img:"product-31.jpg",type:"lamplight"
         },
         {
-            id:"5",name:"木质收音机",price:"$29.00",img:"product-32.jpg",type:"decorate"
+            id:"5",productName:"木质收音机",price:"$29.00",img:"product-32.jpg",type:"decorate"
         },
         {
-            id:"6",name:"木质收音机",price:"$29.00",img:"product-33.jpg",type:"chair"
+            id:"6",productName:"木质收音机",price:"$29.00",img:"product-33.jpg",type:"chair"
         },
         {
-            id:"7",name:"木质收音机",price:"$29.00",img:"product-34.jpg",type:"lamplight"
+            id:"7",productName:"木质收音机",price:"$29.00",img:"product-34.jpg",type:"lamplight"
         },
         {
-            id:"8",name:"木质收音机",price:"$29.00",img:"product-35.jpg",type:"furniture"
+            id:"8",productName:"木质收音机",price:"$29.00",img:"product-35.jpg",type:"furniture"
         }
     ],
     btnType:"des",
@@ -223,12 +223,13 @@ watch: {},
 methods: {
     //添加到购物车
     async addToCart(){
-      let res = await this.$axios.post("api/product/getProductInfoByID",
+      let res = await this.$axios.post("api/product/getAllCartByUserID",
         this.$qs.stringify({
-          productID:this.nowImg.productID
+          userID:this.userID
       }))
-
-      if(res.code == 200){
+      console.log(res.results)
+      if(res.code == 200 && res.results[0].productID == this.nowImg.productID){
+        console.log(res)
         this.$notify({
             title: '添加失败',
             message: '购物车里面已经有了相同的宝贝了!',
@@ -250,7 +251,14 @@ methods: {
                 type: 'success',
                 offset: 100
               });
-            }     
+               this.$router.push({
+                    name:'Cart',
+                    params:{
+                        productID:this.nowImg.productID
+                    }
+              })
+            }   
+            //跳转页面
 
           }).catch(err=>{
             console.log(err)
@@ -298,8 +306,7 @@ methods: {
 created() {
   //先接受主页传过来的商品ID
   //根据商品ID请求数据，然后渲染到页面上
-  // this.userID = this.$route.params.userID;
-  console.log(this.$route.params)
+  this.userID = JSON.parse(localStorage.getItem("userID"));
   this.productID = this.$route.params.productID;
   // 请求数据
    this.$axios.post("api/product/getProductInfoByID",
