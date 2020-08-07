@@ -163,28 +163,28 @@ return {
     },
     swiperList:[
         {
-            id:"1",name:"木质收音机",price:"$29.00",img:"product-28.jpg",type:"furniture"
+            id:"1",productName:"木质收音机",price:"$29.00",img:"product-28.jpg",type:"furniture"
         },
         {
-            id:"2",name:"木质收音机",price:"$29.00",img:"product-29.jpg",type:"chair"
+            id:"2",productName:"木质收音机",price:"$29.00",img:"product-29.jpg",type:"chair"
         },
         {
-            id:"3",name:"木质收音机",price:"$29.00",img:"product-30.jpg",type:"decorate"
+            id:"3",productName:"木质收音机",price:"$29.00",img:"product-30.jpg",type:"decorate"
         },
         {
-            id:"4",name:"木质收音机",price:"$29.00",img:"product-31.jpg",type:"lamplight"
+            id:"4",productName:"木质收音机",price:"$29.00",img:"product-31.jpg",type:"lamplight"
         },
         {
-            id:"5",name:"木质收音机",price:"$29.00",img:"product-32.jpg",type:"decorate"
+            id:"5",productName:"木质收音机",price:"$29.00",img:"product-32.jpg",type:"decorate"
         },
         {
-            id:"6",name:"木质收音机",price:"$29.00",img:"product-33.jpg",type:"chair"
+            id:"6",productName:"木质收音机",price:"$29.00",img:"product-33.jpg",type:"chair"
         },
         {
-            id:"7",name:"木质收音机",price:"$29.00",img:"product-34.jpg",type:"lamplight"
+            id:"7",productName:"木质收音机",price:"$29.00",img:"product-34.jpg",type:"lamplight"
         },
         {
-            id:"8",name:"木质收音机",price:"$29.00",img:"product-35.jpg",type:"furniture"
+            id:"8",productName:"木质收音机",price:"$29.00",img:"product-35.jpg",type:"furniture"
         }
     ],
     btnType:"des",
@@ -251,7 +251,14 @@ methods: {
                 type: 'success',
                 offset: 100
               });
-            }     
+               this.$router.push({
+                    name:'Cart',
+                    params:{
+                        productID:this.nowImg.productID
+                    }
+              })
+            }   
+            //跳转页面
 
           }).catch(err=>{
             console.log(err)
