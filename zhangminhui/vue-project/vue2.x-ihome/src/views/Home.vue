@@ -5,7 +5,6 @@
   <Bigswiper></Bigswiper>
   <BestGoods></BestGoods>
   <Qianggou></Qianggou>
-  
   <Newdesign></Newdesign>
   <Video></Video>
   <Article></Article>

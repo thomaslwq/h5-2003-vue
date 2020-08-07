@@ -8,7 +8,7 @@
         <i class="iconfont icon-fangdajing"></i>
       </div>
     </div>
-    <div class="navbox" ref="navScroll">
+    <div class="navbox" :id="navScroll">
       <div class="nav">
         <div class="logo">
           <img src="../assets/img/logo/logo.png" alt />
@@ -121,6 +121,7 @@ export default {
   components: {},
   data() {
     return {
+      navScroll:false,
       wishNember:0,
       currentMenu:'',
       isLogin: false,
@@ -142,10 +143,10 @@ export default {
     handleScroll() {
       let scrollY = document.documentElement.scrollTop;
       if (scrollY > 130) {
-        this.$refs.navScroll.id = "nav-scroll";
+        this.navScroll = "navScroll"
         this.hidden = true;
       } else {
-        this.$refs.navScroll.id = "";
+        this.navScroll = false
         this.hidden = false;
       }
     },
@@ -227,7 +228,6 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             this.user = res.results[0];
-            // console.log(res.results[0])
           }
         });
       //   this.$axios
@@ -262,7 +262,7 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
-  #nav-scroll {
+  #navScroll {
     position: fixed;
     top: 0;
     left: 0;

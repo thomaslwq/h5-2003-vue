@@ -398,9 +398,8 @@ app.post("/api/admin/updateProduct", function (req, res, next) {
   var body = req.body;
   console.log(body);
   Object.keys(productModel).forEach((keys) => {
-    userModel[keys] = body[keys];
+    productModel[keys] = body[keys];
   });
-
   var arr = [];
   Object.keys(productModel).forEach((keys) => {
     if (productModel[keys]) {
@@ -757,6 +756,29 @@ app.post('/api/product/getWishList', function (req, res) {
     }
   })
 })
+/**
+ * 商品-查看心愿单
+ * @param {String} userID
+ * @param {String} productID
+ */
+app.post('/api/product/getWishListByUserID&PorductID', function (req, res) {
+  var body = req.body;
+  var sql = "select * from product t1,wishlist t2,users t3 where t2.productID=t1.productID and t2.userID=t3.userID and t3.userID=" + body.userID+" and t1.productID="+body.productID;
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: 'connect failed' + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: 'find success',
+        results
+      });
+    }
+  })
+})
 
 /**
  * 商品-添加购物车
@@ -768,7 +790,8 @@ app.post('/api/product/addToCart', function (req, res) {
   var body = req.body;
   var tablename = "cart";
   var cartID = SetID(tablename);
-  var sql = "insert into cart values (" + cartID + "," + userID + "," + productID + "," + count + ")";
+  var sql = "insert into cart values (" + cartID + "," + body.userID + "," +body. productID + "," + body.count + ")";
+  console.log(sql);
   myCon.query(sql, function (error, results, fields) {
     if (error) {
       res.send({
@@ -857,7 +880,31 @@ app.post('/api/product/deleteAllCart', function (req, res) {
  */
 app.post('/api/product/getAllCartByUserID', function (req, res) {
   var body = req.body;
-  var sql = "select product.*,users.userID,cart.count from product,users,cart where cart.productID=product.productID and cart.userID=users.userID and users.userID=" + body.userID;
+  var sql = "select product.*,users.userID,cart.count,cart.cartID from product,users,cart where cart.productID=product.productID and cart.userID=users.userID and users.userID=" + body.userID;
+  console.log(sql);
+  myCon.query(sql, function (error, results, fields) {
+    if (error) {
+      res.send({
+        code: 400,
+        content: 'connect failed' + error
+      });
+    } else {
+      res.send({
+        code: 200,
+        content: 'find success',
+        results
+      });
+    }
+  });
+});
+/**
+ * 商品-获取购物车
+ * @param {String} userID
+ * @param {String} productID
+ */
+app.post('/api/product/getAllCartByUserID&ProductID', function (req, res) {
+  var body = req.body;
+  var sql = "select product.*,users.userID,cart.count,cart.cartID from product,users,cart where cart.productID=product.productID and cart.userID=users.userID and users.userID=" + body.userID+" and product.productID="+body.productID;
   console.log(sql);
   myCon.query(sql, function (error, results, fields) {
     if (error) {

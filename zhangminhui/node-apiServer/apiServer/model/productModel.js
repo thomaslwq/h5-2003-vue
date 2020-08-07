@@ -1,19 +1,20 @@
 const productModel = {
-  productID:'',
   productName: "",
   productCode: "",
-  amount: 0,
-  salesNum: 0,
-  discountNum: 100,
-  price: 0,
-  discountPrice: 0,
+  amount: "",
+  salesNum:"",
+  discountNum:"",
+  price: "",
+  discountPrice:"",
   content: "",
   colorID: "",
   materialID: "",
   specificationID: "",
   seriesID: "",
   sortID: "",
-  createTime:""
+  createTime:"",
+  isNewProduct:"",
+  isDiscount:""
 };
 
 module.exports = {

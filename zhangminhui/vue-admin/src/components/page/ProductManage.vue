@@ -41,8 +41,10 @@
                 <el-table-column prop="specificationID" label="规格"></el-table-column>
                 <el-table-column prop="seriesID" label="系列"></el-table-column>
                 <el-table-column prop="sortID" label="分类"></el-table-column>
-                <el-table-column prop="isNewProduct" label="是否新品"></el-table-column>
-                <el-table-column prop="isDiscount" label="是否打折"></el-table-column>
+                <el-table-column prop="isNewProduct" label="是否新品">
+                </el-table-column>
+                <el-table-column prop="isDiscount" label="是否打折">
+                </el-table-column>
                 <el-table-column prop="createTime" label="创建时间"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -204,7 +206,9 @@ export default {
             //删除全选
             delList: [],
             multipleSelection: [],
-
+            //switch
+            isDis:false,
+            isNewPro:false,
             //各种参数表
             colors: [],
             sorts: [],
@@ -215,7 +219,7 @@ export default {
 
             //上传
             uploadData: {},
-            fileList:[]
+            fileList: []
         };
     },
     //监听属性 类似于data概念
@@ -229,7 +233,7 @@ export default {
                 .get('/api/admin/getAllProduct')
                 .then((res) => {
                     if (res.results.length > 0) {
-                        this.tableData = res.results;
+                         this.tableData = res.results;
                     }
                 })
                 .catch((err) => {
@@ -357,29 +361,23 @@ export default {
             }
         },
         //上传
-        handleRemove(file, fileList) {
-        },
-        handlePreview(file) {
-        },
-        beforeRemove(file) {
-        },
-        handleExceed(file) {
-        },
+        handleRemove(file, fileList) {},
+        handlePreview(file) {},
+        beforeRemove(file) {},
+        handleExceed(file) {},
         beforeUpload(file) {
             console.log(file);
         },
-        upload(file){
-            
+        upload(file) {
             let form = this.$refs['form'].$el;
             let formData = new FormData(form);
-                formData.append('productID', this.form.productID);
-                this.$axios
+            formData.append('productID', this.form.productID);
+            this.$axios
                 .post('api/admin/uploadProductPicture', formData)
                 .then((res) => {})
                 .catch((err) => {});
-            
+
             //    this.$refs.upload.submit();
-         
         }
     },
     //生命周期 - 创建完成（可以访问当前this实例）
