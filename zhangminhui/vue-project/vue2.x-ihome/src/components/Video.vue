@@ -52,9 +52,13 @@ export default {
       }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+
+    },
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
+  mounted() {
+    this.$refs.videos.pause()
+  },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
@@ -92,7 +96,6 @@ export default {
       animation-duration: 2s;
       animation-iteration-count: infinite;
       animation-timing-function: linear;
-      -moz-animation-delay: 0.8s;
     }
     &:hover {
       background: #a3bbc8;

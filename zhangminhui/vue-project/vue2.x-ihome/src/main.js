@@ -1,9 +1,10 @@
 import Vue from 'vue'
-import { Icon,Message,Container,Aside,Main,Notification } from 'element-ui';
+import { Icon,Message,Container,Aside,Main,Notification,Pagination,Popconfirm,Button,Radio } from 'element-ui';
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from "../common/myaxios";
+import './assets/iconfont/iconfont.css'
 axios.defaults.baseURL = process.env.VUE_APP_URL
 import qs from "qs";
 
@@ -15,6 +16,10 @@ Vue.use(Icon);
 Vue.use(Container);
 Vue.use(Aside);
 Vue.use(Main);
+Vue.use(Pagination);
+Vue.use(Popconfirm);
+Vue.use(Button);
+Vue.use(Radio);
 Vue.config.productionTip = false;
 //引入elment ui 的提示效果
 Vue.prototype.$message = Message;
@@ -24,6 +29,10 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$qs=qs;
 //引入swiper
 // Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
+
+
+
+
 
 new Vue({
   router,

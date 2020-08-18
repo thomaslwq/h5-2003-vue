@@ -82,7 +82,7 @@ export default new Router({
                         title: '评论管理'
                     }
 
-                }
+                },
 
             ]
         },

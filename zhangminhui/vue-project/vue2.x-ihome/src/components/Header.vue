@@ -8,18 +8,57 @@
         <i class="iconfont icon-fangdajing"></i>
       </div>
     </div>
-    <div class="navbox" ref="navScroll">
+    <div class="navbox" :id="navScroll">
       <div class="nav">
-        <div class="logo">
-          <img src="../assets/img/logo/logo-3.png" alt />
+        <div class="logo" @click="go">
+          <img src="../assets/img/logo/logo.png" alt />
         </div>
         <div class="menu">
           <ul>
-            <li class="menu-item" v-for="(item,index) in navmenu" :key="index">
-              {{item.text}}
-              <div class="menu-item-box" v-show="item.tag">
+            <li class="menu-item" @click="go">
+              主页
+            </li>
+            <li class="menu-item" @mouseenter="currentMenu='series'" @mouseleave="currentMenu=''">
+              家居用品
+              <div class="menu-item-box" v-show="currentMenu==='series'">
                 <ul class="menu-item-ul">
-                  <li v-for="(newItem,ind) in item.childrenMenu" :key="ind">{{newItem}}</li>
+                  <li v-for="(newItem,index) in seriesMenu" :key="newItem.seriesID+index"
+                  @click="goProductGrid(newItem.seriesID)"
+                  >{{newItem.seriesName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item" @mouseenter="currentMenu='sort'" @mouseleave="currentMenu=''">
+              品牌
+              <div class="menu-item-box" v-show="currentMenu==='sort'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem,index) in sortMenu" :key="newItem.sortID+index"
+                  @click="goProductGrid(newItem.sortID)"
+                  >{{newItem.sortName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item">
+              装饰品
+              <div class="menu-item-box" v-show="currentMenu==='ornament'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem) in seriesMenu" :key="newItem.seriesID">{{newItem.seriesName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item">
+              家纺
+              <div class="menu-item-box" v-show="currentMenu==='textiles'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem) in seriesMenu" :key="newItem.seriesID">{{newItem.seriesName}}</li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-item">
+              儿童
+              <div class="menu-item-box" v-show="currentMenu==='children'">
+                <ul class="menu-item-ul">
+                  <li v-for="(newItem) in seriesMenu" :key="newItem.seriesID">{{newItem.seriesName}}</li>
                 </ul>
               </div>
             </li>
@@ -27,39 +66,48 @@
         </div>
         <div class="nav-icon">
           <span class="iconfont icon-fangdajing" @click="searchShow"></span>
-          <span class="nav-icon-shoucang">
-            <i class="iconfont icon-shoucang"></i>
-            <span class="icon-shoucang-tip">0</span>
+          <span class="nav-icon-shoucang"  @click="GotoWish">
+            <i class="iconfont icon-aixin"></i>
+            <span class="icon-shoucang-tip">{{wishNember}}</span>
           </span>
-          <span class="nav-icon-gouwuche">
+          <span class="nav-icon-gouwuche"  @click="GotoCart">
             <i class="iconfont icon-gouwuche"></i>
             <span class="icon-gouwuche-tip">0</span>
           </span>
           <span class="iconfont icon-caidan" @click="move"></span>
         </div>
       </div>
-      <div class="user" ref="users">
-        <div class="close" @click="close">X</div>
-        <div class="userMessage">
-          <div class="userImg">
-            <img src="../assets/img/touxiang.png" alt />
+      <div class="userBox" ref="userBox">
+        <div class="user" ref="users">
+          <div class="close" @click="close">X</div>
+          <div class="NOLogin" v-if="!isLogin">
+            还没登录哦，点我去
+            <span @click="Login">登录</span>
           </div>
-          <span>{{user.name}}</span>
-        </div>
-        <div class="email">
-          <div>我的邮箱</div>
-          <span>{{user.email}}</span>
-        </div>
-        <div class="phone">
-          <div>电话号码</div>
-          <span>{{user.phone}}</span>
-        </div>
-        <div class="address">
-          <div>我的地址</div>
-          <span>{{user.address}}</span>
-        </div>
-        <div class="changeMessage">
-          <button class="btn" @click="change">修改信息</button>
+          <div v-else>
+            <div class="userMessage">
+              <div class="userImg">
+                <img :src="'http://175.24.122.212:8989/apiServer'+user.headPortrait" alt />
+              </div>
+              <span>{{user.username}}</span>
+            </div>
+            <div class="email">
+              <div>我的邮箱</div>
+              <span>{{user.email}}</span>
+            </div>
+            <div class="phone">
+              <div>电话号码</div>
+              <span>{{user.telephone}}</span>
+            </div>
+            <div class="address">
+              <div>我的地址</div>
+              <span>{{user.addresses || ""}}</span>
+            </div>
+            <div class="changeMessage">
+              <button class="btn1" @click="change">修改信息</button>
+              <button class="btn2" @click="quit">退出登录</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -67,49 +115,23 @@
 </template>
 
 <script>
-import "../assets/icon/iconfont.css";
+import "../assets/iconfont/iconfont.css";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     return {
+      navScroll:false,
+      wishNember:0,
+      currentMenu:'',
+      isLogin: false,
       hidden: false,
       searchHiddle: false,
-      navmenu: [
-        {
-          id: 1,
-          tag: true,
-          text: "Home+",
-          childrenMenu: ["Home1", "Home2", "Home3", "Home4"],
-        },
-        { id: 2, tag: false, text: "About" },
-        {
-          id: 3,
-          tag: true,
-          text: "Shop+",
-          childrenMenu: ["Shop Grid", "Shop List", "Shop Datails", "Wish List"],
-        },
-        {
-          id: 4,
-          tag: true,
-          text: "Pages+",
-          childrenMenu: ["Faq", "Blog", "Terms"],
-        },
-        {
-          id: 5,
-          tag: true,
-          text: "Blog+",
-          childrenMenu: ["Blog", "Blog Datails"],
-        },
-        { id: 6, tag: false, text: "Contact" },
-      ],
-      user: {
-        name: "杨洋",
-        email: "1239201872@qq.com",
-        phone: 13156879024,
-        address: "广东省深圳市宝安区西部硅谷",
-      },
+      seriesMenu:[],
+      sortMenu:[],
+      user: {},
       chengeMess: { name: false, email: false, phone: false, address: false },
+      touxiang:""
     };
   },
   //监听属性 类似于data概念
@@ -120,19 +142,32 @@ export default {
   methods: {
     handleScroll() {
       let scrollY = document.documentElement.scrollTop;
-      if (scrollY > 200) {
-        this.$refs.navScroll.id = "nav-scroll";
+      if (scrollY > 130) {
+        this.navScroll = "navScroll"
         this.hidden = true;
       } else {
-        this.$refs.navScroll.id = "";
+        this.navScroll = false
         this.hidden = false;
       }
     },
+    go(){
+      if(this.$route.name==="Home"){
+        return
+      }else{
+        this.$router.push("/")
+      }
+    },
     move() {
-      this.$refs.users.style.display = "block";
+      this.$refs.userBox.style.display = "block";
+      this.$refs.userBox.style.background = "rgba(0,0,0,.5)";
+      this.$refs.users.className = "openUser user";
     },
     close() {
-      this.$refs.users.style.display = "none";
+      this.$refs.users.className = "closeUser user";
+      this.$refs.userBox.style.background = "rgba(0,0,0,0)";
+      setTimeout(() => {
+        this.$refs.userBox.style.display = "none";
+      }, 500);
     },
     change() {
       this.$router.push("/changeMessage");
@@ -143,12 +178,87 @@ export default {
     searchHid() {
       this.searchHiddle = false;
     },
+    GotoWish() {
+      if(this.$route.name == "Wish"){
+        return false;
+      }
+      this.$router.push("/Wish");
+    },
+    goProductGrid:function(id){
+      console.log(this.$route.name)
+      if(this.$route.name==="Productgrid"){
+        this.$emit('post-id',id)
+      }else{
+        this.$router.push({
+              name:'Productgrid',
+              params:{
+                  id:id
+              }
+          })
+      }
+    },
+     GotoCart() {
+       if(this.$route.name == "Cart"){
+         return false;
+       }
+        this.$router.push("/Cart");
+    },
+    quit() {
+      localStorage.removeItem("userID");
+      this.isLogin = false
+      this.$router.push("/")
+    },
+    Login() {
+      this.$router.push("/Login");
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+    this.$axios.get('api/admin/getAllSeries').then(res=>{
+      this.seriesMenu = res.results
+    });
+    this.$axios.get('api/admin/getAllSort').then(res=>{
+      this.sortMenu = res.results
+    })
+  },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    window.addEventListener("scroll", this.handleScroll);
+    
+    var userID = localStorage.getItem("userID");
+    window.addEventListener("scroll",this.handleScroll);
+    if (userID) {
+      this.isLogin = true;
+      // console.log(userID);
+      this.$axios
+        .post(
+          "api/user/getUserInfoByID",
+          this.$qs.stringify({
+            userID: userID,
+          })
+        )
+        .then((res) => {
+          if (res.code == 200) {
+            this.user = res.results[0];
+            console.log(res.results)
+          }
+        });
+      //   this.$axios
+      // .post(
+      //   "api/product/getWishList",
+      //   this.$qs.stringify({
+      //     userID: userID,
+      //   })
+      // )
+      // .then((res) => {
+      //   if (res.code == 200) {
+      //     this.wishNember = res.results.length
+      //   }else{
+      //     this.wishNember = 0
+      //   }
+      // });
+    }else{
+      this.isLogin = false;
+    }
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
@@ -164,12 +274,21 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
-  #nav-scroll {
+  #navScroll {
     position: fixed;
     top: 0;
     left: 0;
     background: white;
     z-index: 9999;
+    animation: go 1s linear;
+  }
+  @keyframes go {
+    from {
+      top: -130px;
+    }
+    to {
+      top: 0;
+    }
   }
   .hidden {
     width: 100%;
@@ -204,6 +323,7 @@ export default {
       position: absolute;
       right: 10px;
       top: 10px;
+      cursor: pointer;
     }
   }
   .search {
@@ -249,6 +369,10 @@ export default {
       .logo {
         flex: 2;
         cursor: pointer;
+        img {
+          width: 150px;
+          height: 40px;
+        }
       }
       .menu {
         flex: 3;
@@ -262,6 +386,9 @@ export default {
             color: #436372;
             height: 80px;
             line-height: 80px;
+            font-size: 18px;
+            text-align: center;
+            font-weight: 500;
           }
           .menu-item {
             &:hover {
@@ -275,7 +402,7 @@ export default {
               .menu-item-ul {
                 background: white;
                 position: absolute;
-                width: 210px;
+                width: 200px;
                 border-top: 2px solid rgb(252, 215, 182);
                 display: flex;
                 flex-flow: column;
@@ -284,8 +411,11 @@ export default {
                   flex: 1;
                   height: 55px;
                   line-height: 55px;
-                  padding-left: 30px;
                   box-sizing: border-box;
+                  text-align: left;
+                  padding-left: 20px;
+                  font-size: 16px;
+                  font-weight: 400;
                   &:hover {
                     color: rgb(252, 215, 182);
                   }
@@ -300,6 +430,8 @@ export default {
         flex: 2;
         position: relative;
         margin-left: 50px;
+        display: flex;
+        justify-content: flex-end;
         .icon-fangdajing {
           display: inline-block;
           width: 50px;
@@ -338,7 +470,7 @@ export default {
               color: rgb(252, 215, 182);
             }
           }
-          .icon-shoucang {
+          .icon-aixin {
             display: inline-block;
             width: 30px;
             text-align: center;
@@ -416,108 +548,173 @@ export default {
           background: rgb(163, 187, 200);
           text-align: center;
           line-height: 50px;
+          font-size: 26px;
           cursor: pointer;
+          transition: all 0.5s;
           &:hover {
             background: rgb(252, 215, 182);
+            color: #fff;
           }
         }
       }
     }
     .openUser {
-      transition: go 2s;
+      animation: gogo 0.5s linear;
     }
-    .user {
-      display: none;
-      position: absolute;
-      top: 0;
-      width: 300px;
-      height: 600px;
-      position: absolute;
-      right: 0;
-      top: 0;
-      border: 1px solid #cccccc;
-      z-index: 2;
-      background: white;
-      .close {
-        margin: 20px;
-        cursor: pointer;
-        font-weight: bolder;
+    .closeUser {
+      animation: to 0.5s linear;
+    }
+    @keyframes gogo {
+      from {
+        right: -300px;
       }
-      .userMessage {
-        width: 100px;
-        margin: 10px auto;
-        .userImg {
-          width: 100px;
-          height: 100px;
-          border-radius: 50%;
-          overflow: hidden;
-          img {
-            width: 100%;
-            height: 100%;
+      to {
+        right: 0;
+      }
+    }
+    @keyframes to {
+      from {
+        right: 0;
+      }
+      to {
+        right: -300px;
+      }
+    }
+    .userBox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      .user {
+        position: absolute;
+        width: 300px;
+        min-height: 600px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        border: 1px solid #cccccc;
+        z-index: 2;
+        background: white;
+        .close {
+          margin: 20px;
+          cursor: pointer;
+          font-weight: bolder;
+        }
+        .NOLogin {
+          width: 100%;
+          text-align: center;
+          margin: 300px auto;
+          span {
+            color: rgb(163, 187, 200);
+            cursor: pointer;
+            &:hover {
+              color: rgb(252, 215, 182);
+            }
           }
         }
-        span {
-          display: inline-block;
+        .userMessage {
           width: 100px;
-          height: 30px;
-          text-align: center;
-          line-height: 30px;
+          margin: 10px auto;
+          .userImg {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          span {
+            display: inline-block;
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            line-height: 60px;
+            font-size: 18px;
+            font-weight: bolder;
+          }
+          .users-inp {
+            width: 200px;
+            height: 30px;
+            outline: none;
+          }
         }
-        .users-inp {
-          width: 200px;
-          height: 30px;
-          outline: none;
+        .email {
+          width: 100%;
+          height: 100px;
+          padding: 10px;
+          box-sizing: border-box;
+          div {
+            margin: 10px 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: rgb(252, 215, 182);
+          }
         }
-      }
-      .email {
-        width: 100%;
-        height: 100px;
-        padding: 10px;
-        box-sizing: border-box;
-        div {
+        .phone {
+          width: 100%;
+          height: 100px;
+          padding: 10px;
+          box-sizing: border-box;
           margin: 10px 0;
-          font-size: 22px;
-          font-weight: bold;
-          color: rgb(252, 215, 182);
+          div {
+            margin: 10px 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: rgb(252, 215, 182);
+          }
         }
-      }
-      .phone {
-        width: 100%;
-        height: 100px;
-        padding: 10px;
-        box-sizing: border-box;
-        margin: 10px 0;
-        div {
-          margin: 10px 0;
-          font-size: 22px;
-          font-weight: bold;
-          color: rgb(252, 215, 182);
+        .address {
+          width: 100%;
+          height: 100px;
+          padding: 10px;
+          box-sizing: border-box;
+          div {
+            margin: 10px 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: rgb(252, 215, 182);
+          }
         }
-      }
-      .address {
-        width: 100%;
-        height: 100px;
-        padding: 10px;
-        box-sizing: border-box;
-        div {
-          margin: 10px 0;
-          font-size: 22px;
-          font-weight: bold;
-          color: rgb(252, 215, 182);
-        }
-      }
-      .changeMessage {
-        width: 100%;
-        .btn {
-          width: 100px;
-          height: 30px;
-          border-radius: 5px;
-          margin: 10px 100px;
-          border: 0;
-          font-weight: bolder;
-          background: rgb(252, 215, 182);
-          outline: none;
-          cursor: pointer;
+        .changeMessage {
+          width: 100%;
+          .btn1 {
+            width: 100px;
+            height: 30px;
+            border-radius: 5px;
+            margin: 10px 100px;
+            border: 0;
+            font-weight: bolder;
+            background: rgb(163, 187, 200);
+            outline: none;
+            color: white;
+            cursor: pointer;
+            &:hover {
+              background: rgb(252, 215, 182);
+              transition: 0.5s;
+            }
+          }
+          .btn2 {
+            width: 100px;
+            height: 30px;
+            border-radius: 5px;
+            margin: 0px 100px 20px 100px;
+            border: 0;
+            font-weight: bolder;
+            background: rgb(163, 187, 200);
+            color: white;
+            outline: none;
+            cursor: pointer;
+            &:hover {
+              background: rgb(252, 215, 182);
+              transition: 0.5s;
+            }
+          }
         }
       }
     }

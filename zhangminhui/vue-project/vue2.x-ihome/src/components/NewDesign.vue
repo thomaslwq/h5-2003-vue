@@ -2,16 +2,17 @@
   <div class="design">
     <span class="design-span">新设计</span>
     <div class="design-title">
-      <span v-for="(item,index) in title" :key="index" @click="changeDesign(item)">{{item}}</span>
+      <span @click="showAll">所有</span>
+      <span v-for="(item,index) in title" :key="index" @click="changeDesign(item)">{{item.seriesName}}</span>
     </div>
-    <div class="designMore">查看更多</div>
+    <div class="designMore" @click="$router.push('/Productgrid')">查看更多</div>
     <div class="design-list">
       <ul>
-        <li v-for="(item,index) in product" :key="index">
-          <span class="design-list-title">{{item.title}}</span>
+        <li v-for="(item,index) in product" :key="index" @click="seeDetails(item.productID)">
+          <span class="design-list-title">{{item.productName}}</span>
           <span class="design-list-tip">{{item.tip}}</span>
           <div class="img-box">
-            <img :src="item.src" alt />
+            <img :src="'http://175.24.122.212:8989/apiServer'+ item.imgurl" alt />
           </div>
         </li>
       </ul>
@@ -27,126 +28,66 @@ export default {
   data() {
     //这里存放数据
     return {
-      title: ["所有", "家具", "椅子", "灯光", "装潢"],
-      product: [
-        {
-          id: 1,
-          title: "Beat扁平吊坠黑色",
-          tip: "经典",
-          type: "家具,",
-          src: require("../assets/img/product/product-36.png"),
-        },
-        {
-          id: 2,
-          title: "Lampe Sur Pieds Bamboo",
-          tip: "经典",
-          type: "椅子,灯光",
-          src: require("../assets/img/product/product-37.png"),
-        },
-        {
-          id: 3,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "灯光,",
-          src: require("../assets/img/product/product-38.png"),
-        },
-        {
-          id: 4,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "家具,装潢",
-          src: require("../assets/img/product/product-39.png"),
-        },
-        {
-          id: 5,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "椅子,装潢",
-          src: require("../assets/img/product/product-40.png"),
-        },
-        {
-          id: 6,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "灯光,",
-          src: require("../assets/img/product/product-41.png"),
-        },
-      ],
-      newProduct: [
-        {
-          id: 1,
-          title: "Beat扁平吊坠黑色",
-          tip: "经典",
-          type: "家具,",
-          src: require("../assets/img/product/product-36.png"),
-        },
-        {
-          id: 2,
-          title: "Lampe Sur Pieds Bamboo",
-          tip: "经典",
-          type: "椅子,灯光",
-          src: require("../assets/img/product/product-37.png"),
-        },
-        {
-          id: 3,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "灯光,",
-          src: require("../assets/img/product/product-38.png"),
-        },
-        {
-          id: 4,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "家具,装潢",
-          src: require("../assets/img/product/product-39.png"),
-        },
-        {
-          id: 5,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "椅子,装潢",
-          src: require("../assets/img/product/product-40.png"),
-        },
-        {
-          id: 6,
-          title: "藤摇椅",
-          tip: "经典",
-          type: "灯光,",
-          src: require("../assets/img/product/product-41.png"),
-        },
-      ],
-    };
+      title: [],
+      product: [],
+      originList:[],
+    }; 
   },
   //监听属性 类似于data概念
   computed: {},
   methods: {
-    changeDesign(type) {
-      if (type == "家具") {
-        this.product = [...this.newProduct];
-        this.product = this.product.filter((item, idexx) => {
-          return item.type.indexOf("家具") > -1;
-        });
-      } else if (type == "椅子") {
-        this.product = [...this.newProduct];
-        this.product = this.product.filter((item, idexx) => {
-          return item.type.indexOf("椅子") > -1;
-        });
-      } else if (type == "灯光") {
-        this.product = [...this.newProduct];
-        this.product = this.product.filter((item, idexx) => {
-          return item.type.indexOf("灯光") > -1;
-        });
-      } else if (type == "装潢") {
-        this.product = [...this.newProduct];
-        this.product = this.product.filter((item, idexx) => {
-          return item.type.indexOf("装潢") > -1;
-        });
-      } else {
-        this.product = [...this.newProduct];
-      }
-    },
+    showAll:function(){
+    this.product=this.originList;
   },
+    changeDesign(item) {
+      this.$axios.post('api/product/getTopProductBySeries',this.$qs.stringify(
+                {
+                seriesID:Number(item.seriesID)
+                })
+            ).then(res=>{
+              if(res.code == 200){
+                var arr = res.results.filter(v=>{
+                  if(v.imgurl){
+                    return v
+                  }else{
+                    v.imgurl = "/uploads/null.jpg";
+                    return v
+                  }
+                })
+                this.product = arr;
+              }
+            })
+    },
+    seeDetails:function(id){
+        this.$router.push({
+            name:'ProductDetails',
+            params:{
+                productID:id
+            }
+        })
+    }
+  },
+  created() {
+  this.$axios.get('api/admin/getAllSeries').then(res=>{
+      
+      this.title = res.results.splice(0,4);
+    });
+},
+  mounted(){
+    this.$axios.get("api/product/getNewDesignProduct")
+    .then(res=>{
+      var arr=res.results.map(v=>{
+        if(v.imgurl){
+          return v
+        }else{
+          v.imgurl="/uploads/1029793003.jpg"
+          return v
+        }
+      })
+      this.originList = arr.splice(0,6);
+      this.product = this.originList;
+    })
+  }
 };
 </script>
 <style lang="less" >
@@ -178,12 +119,12 @@ export default {
       cursor: pointer;
     }
   }
-  .designMore{
-      font-size: 18px;
-      float: right;
-      cursor: pointer;
-      font-weight: bolder;
-      margin-right: 70px;
+  .designMore {
+    font-size: 18px;
+    float: right;
+    cursor: pointer;
+    font-weight: bolder;
+    margin-right: 70px;
   }
   .design-list {
     width: 1140px;
@@ -198,12 +139,12 @@ export default {
         margin: 15px;
         width: 350px;
         height: 250px;
-        background: rgb(248, 248, 248);
+        background: rgb(255, 255, 255);
         position: relative;
         &:hover {
           .img-box {
-            width: 210px;
-            height: 133px;
+            width: 270px;
+            height: 183px;
             transition: 1s;
           }
         }
@@ -229,8 +170,8 @@ export default {
           position: absolute;
           bottom: 0;
           right: 0;
-          width: 200px;
-          height: 123px;
+          width: 260px;
+          height: 168px;
           img {
             width: 100%;
             height: 100%;
